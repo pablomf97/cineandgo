@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+
+// TMDB genre ids
 const Map<int, String> kGenresEN = {
   28: 'Action',
   12: 'Adventure',
@@ -56,5 +59,37 @@ const Map<int, String> kGenresES = {
   10767: 'Charla',
   10768: 'Bélica & Política',
 };
+
+// TMDB poster path
 const String kPosterPathOriginal = 'https://image.tmdb.org/t/p/original';
 const String kPosterPath500 = 'https://image.tmdb.org/t/p/w500';
+
+//   Colors:
+//      Defining colors for the theme,
+//      following the material design
+//      standards.
+// Primary color --> DeepOrange
+const Color kPrimaryColor = Color(0xFFFF5722);
+// Dark primary color --> Darker version of DeepOrange
+const Color kDarkPrimaryColor = Color(0xFFE64A19);
+// Light primary color --> Lighter version of DeepOrange
+const Color kLightPrimaryColor = Color(0xFFFFCCBC);
+// Accent color --> Orange
+const Color kAccentColor = Color(0xFFFF9800);
+// Text&Icons color --> White
+const Color kTextAndIconsColor = Color(0xFFFFFFFF);
+// Primary text color --> Lighter black
+const Color kPrimaryTextColor = Color(0xFF212121);
+// Secondary text color --> Gray
+const Color kSecondaryTextColor = Color(0xFF757575);
+// Divider color --> Lighter gray
+const Color kDividerColor = Color(0xFFBDBDBD);
+
+// Theme data
+final ThemeData kThemeData = ThemeData(
+  primaryColor: kPrimaryColor,
+  primaryColorDark: kDarkPrimaryColor,
+  primaryColorLight: kLightPrimaryColor,
+  accentColor: kAccentColor,
+  dividerColor: kDividerColor,
+);

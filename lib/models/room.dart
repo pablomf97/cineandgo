@@ -1,11 +1,15 @@
+import 'package:cineandgo/models/film.dart';
 import 'package:cineandgo/models/message.dart';
 import 'package:cineandgo/models/user.dart';
+import 'package:flutter/material.dart';
+
+import 'cinema.dart';
 
 class Room {
   // Attributes
   String _id;
-  String _cinemaId;
-  String _filmId;
+  Cinema _cinema;
+  Film _film;
   String _roomTitle;
   String _dateTime;
   List<User> _users;
@@ -14,8 +18,8 @@ class Room {
   // Constructor
   Room(
     this._id,
-    this._cinemaId,
-    this._filmId,
+    this._cinema,
+    this._film,
     this._roomTitle,
     this._dateTime,
     this._users,
@@ -24,8 +28,8 @@ class Room {
 
   // Getters
   String getId() => _id;
-  String getCinemaId() => _cinemaId;
-  String getFilmId() => _filmId;
+  Cinema getCinema() => _cinema;
+  Film getFilm() => _film;
   String getRoomTitle() => _roomTitle;
   String getDateTime() => _dateTime;
   List<User> getUsers() => _users;
@@ -33,8 +37,8 @@ class Room {
 
   // Setters -- Will uncomment if necessary
   //  void setId(String value) => _id = value;
-  //  void setCinemaId(String value) => _cinemaId = value;
-  //  void setFilmId(String value) => _filmId = value;
+  //  void setCinema(Cinema value) => _cinema = value;
+  //  void setFilm(Film value) => _film = value;
   //  void setRoomTitle(String value) => _roomTitle = value;
   //  void setDateTime(String value) => _dateTime = value;
   //  void setUsers(List<User> value) => _users = value;
