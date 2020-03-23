@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 // TMDB genre ids
-const Map<int, String> kGenresEN = {
+const kGenresEN = {
   28: 'Action',
   12: 'Adventure',
   16: 'Animation',
@@ -30,7 +30,7 @@ const Map<int, String> kGenresEN = {
   10767: 'Talk,',
   10768: 'War & Politics',
 };
-const Map<int, String> kGenresES = {
+const kGenresES = {
   28: 'Acción',
   12: 'Aventura',
   16: 'Animación',
@@ -61,8 +61,8 @@ const Map<int, String> kGenresES = {
 };
 
 // TMDB poster path
-const String kPosterPathOriginal = 'https://image.tmdb.org/t/p/original';
-const String kPosterPath500 = 'https://image.tmdb.org/t/p/w500';
+const kPosterPathOriginal = 'https://image.tmdb.org/t/p/original';
+const kPosterPath500 = 'https://image.tmdb.org/t/p/w500';
 
 //   Colors:
 //      Defining colors for the theme,
@@ -71,25 +71,33 @@ const String kPosterPath500 = 'https://image.tmdb.org/t/p/w500';
 // Primary color --> DeepOrange
 const Color kPrimaryColor = Color(0xFFFF5722);
 // Dark primary color --> Darker version of DeepOrange
-const Color kDarkPrimaryColor = Color(0xFFE64A19);
+const kDarkPrimaryColor = Color(0xFFE64A19);
 // Light primary color --> Lighter version of DeepOrange
-const Color kLightPrimaryColor = Color(0xFFFFCCBC);
+const kLightPrimaryColor = Color(0xFFFFCCBC);
 // Accent color --> Orange
-const Color kAccentColor = Color(0xFFFF9800);
+const kAccentColor = Color(0xFFFF9800);
 // Text&Icons color --> White
-const Color kTextAndIconsColor = Color(0xFFFFFFFF);
+const kTextAndIconsColor = Color(0xFFFFFFFF);
 // Primary text color --> Lighter black
-const Color kPrimaryTextColor = Color(0xFF212121);
+const kPrimaryTextColor = Color(0xFF212121);
 // Secondary text color --> Gray
-const Color kSecondaryTextColor = Color(0xFF757575);
+const kSecondaryTextColor = Color(0xFF757575);
 // Divider color --> Lighter gray
-const Color kDividerColor = Color(0xFFBDBDBD);
+const kDividerColor = Color(0xFFBDBDBD);
 
-// Theme data
-final ThemeData kThemeData = ThemeData(
-  primaryColor: kPrimaryColor,
-  primaryColorDark: kDarkPrimaryColor,
-  primaryColorLight: kLightPrimaryColor,
-  accentColor: kAccentColor,
-  dividerColor: kDividerColor,
+// TextField decoration
+const kTextFieldDecoration = InputDecoration(
+  hintText: 'Introduce un valor',
+  contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+  border: OutlineInputBorder(
+    borderRadius: BorderRadius.all(Radius.circular(32.0)),
+  ),
+  enabledBorder: OutlineInputBorder(
+    borderSide: BorderSide(color: kLightPrimaryColor, width: 1.0),
+    borderRadius: BorderRadius.all(Radius.circular(32.0)),
+  ),
+  focusedBorder: OutlineInputBorder(
+    borderSide: BorderSide(color: kAccentColor, width: 2.0),
+    borderRadius: BorderRadius.all(Radius.circular(32.0)),
+  ),
 );
