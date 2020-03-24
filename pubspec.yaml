@@ -18,6 +18,9 @@ dependencies:
   # Firebase Cloud Firestore
   cloud_firestore: ^0.13.4+2
 
+  # Google Sign In
+  google_sign_in: ^4.2.0
+
   # Animated text kit
   animated_text_kit: ^2.0.0
 

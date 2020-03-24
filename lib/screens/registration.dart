@@ -1,8 +1,12 @@
+import 'package:cineandgo/components/custom_divider.dart';
+import 'package:cineandgo/components/google_sign_in_out.dart';
+import 'package:cineandgo/components/image_rounded_button.dart';
 import 'package:cineandgo/constants/constants.dart';
 import 'package:cineandgo/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:cineandgo/components/rounded_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:progress_indicators/progress_indicators.dart';
 import 'package:edge_alert/edge_alert.dart';
@@ -15,8 +19,9 @@ class Registration extends StatefulWidget {
 
 class _RegistrationState extends State<Registration>
     with SingleTickerProviderStateMixin {
-  // Firebase stuff
+  // Firebase stuff & more Google stuff
   final _auth = FirebaseAuth.instance;
+  final GoogleSignIn googleSignIn = GoogleSignIn();
 
   // Animation-related
   AnimationController controller;
@@ -203,17 +208,64 @@ class _RegistrationState extends State<Registration>
                       });
                     }
                   } catch (oops) {
+                    print(oops.code);
+                    String message;
+                    if (oops.code == 'ERROR_INVALID_EMAIL') {
+                      message = 'Parece que el email introducido no'
+                          ' es válido. Comprueba que esté bien escrito '
+                          'e inténtalo de nuevo';
+                    } else if (oops.code == 'ERROR_EMAIL_ALREADY_IN_USE') {
+                      message = 'El email que has introducido ya está '
+                          'en uso...';
+                    } else {
+                      message = 'Ha ocurrido algún error relacionado'
+                          ' con la base de datos. Vuelve a'
+                          ' intentarlo en unos momentos';
+                    }
                     setState(() {
                       showSpinner = false;
                       EdgeAlert.show(context,
                           title: '¡Oops, error!',
-                          description: 'Ha ocurrido algún error relacionado'
-                              ' con la base de datos. Vuelve a'
-                              ' intentarlo en unos momentos',
+                          description: message,
                           duration: EdgeAlert.LENGTH_VERY_LONG,
                           icon: Icons.error_outline,
                           backgroundColor: Colors.red);
                     });
+                  }
+                },
+              ),
+              CustomDivider(
+                thickness: 1.5,
+                text: 'O USA',
+                horizontalPadding: 12.0,
+              ),
+              ImageRoundedButton(
+                title: 'Google',
+                imagePath: 'images/google.png',
+                onPressed: () async {
+                  setState(() {
+                    showSpinner = true;
+                  });
+                  try {
+                    await GoogleSignInOut.signInWithGoogle(_auth, googleSignIn);
+                    int i = 0;
+                    Navigator.pushNamedAndRemoveUntil(context, Home.id,
+                        (route) {
+                      return i++ == 2;
+                    });
+                  } catch (oops) {
+                    print(oops);
+                    setState(() {
+                      showSpinner = false;
+                    });
+                    EdgeAlert.show(context,
+                        title: '¡Oops, error!',
+                        description: 'Algo no ha salido bien al intentar '
+                            'entrar con tu cuenta de Google. Inténtalo de '
+                            'nuevo en unos momentos.',
+                        duration: EdgeAlert.LENGTH_VERY_LONG,
+                        icon: Icons.error_outline,
+                        backgroundColor: Colors.red);
                   }
                 },
               ),
