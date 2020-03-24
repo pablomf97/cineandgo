@@ -1,6 +1,7 @@
 import 'package:cineandgo/components/custom_divider.dart';
 import 'package:cineandgo/components/rounded_button.dart';
 import 'package:cineandgo/constants/constants.dart';
+import 'package:cineandgo/localization/app_localizations.dart';
 import 'package:edge_alert/edge_alert.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -73,7 +74,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
               ),
             ),
             ScalingText(
-              'Cargando películas y salas...',
+              AppLocalizations.of(context).translate('loading_screen'),
               style: TextStyle(fontSize: 15.0),
             ),
           ],
@@ -113,7 +114,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                   email = value;
                 },
                 decoration: kTextFieldDecoration.copyWith(
-                  hintText: 'Introduce tu email',
+                  hintText:
+                      AppLocalizations.of(context).translate('enter_email'),
                 ),
               ),
               SizedBox(
@@ -135,7 +137,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                   password = value;
                 },
                 decoration: kTextFieldDecoration.copyWith(
-                  hintText: 'Introduce tu contraseña',
+                  hintText:
+                      AppLocalizations.of(context).translate('enter_pass'),
                 ),
               ),
               SizedBox(
@@ -143,7 +146,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
               ),
               RoundedButton(
                 enabled: isEmailFieldFilled && isPasswordFieldFilled,
-                text: 'Entrar',
+                text: AppLocalizations.of(context).translate('login'),
                 color: kAccentColor,
                 onPressed: () async {
                   try {
@@ -165,26 +168,22 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                   } catch (oops) {
                     String message;
                     if (oops.code == 'ERROR_USER_NOT_FOUND') {
-                      message = 'Parece que el email introducido no '
-                          'esta en nuestra base de datos. ¿Estás segur@'
-                          ' de haberlo introducido correctamente?';
+                      message = AppLocalizations.of(context)
+                          .translate('err_msg_firebase_user_not_found');
                     } else if (oops.code == 'ERROR_WRONG_PASSWORD') {
-                      message = '¡Contraseña incorrecta! Asegurate de '
-                          'introducirla correctamente y vuelve a '
-                          'intentarlo';
+                      message = AppLocalizations.of(context)
+                          .translate('err_msg_firebase_wrong_password');
                     } else if (oops.code == 'ERROR_INVALID_EMAIL') {
-                      message = 'Parece que el email introducido no'
-                          ' es válido. Comprueba que esté bien escrito '
-                          'e inténtalo de nuevo';
+                      message = AppLocalizations.of(context)
+                          .translate('err_msg_firebase_invalid_email');
                     } else {
-                      message = 'Ha ocurrido algún error relacionado'
-                          ' con la base de datos. Vuelve a'
-                          ' intentarlo en unos momentos';
+                      message = AppLocalizations.of(context)
+                          .translate('err_msg_firebase_generic');
                     }
                     setState(() {
                       showSpinner = false;
                       EdgeAlert.show(context,
-                          title: '¡Oops, error!',
+                          title: AppLocalizations.of(context).translate('oops'),
                           description: message,
                           duration: EdgeAlert.LENGTH_VERY_LONG,
                           icon: Icons.error_outline,
@@ -195,7 +194,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
               ),
               CustomDivider(
                 thickness: 1.5,
-                text: 'O USA',
+                text: AppLocalizations.of(context).translate('or_use'),
                 horizontalPadding: 12.0,
               ),
               ImageRoundedButton(
@@ -218,10 +217,9 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                       showSpinner = false;
                     });
                     EdgeAlert.show(context,
-                        title: '¡Oops, error!',
-                        description: 'Algo no ha salido bien al intentar '
-                            'entrar con tu cuenta de Google. Inténtalo de '
-                            'nuevo en unos momentos.',
+                        title: AppLocalizations.of(context).translate('oops'),
+                        description: AppLocalizations.of(context)
+                            .translate('err_msg_google_sign_in'),
                         duration: EdgeAlert.LENGTH_VERY_LONG,
                         icon: Icons.error_outline,
                         backgroundColor: Colors.red);

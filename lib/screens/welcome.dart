@@ -1,3 +1,4 @@
+import 'package:cineandgo/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:cineandgo/constants/constants.dart';
 import 'login.dart';
@@ -55,12 +56,12 @@ class _WelcomeState extends State<Welcome> with SingleTickerProviderStateMixin {
               height: 48.0,
             ),
             RoundedButton(
-              text: 'Entrar',
+              text: AppLocalizations.of(context).translate('login'),
               color: kAccentColor,
               onPressed: () => Navigator.pushNamed(context, Login.id),
             ),
             RoundedButton(
-              text: 'Registrarse',
+              text: AppLocalizations.of(context).translate('register'),
               color: kPrimaryColor,
               onPressed: () => Navigator.pushNamed(context, Registration.id),
             ),

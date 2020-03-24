@@ -2,6 +2,7 @@ import 'package:cineandgo/components/custom_divider.dart';
 import 'package:cineandgo/components/google_sign_in_out.dart';
 import 'package:cineandgo/components/image_rounded_button.dart';
 import 'package:cineandgo/constants/constants.dart';
+import 'package:cineandgo/localization/app_localizations.dart';
 import 'package:cineandgo/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:cineandgo/components/rounded_button.dart';
@@ -73,7 +74,7 @@ class _RegistrationState extends State<Registration>
               ),
             ),
             ScalingText(
-              'Cargando películas y salas...',
+              AppLocalizations.of(context).translate('loading_screen'),
               style: TextStyle(fontSize: 15.0),
             ),
           ],
@@ -113,7 +114,8 @@ class _RegistrationState extends State<Registration>
                   email = value;
                 },
                 decoration: kTextFieldDecoration.copyWith(
-                  hintText: 'Introduce un email',
+                  hintText:
+                      AppLocalizations.of(context).translate('enter_an_email'),
                 ),
               ),
               SizedBox(
@@ -135,7 +137,8 @@ class _RegistrationState extends State<Registration>
                   password = value;
                 },
                 decoration: kTextFieldDecoration.copyWith(
-                  hintText: 'Introduce una contraseña',
+                  hintText:
+                      AppLocalizations.of(context).translate('enter_a_pass'),
                 ),
               ),
               SizedBox(
@@ -156,7 +159,8 @@ class _RegistrationState extends State<Registration>
                   }
                 },
                 decoration: kTextFieldDecoration.copyWith(
-                  hintText: 'Repite la contraseña',
+                  hintText:
+                      AppLocalizations.of(context).translate('repeat_pass'),
                 ),
               ),
               SizedBox(
@@ -166,13 +170,13 @@ class _RegistrationState extends State<Registration>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    'La contraseña debe tener al menos seis caracteres.',
+                    AppLocalizations.of(context).translate('pass_six_chars'),
                     style: TextStyle(
                       color: isPasswordFieldFilled ? Colors.green : Colors.red,
                     ),
                   ),
                   Text(
-                    'Las contraseñas deben coincidir.',
+                    AppLocalizations.of(context).translate('pass_coincide'),
                     style: TextStyle(
                       color: isPasswordConfirmationOkay
                           ? Colors.green
@@ -188,7 +192,7 @@ class _RegistrationState extends State<Registration>
                 enabled: isEmailFieldFilled &&
                     isPasswordFieldFilled &&
                     isPasswordConfirmationOkay,
-                text: 'Registrarse',
+                text: AppLocalizations.of(context).translate('register'),
                 color: kAccentColor,
                 onPressed: () async {
                   try {
@@ -211,21 +215,19 @@ class _RegistrationState extends State<Registration>
                     print(oops.code);
                     String message;
                     if (oops.code == 'ERROR_INVALID_EMAIL') {
-                      message = 'Parece que el email introducido no'
-                          ' es válido. Comprueba que esté bien escrito '
-                          'e inténtalo de nuevo';
+                      message = AppLocalizations.of(context)
+                          .translate('err_msg_firebase_invalid_email');
                     } else if (oops.code == 'ERROR_EMAIL_ALREADY_IN_USE') {
-                      message = 'El email que has introducido ya está '
-                          'en uso...';
+                      message = AppLocalizations.of(context)
+                          .translate('err_msg_firebase_email_already_in_use');
                     } else {
-                      message = 'Ha ocurrido algún error relacionado'
-                          ' con la base de datos. Vuelve a'
-                          ' intentarlo en unos momentos';
+                      message = AppLocalizations.of(context)
+                          .translate('err_msg_firebase_generic');
                     }
                     setState(() {
                       showSpinner = false;
                       EdgeAlert.show(context,
-                          title: '¡Oops, error!',
+                          title: AppLocalizations.of(context).translate('oops'),
                           description: message,
                           duration: EdgeAlert.LENGTH_VERY_LONG,
                           icon: Icons.error_outline,
@@ -236,7 +238,7 @@ class _RegistrationState extends State<Registration>
               ),
               CustomDivider(
                 thickness: 1.5,
-                text: 'O USA',
+                text: AppLocalizations.of(context).translate('or_use'),
                 horizontalPadding: 12.0,
               ),
               ImageRoundedButton(
@@ -259,10 +261,9 @@ class _RegistrationState extends State<Registration>
                       showSpinner = false;
                     });
                     EdgeAlert.show(context,
-                        title: '¡Oops, error!',
-                        description: 'Algo no ha salido bien al intentar '
-                            'entrar con tu cuenta de Google. Inténtalo de '
-                            'nuevo en unos momentos.',
+                        title: AppLocalizations.of(context).translate('oops'),
+                        description: AppLocalizations.of(context)
+                            .translate('err_msg_google_sign_in'),
                         duration: EdgeAlert.LENGTH_VERY_LONG,
                         icon: Icons.error_outline,
                         backgroundColor: Colors.red);

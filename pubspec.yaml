@@ -10,6 +10,10 @@ dependencies:
   flutter:
     sdk: flutter
 
+  #i18n
+  flutter_localizations:
+    sdk: flutter
+
 # Firebase dependencies
   # Firebase Core
   firebase_core: ^0.4.4+3
@@ -42,6 +46,8 @@ flutter:
   uses-material-design: true
   assets:
     - images/
+    - lang/en.json
+    - lang/es.json
 
   fonts:
     - family: OpenSans
