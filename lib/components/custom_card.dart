@@ -1,5 +1,4 @@
 import 'package:cineandgo/constants/constants.dart';
-import 'package:cineandgo/models/film.dart';
 import 'package:cineandgo/services/tmdb.dart';
 import 'package:flutter/material.dart';
 
@@ -28,9 +27,11 @@ class CustomCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(10.0),
             image: DecorationImage(
               fit: BoxFit.cover,
-              image: NetworkImage(
-                TMDBModel.getPosterUrl(posterPath, true),
-              ),
+              image: (posterPath == null || posterPath.isEmpty)
+                  ? AssetImage('images/logo.png')
+                  : NetworkImage(
+                      TMDBModel.getPosterUrl(posterPath, true),
+                    ),
             ),
           ),
           alignment: Alignment.bottomCenter,
