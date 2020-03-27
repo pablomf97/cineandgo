@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cineandgo/components/genre_container.dart';
 import 'package:cineandgo/components/movie_details_layout.dart';
 import 'package:cineandgo/constants/constants.dart';
@@ -47,7 +49,8 @@ class _MovieDetailsState extends State<MovieDetails>
   }
 
   void getMovieData() async {
-    var movieDetails = await TMDBModel.getMovieDetails('es', widget.movieId);
+    var movieDetails = await TMDBModel.getMovieDetails(
+        window.locale.languageCode, widget.movieId);
 
     if (movieDetails != null) {
       List<GenreContainer> genres = [];
@@ -60,6 +63,7 @@ class _MovieDetailsState extends State<MovieDetails>
       }
       setState(() {
         pageLayout = MovieDetailsLayout(
+          id: movieDetails['id'].toString(),
           title: movieDetails['title'],
           originalTitle: movieDetails['original_title'],
           overview: movieDetails['overview'],

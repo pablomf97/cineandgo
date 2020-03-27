@@ -37,6 +37,7 @@ class CustomDrawer extends StatelessWidget {
                       Navigator.push(context, MaterialPageRoute(builder: (_) {
                         return Fullscreen(
                           photoUrl: photoUrl,
+                          index: 0,
                         );
                       }));
                     },
@@ -45,7 +46,7 @@ class CustomDrawer extends StatelessWidget {
                         Radius.circular(30.0),
                       ),
                       child: Hero(
-                        tag: 'go_fullscreen',
+                        tag: 'go_fullscreen_0',
                         child: (photoUrl != null)
                             ? Image.network(
                                 photoUrl,

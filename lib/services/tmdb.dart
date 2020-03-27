@@ -31,6 +31,16 @@ class TMDBModel {
     return movieData;
   }
 
+  static Future<dynamic> getCast(String movieId) async {
+    NetworkHelper networkHelper =
+        NetworkHelper('${requestUrl}movie/$movieId/credits'
+            '?api_key=$_tmdbApiKey');
+
+    var movieData = await networkHelper.getData();
+
+    return movieData;
+  }
+
   static String getPosterUrl(String posterPath, bool small) {
     return (small ? posterUrlSmall : posterUrlOriginal) + posterPath;
   }
