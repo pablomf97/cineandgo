@@ -1,4 +1,3 @@
-import 'package:cineandgo/screens/fullscreen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:cineandgo/screens/home.dart';
 import 'package:cineandgo/screens/loading_screen.dart';
@@ -7,6 +6,8 @@ import 'package:cineandgo/screens/welcome.dart';
 import 'package:cineandgo/screens/login.dart';
 import 'package:cineandgo/screens/registration.dart';
 import 'package:cineandgo/localization/app_localizations.dart';
+
+// TODO: Clean imports of project
 
 void main() => runApp(CineGo());
 

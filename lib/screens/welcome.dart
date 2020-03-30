@@ -5,8 +5,6 @@ import 'login.dart';
 import 'registration.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:cineandgo/components/rounded_button.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'home.dart';
 
 class Welcome extends StatefulWidget {
   static const String id = 'welcome';

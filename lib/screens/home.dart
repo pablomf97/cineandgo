@@ -1,7 +1,6 @@
 import 'package:cineandgo/components/custom_drawer.dart';
 import 'package:cineandgo/constants/constants.dart';
 import 'package:cineandgo/localization/app_localizations.dart';
-import 'package:cineandgo/models/film.dart';
 import 'package:cineandgo/screens/movie_details.dart';
 import 'package:cineandgo/services/tmdb.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -72,7 +71,10 @@ class _HomeState extends State<Home> {
             posterPath: movie['poster_path'],
             function: () {
               Navigator.push(context, MaterialPageRoute(builder: (_) {
-                return MovieDetails(movieId: movie['id'].toString());
+                return MovieDetails(
+                  movieId: movie['id'].toString(),
+                  title: movie['title'],
+                );
               }));
             },
           ),

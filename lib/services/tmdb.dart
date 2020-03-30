@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-
 import 'networking.dart';
 import 'package:cineandgo/api_keys/api_keys.dart';
 

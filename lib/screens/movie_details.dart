@@ -1,19 +1,20 @@
 import 'dart:ui';
-
 import 'package:cineandgo/components/genre_container.dart';
 import 'package:cineandgo/components/movie_details_layout.dart';
 import 'package:cineandgo/constants/constants.dart';
 import 'package:cineandgo/localization/app_localizations.dart';
+import 'package:cineandgo/screens/movie_form.dart';
 import 'package:cineandgo/services/tmdb.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'fullscreen.dart';
-
 class MovieDetails extends StatefulWidget {
-  MovieDetails({@required this.movieId});
+  MovieDetails({
+    @required this.movieId,
+    @required this.title,
+  });
 
   final String movieId;
+  final String title;
 
   @override
   _MovieDetailsState createState() => _MovieDetailsState();
@@ -85,7 +86,24 @@ class _MovieDetailsState extends State<MovieDetails>
         centerTitle: true,
         backgroundColor: kPrimaryColor,
       ),
-      body: pageLayout,
+      body: pageLayout, // TODO: Creation of rooms tomorrow (as of 29/03)
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) {
+                return MovieForm(
+                  id: widget.movieId,
+                  title: widget.title,
+                );
+              },
+            ),
+          );
+        },
+        child: Icon(Icons.add),
+        backgroundColor: kAccentColor,
+      ),
     );
   }
 }

@@ -3,11 +3,11 @@ import 'package:cineandgo/constants/constants.dart';
 import 'package:cineandgo/localization/app_localizations.dart';
 import 'package:cineandgo/screens/fullscreen.dart';
 import 'package:cineandgo/services/tmdb.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'custom_tile.dart';
 import 'genre_container.dart';
+
+// TODO: Clean code and separate it in diferent components
 
 class MovieDetailsLayout extends StatefulWidget {
   MovieDetailsLayout(

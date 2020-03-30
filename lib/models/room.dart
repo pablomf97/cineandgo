@@ -1,7 +1,6 @@
 import 'package:cineandgo/models/film.dart';
 import 'package:cineandgo/models/message.dart';
 import 'package:cineandgo/models/user.dart';
-import 'package:flutter/material.dart';
 
 import 'cinema.dart';
 
