@@ -18,6 +18,7 @@
   "change": "Cambiar",
   "room_name": "Ponle un nombre a la sala",
   "enter_room_name": "Introduce un nombre",
+  "select_name": "Selecciona un nombre",
   "search_region": "Busca aquí por comunidad",
   "region": "Comunidad",
   "town": "Localidad",
@@ -41,6 +42,7 @@
   "rooms": "Salas",
   "all_rooms": "Todas las salas",
   "search_rooms": "Buscar salas",
+  "accept": "Aceptar",
   "close": "Cerrar",
   "oops": "¡Ups, error!",
   "err_msg_firebase_user_not_found": "Parece que el email introducido no está en nuestra base de datos. ¿Estás segur@ de haberlo introducido correctamente?",
@@ -48,5 +50,6 @@
   "err_msg_firebase_invalid_email": "Parece que el email introducido no  es válido. Comprueba que esté bien escrito e inténtalo de nuevo.",
   "err_msg_firebase_email_already_in_use": "El email que has introducido ya está en uso.",
   "err_msg_firebase_generic": "Ha ocurrido algún error relacionado con la base de datos. Vuelve a intentarlo en unos momentos.",
-  "err_msg_google_sign_in": "Algo no ha salido bien al intentar entrar con tu cuenta de Google. Inténtalo de nuevo en unos momentos."
+  "err_msg_google_sign_in": "Algo no ha salido bien al intentar entrar con tu cuenta de Google. Inténtalo de nuevo en unos momentos.",
+  "form_not_filled": "¡Error! Asegúrate de haber rellenado todos los campos."
 }

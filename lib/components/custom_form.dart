@@ -1,6 +1,8 @@
+import 'package:cineandgo/components/dropdown_cinema.dart';
 import 'package:cineandgo/components/single_searchable_dropdown.dart';
 import 'package:cineandgo/constants/constants.dart';
 import 'package:cineandgo/localization/app_localizations.dart';
+import 'package:edge_alert/edge_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
@@ -30,6 +32,7 @@ class _CustomFormState extends State<CustomForm> {
   String _selectedRegion;
   String _selectedLocalidad;
   String _selectedTheater;
+  String _selectedName;
   DateTime _selectedDate;
   TimeOfDay _selectedTime;
 
@@ -56,103 +59,151 @@ class _CustomFormState extends State<CustomForm> {
     }
   }
 
-  void _selectCinema(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-              title: Text(
-                  AppLocalizations.of(context).translate('select_theater')),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0)),
-              content: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    SingleSearchableDropdown(
-                      items: _dropdownComunidades,
-                      value: _selectedRegion,
-                      hint: AppLocalizations.of(context).translate('region'),
-                      searchHint: AppLocalizations.of(context)
-                          .translate('search_region'),
+  void _selectName(BuildContext context) async {
+    String aux = _selectedName;
+    await showDialog(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (BuildContext context, setState) {
+          return AlertDialog(
+            title: Text(AppLocalizations.of(context).translate('select_name')),
+            content: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: TextFormField(
+                initialValue: aux != null && aux.isNotEmpty ? aux : '',
+                decoration: kTextFieldDecoration.copyWith(
+                  hintText: AppLocalizations.of(context).translate('room_name'),
+                ),
+                onChanged: (value) => aux = value,
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text(AppLocalizations.of(context).translate('accept')),
+                textColor: kPrimaryColor,
+                onPressed: () => Navigator.pop(context),
+              )
+            ],
+          );
+        },
+      ),
+    );
+    setState(() {
+      if (aux != null && aux.isNotEmpty) {
+        if (aux != _selectedName) _selectedName = aux;
+      } else {
+        _selectedName = null;
+      }
+    });
+  }
+
+  void _selectCinema(BuildContext context) async {
+    await showDialog(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (BuildContext context, setState) {
+          return AlertDialog(
+            title:
+                Text(AppLocalizations.of(context).translate('select_theater')),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)),
+            content: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  SingleSearchableDropdown(
+                    items: _dropdownComunidades,
+                    value: _selectedRegion,
+                    hint: AppLocalizations.of(context).translate('region'),
+                    searchHint:
+                        AppLocalizations.of(context).translate('search_region'),
+                    onChangeValue: (value) {
+                      List<DropdownMenuItem> aux = [];
+                      if (_dropdownLocalidades != null &&
+                          _dropdownLocalidades.isNotEmpty)
+                        _dropdownLocalidades.clear();
+                      if (_dropdownTheaters != null &&
+                          _dropdownTheaters.isNotEmpty)
+                        _dropdownTheaters.clear();
+                      for (var town in kComunidades[value.toString()]) {
+                        aux.add(DropdownMenuItem(
+                          child: Text(town),
+                          value: town,
+                        ));
+                      }
+                      setState(() {
+                        _selectedRegion = value;
+                        _dropdownLocalidades = aux;
+                      });
+                    },
+                  ),
+                  SingleSearchableDropdown(
+                      hint: AppLocalizations.of(context).translate('town'),
+                      searchHint:
+                          AppLocalizations.of(context).translate('search_town'),
+                      items: _dropdownLocalidades,
                       onChangeValue: (value) {
                         List<DropdownMenuItem> aux = [];
-                        if (_dropdownLocalidades != null &&
-                            _dropdownLocalidades.isNotEmpty)
-                          _dropdownLocalidades.clear();
-                        if (_dropdownTheaters != null &&
-                            _dropdownTheaters.isNotEmpty)
-                          _dropdownTheaters.clear();
-                        for (var town in kComunidades[value.toString()]) {
-                          aux.add(DropdownMenuItem(
-                            child: Text(town),
-                            value: town,
-                          ));
-                        }
-                        setState(() {
-                          _selectedRegion = value;
-                          _dropdownLocalidades = aux;
-                        });
-                      },
-                    ),
-                    SingleSearchableDropdown(
-                        hint: AppLocalizations.of(context).translate('town'),
-                        searchHint: AppLocalizations.of(context)
-                            .translate('search_town'),
-                        items: _dropdownLocalidades,
-                        onChangeValue: (value) {
-                          List<DropdownMenuItem> aux = [];
-                          Firestore.instance
-                              .collection('theaters')
-                              .where('city', isEqualTo: _selectedRegion)
-                              .where('place', isEqualTo: value.toString())
-                              .snapshots()
-                              .listen((data) {
-                            data.documents.forEach((doc) {
-                              aux.add(DropdownMenuItem(
-                                child: Text(doc['name']),
-                                value: doc.documentID,
-                              ));
-                            });
+                        Firestore.instance
+                            .collection('theaters')
+                            .where('city', isEqualTo: _selectedRegion)
+                            .where('place', isEqualTo: value.toString())
+                            .snapshots()
+                            .listen((data) {
+                          data.documents.forEach((doc) {
+                            aux.add(DropdownMenuItem(
+                              child: Text(doc['name']),
+                              value: '${doc['name']} (${doc.documentID})',
+                            ));
                           });
-
                           setState(() {
                             _selectedLocalidad = value;
                             _dropdownTheaters = aux;
                           });
-                        },
-                        value: _selectedLocalidad),
-                    SingleSearchableDropdown(
-                      hint: AppLocalizations.of(context).translate('theater'),
-                      searchHint: AppLocalizations.of(context)
-                          .translate('search_theater'),
-                      items: _dropdownTheaters,
-                      onChangeValue: (value) {
+                        });
+                      },
+                      value: _selectedLocalidad),
+                  SingleSearchableDropdown(
+                    hint: AppLocalizations.of(context).translate('theater'),
+                    searchHint: AppLocalizations.of(context)
+                        .translate('search_theater'),
+                    items: _dropdownTheaters,
+                    onChangeValue: (value) {
+                      setState(() {
                         _selectedTheater = value;
-                      },
-                      value: _selectedTheater,
-                      validator: (value) {
-                        if (value == null) {
-                          return AppLocalizations.of(context)
-                              .translate('enter_theater');
-                        }
-                        return null;
-                      },
-                    )
-                  ],
-                ),
+                      });
+                    },
+                    value: _selectedTheater,
+                    validator: (value) {
+                      if (value == null) {
+                        return AppLocalizations.of(context)
+                            .translate('enter_theater');
+                      }
+                      return null;
+                    },
+                  )
+                ],
               ),
-              actions: <Widget>[
-                FlatButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: Text(
-                      'Close',
-                      style: TextStyle(color: kPrimaryColor),
-                    ))
-              ],
-            ));
+            ),
+            actions: <Widget>[
+              FlatButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text(
+                    AppLocalizations.of(context)
+                            .translate('accept'),
+                    style: TextStyle(color: kPrimaryColor),
+                  ))
+            ],
+          );
+        },
+      ),
+    );
+    setState(() {
+      _selectedTheater = _selectedTheater;
+    });
   }
 
   @override
@@ -175,120 +226,167 @@ class _CustomFormState extends State<CustomForm> {
     return Form(
       key: _formKey,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(
-              AppLocalizations.of(context).translate('create_room'),
-              style: TextStyle(
-                fontSize: 30,
+            child: Container(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                AppLocalizations.of(context).translate('create_room'),
+                style: TextStyle(
+                  fontSize: 40,
+                  color: kPrimaryColor,
+                ),
               ),
             ),
           ),
           Card(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: TextFormField(
-                    decoration: kTextFieldDecoration.copyWith(
-                      hintText:
-                          AppLocalizations.of(context).translate('room_name'),
+            color: kVeryLightPrimaryColor,
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 15.0),
+              child: Container(
+                child: Column(
+                  children: <Widget>[
+                    Card(
+                      elevation: 5.0,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListTile(
+                          leading: Icon(
+                            Icons.theaters,
+                            color: Colors.black,
+                          ),
+                          title: Text(
+                            widget.title,
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return AppLocalizations.of(context)
-                            .translate('enter_room_name');
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: TextFormField(
-                    decoration: kTextFieldDecoration,
-                    enabled: false,
-                    initialValue: widget.title,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Container(
-                    child: Column(
-                      children: <Widget>[
-                        Card(
-                          elevation: 5.0,
-                          child: ListTile(
-                            leading: Icon(
-                              Icons.theaters,
-                              color: Colors.black,
+                    Card(
+                      elevation: 5.0,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListTile(
+                          leading: Icon(
+                            Icons.border_color,
+                            color: Colors.black,
+                          ),
+                          title: _selectedName == null
+                              ? Text(AppLocalizations.of(context)
+                                  .translate('select_name'))
+                              : Text(
+                                  '$_selectedName',
+                                ),
+                          trailing: FlatButton(
+                            onPressed: () => _selectName(context),
+                            child: Text(
+                              AppLocalizations.of(context).translate('change'),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                            title: _selectedTheater == null
-                                ? Text(AppLocalizations.of(context)
-                                    .translate('select_theater'))
-                                : Text(
-                                    '$_selectedTheater',
-                                  ),
-                            trailing: FlatButton(
-                                onPressed: () => _selectCinema(context),
-                                child: Text(
-                                  AppLocalizations.of(context)
-                                      .translate('change'),
-                                  style: TextStyle(color: Colors.black),
-                                )),
+                            color: kPrimaryColor,
                           ),
                         ),
-                        Card(
-                          elevation: 5.0,
-                          child: ListTile(
-                            leading: Icon(
-                              Icons.calendar_today,
-                              color: Colors.black,
-                            ),
-                            title: _selectedDate == null
-                                ? Text(AppLocalizations.of(context)
-                                    .translate('pick_date'))
-                                : Text(
-                                    '${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}',
-                                  ),
-                            trailing: FlatButton(
-                                onPressed: () => _selectDate(context),
-                                child: Text(
-                                  AppLocalizations.of(context)
-                                      .translate('change'),
-                                  style: TextStyle(color: Colors.black),
-                                )),
-                          ),
-                        ),
-                        Card(
-                          elevation: 5.0,
-                          child: ListTile(
-                            leading: Icon(
-                              Icons.access_time,
-                              color: Colors.black,
-                            ),
-                            title: _selectedTime == null
-                                ? Text(AppLocalizations.of(context)
-                                    .translate('pick_time'))
-                                : Text(
-                                    '${_selectedTime.hour} : ${_selectedTime.minute == 0 ? _zero : _selectedTime.minute}'),
-                            trailing: FlatButton(
-                                onPressed: () => _selectTime(context),
-                                child: Text(
-                                  AppLocalizations.of(context)
-                                      .translate('change'),
-                                  style: TextStyle(color: Colors.black),
-                                )),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
+                    Card(
+                      elevation: 5.0,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListTile(
+                          leading: Icon(
+                            Icons.event_seat,
+                            color: Colors.black,
+                          ),
+                          title: _selectedTheater == null
+                              ? Text(AppLocalizations.of(context)
+                                  .translate('select_theater'))
+                              : Text(
+                                  '$_selectedTheater',
+                                ),
+                          trailing: FlatButton(
+                            onPressed: () => _selectCinema(context),
+                            child: Text(
+                              AppLocalizations.of(context).translate('change'),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            color: kPrimaryColor,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Card(
+                      elevation: 5.0,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListTile(
+                          leading: Icon(
+                            Icons.calendar_today,
+                            color: Colors.black,
+                          ),
+                          title: _selectedDate == null
+                              ? Text(AppLocalizations.of(context)
+                                  .translate('pick_date'))
+                              : Text(
+                                  '${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}',
+                                ),
+                          trailing: FlatButton(
+                            onPressed: () => _selectDate(context),
+                            child: Text(
+                              AppLocalizations.of(context).translate('change'),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            color: kPrimaryColor,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Card(
+                      elevation: 5.0,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListTile(
+                          leading: Icon(
+                            Icons.access_time,
+                            color: Colors.black,
+                          ),
+                          title: _selectedTime == null
+                              ? Text(AppLocalizations.of(context)
+                                  .translate('pick_time'))
+                              : Text(
+                                  '${_selectedTime.hour} : ${_selectedTime.minute == 0 ? _zero : _selectedTime.minute}'),
+                          trailing: FlatButton(
+                            onPressed: () => _selectTime(context),
+                            child: Text(
+                              AppLocalizations.of(context).translate('change'),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            color: kPrimaryColor,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
           Row(
@@ -297,14 +395,23 @@ class _CustomFormState extends State<CustomForm> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: RaisedButton(
+                  elevation: 5.0,
                   onPressed: () {
-                    if (_formKey.currentState.validate()) {
-                      Scaffold.of(context).showSnackBar(SnackBar(
-                          content: Text(
-                              '$_selectedRegion $_selectedLocalidad $_selectedTheater')));
+                    if (_selectedDate == null ||
+                        _selectedTheater == null ||
+                        _selectedName == null ||
+                        _selectedTime == null) {
+                      EdgeAlert.show(
+                        context,
+                        duration: EdgeAlert.LENGTH_VERY_LONG,
+                        backgroundColor: Colors.red,
+                        icon: Icons.error_outline,
+                        title: AppLocalizations.of(context)
+                            .translate('form_not_filled'),
+                      );
+                    } else {
+                      // TODO: Save to firebase
                     }
-                    print(
-                        '$_selectedRegion $_selectedLocalidad $_selectedTheater');
                   },
                   child: Text(
                     AppLocalizations.of(context).translate('create'),
@@ -323,92 +430,3 @@ class _CustomFormState extends State<CustomForm> {
     );
   }
 }
-
-/* 
-Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            SingleSearchableDropdown(
-                              items: _dropdownComunidades,
-                              value: _selectedRegion,
-                              hint: AppLocalizations.of(context)
-                                  .translate('region'),
-                              searchHint: AppLocalizations.of(context)
-                                  .translate('search_region'),
-                              onChangeValue: (value) {
-                                List<DropdownMenuItem> aux = [];
-                                if (_dropdownLocalidades != null &&
-                                    _dropdownLocalidades.isNotEmpty)
-                                  _dropdownLocalidades.clear();
-                                if (_dropdownTheaters != null &&
-                                    _dropdownTheaters.isNotEmpty)
-                                  _dropdownTheaters.clear();
-                                for (var town
-                                    in kComunidades[value.toString()]) {
-                                  aux.add(DropdownMenuItem(
-                                    child: Text(town),
-                                    value: town,
-                                  ));
-                                }
-                                setState(() {
-                                  _selectedRegion = value;
-                                  _dropdownLocalidades = aux;
-                                });
-                              },
-                            ),
-                            SingleSearchableDropdown(
-                                hint: AppLocalizations.of(context)
-                                    .translate('town'),
-                                searchHint: AppLocalizations.of(context)
-                                    .translate('search_town'),
-                                items: _dropdownLocalidades,
-                                onChangeValue: (value) {
-                                  List<DropdownMenuItem> aux = [];
-                                  Firestore.instance
-                                      .collection('theaters')
-                                      .where('city', isEqualTo: _selectedRegion)
-                                      .where('place',
-                                          isEqualTo: value.toString())
-                                      .snapshots()
-                                      .listen((data) {
-                                    data.documents.forEach((doc) {
-                                      aux.add(DropdownMenuItem(
-                                        child: Text(doc['name']),
-                                        value: doc.documentID,
-                                      ));
-                                    });
-                                  });
-
-                                  setState(() {
-                                    _selectedLocalidad = value;
-                                    _dropdownTheaters = aux;
-                                  });
-                                },
-                                value: _selectedLocalidad),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            SingleSearchableDropdown(
-                              hint: AppLocalizations.of(context)
-                                  .translate('theater'),
-                              searchHint: AppLocalizations.of(context)
-                                  .translate('search_theater'),
-                              items: _dropdownTheaters,
-                              onChangeValue: (value) {
-                                _selectedTheater = value;
-                              },
-                              value: _selectedTheater,
-                              validator: (value) {
-                                if (value == null) {
-                                  return AppLocalizations.of(context)
-                                      .translate('enter_theater');
-                                }
-                                return null;
-                              },
-                            ),
-                          ],
-                        ),
-*/

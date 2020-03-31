@@ -112,7 +112,7 @@ const Map<String, List<String>> kComunidades = {
   'Ávila': ['Arenas de San Pedro', 'Ávila'],
   'Badajoz': ['Almendralejo', 'Badajoz', 'Don Benito', 'Mérida', 'Zafra'],
   'Barcelona': ['Barcelona'],
-  'Bizakaia.': ['Bilbao'],
+  'Bizakaia': ['Bilbao'],
   'Burgos': ['Aranda de Duero', 'Burgos', 'Miranda de Ebro'],
   'Cáceres': [
     'Arroyo de la Luz',
@@ -368,6 +368,8 @@ const Color kPrimaryColor = Color(0xFFFF5722);
 const kDarkPrimaryColor = Color(0xFFE64A19);
 // Light primary color --> Lighter version of DeepOrange
 const kLightPrimaryColor = Color(0xFFFFCCBC);
+// Very light primary color
+const kVeryLightPrimaryColor = Color(0xFFFEF2EE);
 // Accent color --> Orange
 const kAccentColor = Color(0xFFFF9800);
 // Text&Icons color --> White

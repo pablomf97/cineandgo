@@ -123,7 +123,7 @@ class _MovieDetailsLayoutState extends State<MovieDetailsLayout>
             height: MediaQuery.of(context).size.height * 0.35,
             child: Material(
               elevation: 3.0,
-              color: Colors.orange[50],
+              color: kVeryLightPrimaryColor,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
                 bottomRight: Radius.circular(20.0),

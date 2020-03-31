@@ -1,3 +1,4 @@
+import 'package:cineandgo/constants/constants.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:cineandgo/screens/home.dart';
 import 'package:cineandgo/screens/loading_screen.dart';
@@ -15,6 +16,10 @@ class CineGo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: Theme.of(context).copyWith(
+        primaryColor: kPrimaryColor,
+        accentColor: kAccentColor,
+      ),
       supportedLocales: [
         Locale('en', 'GB'),
         Locale('en', 'US'),

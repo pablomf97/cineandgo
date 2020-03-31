@@ -18,6 +18,7 @@
   "change": "Change",
   "room_name": "Give a name to this room",
   "enter_room_name": "Enter some name",
+  "select_name": "Select a name",
   "select_theater": "Select a theater",
   "search_region": "Enter here the region you are looking for",
   "town": "Town",
@@ -41,6 +42,7 @@
   "rooms": "Rooms",
   "all_rooms": "All rooms",
   "search_rooms": "Search rooms",
+  "accept": "Accept",
   "close": "Close",
   "oops": "Oops, error!",
   "err_msg_firebase_user_not_found": "It seems that the email you entered is not registered. Are you sure you wrote it correctly?",
@@ -48,5 +50,6 @@
   "err_msg_firebase_invalid_email": "It seems that the email you provided is not valid. Check that it is properly spelled and then try again.",
   "err_msg_firebase_email_already_in_use": "The email you entered is already in use.",
   "err_msg_firebase_generic": "There has been an error related with the database. Try again in few moments.",
-  "err_msg_google_sign_in": "Something went wrong while trying to sign in using your Google account. Try again in few moments."
+  "err_msg_google_sign_in": "Something went wrong while trying to sign in using your Google account. Try again in few moments.",
+  "form_not_filled": "Error! Make sure you filled in all the information."
 }
