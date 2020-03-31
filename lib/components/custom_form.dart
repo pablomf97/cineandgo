@@ -3,6 +3,7 @@ import 'package:cineandgo/components/single_searchable_dropdown.dart';
 import 'package:cineandgo/constants/constants.dart';
 import 'package:cineandgo/localization/app_localizations.dart';
 import 'package:edge_alert/edge_alert.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
@@ -192,8 +193,7 @@ class _CustomFormState extends State<CustomForm> {
               FlatButton(
                   onPressed: () => Navigator.pop(context),
                   child: Text(
-                    AppLocalizations.of(context)
-                            .translate('accept'),
+                    AppLocalizations.of(context).translate('accept'),
                     style: TextStyle(color: kPrimaryColor),
                   ))
             ],
@@ -396,7 +396,7 @@ class _CustomFormState extends State<CustomForm> {
                 padding: const EdgeInsets.all(8.0),
                 child: RaisedButton(
                   elevation: 5.0,
-                  onPressed: () {
+                  onPressed: () async {
                     if (_selectedDate == null ||
                         _selectedTheater == null ||
                         _selectedName == null ||
@@ -410,7 +410,37 @@ class _CustomFormState extends State<CustomForm> {
                             .translate('form_not_filled'),
                       );
                     } else {
-                      // TODO: Save to firebase
+                      String theaterId =
+                          _selectedTheater.split('(')[1].replaceFirst(')', '');
+
+                      Future<DocumentReference> docRef =
+                          Firestore.instance.collection('rooms').add({
+                        'movieId': widget.id,
+                        'theaterId': theaterId,
+                        'roomName': _selectedName,
+                        'date':
+                            '${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}',
+                        'time': '${_selectedTime.hour}:${_selectedTime.minute}',
+                        'going': [await FirebaseAuth.instance.currentUser().then((value) => value.email)]
+                      });
+
+                      docRef.then((value) {
+                        EdgeAlert.show(context,
+                            backgroundColor: Colors.green,
+                            icon: Icons.check_circle_outline,
+                            duration: EdgeAlert.LENGTH_VERY_LONG,
+                            title: AppLocalizations.of(context)
+                                .translate('room_created'));
+
+                        Navigator.pop(context);
+                      }, onError: (error) {
+                        EdgeAlert.show(context,
+                            backgroundColor: Colors.red,
+                            icon: Icons.check_circle_outline,
+                            duration: EdgeAlert.LENGTH_VERY_LONG,
+                            title:
+                                AppLocalizations.of(context).translate('oops'));
+                      });
                     }
                   },
                   child: Text(

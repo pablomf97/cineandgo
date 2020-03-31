@@ -44,6 +44,7 @@
   "search_rooms": "Buscar salas",
   "accept": "Aceptar",
   "close": "Cerrar",
+  "room_created": "¡Sala creada!",
   "oops": "¡Ups, error!",
   "err_msg_firebase_user_not_found": "Parece que el email introducido no está en nuestra base de datos. ¿Estás segur@ de haberlo introducido correctamente?",
   "err_msg_firebase_wrong_password": "¡Contraseña incorrecta! Asegurate de introducirla correctamente y vuelve a intentarlo.",
