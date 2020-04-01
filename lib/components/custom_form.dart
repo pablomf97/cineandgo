@@ -2,6 +2,7 @@ import 'package:cineandgo/components/dropdown_cinema.dart';
 import 'package:cineandgo/components/single_searchable_dropdown.dart';
 import 'package:cineandgo/constants/constants.dart';
 import 'package:cineandgo/localization/app_localizations.dart';
+import 'package:cineandgo/models/cinema.dart';
 import 'package:edge_alert/edge_alert.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -410,18 +411,38 @@ class _CustomFormState extends State<CustomForm> {
                             .translate('form_not_filled'),
                       );
                     } else {
-                      String theaterId =
-                          _selectedTheater.split('(')[1].replaceFirst(')', '');
+                      Firestore db = Firestore.instance;
+                      Cinema theater;
+
+                      await db
+                          .collection('theaters')
+                          .document(_selectedTheater
+                              .split('(')[1]
+                              .replaceFirst(')', ''))
+                          .get()
+                          .then((doc) => theater = new Cinema(
+                                address: doc.data['address'],
+                                city: doc.data['city'],
+                                id: doc.data['id'],
+                                latitude: doc.data['latitude'],
+                                longitude: doc.data['longitude'],
+                                name: doc.data['name'],
+                                place: doc.data['place'],
+                                website: doc.data['website'],
+                              ));
 
                       Future<DocumentReference> docRef =
-                          Firestore.instance.collection('rooms').add({
+                          db.collection('rooms').add({
                         'movieId': widget.id,
-                        'theaterId': theaterId,
+                        'theater': theater.toJson(),
                         'roomName': _selectedName,
-                        'date':
-                            '${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}',
+                        'date': _selectedDate,
                         'time': '${_selectedTime.hour}:${_selectedTime.minute}',
-                        'going': [await FirebaseAuth.instance.currentUser().then((value) => value.email)]
+                        'going': [
+                          await FirebaseAuth.instance
+                              .currentUser()
+                              .then((value) => value.email)
+                        ]
                       });
 
                       docRef.then((value) {
@@ -439,7 +460,8 @@ class _CustomFormState extends State<CustomForm> {
                             icon: Icons.check_circle_outline,
                             duration: EdgeAlert.LENGTH_VERY_LONG,
                             title:
-                                AppLocalizations.of(context).translate('oops'));
+                                AppLocalizations.of(context).translate('oops'),
+                            description: error.toString());
                       });
                     }
                   },
