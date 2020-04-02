@@ -1,8 +1,8 @@
-import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cineandgo/components/info_tile.dart';
 import 'package:cineandgo/components/movie_card.dart';
-import 'package:cineandgo/constants/constants.dart';
+import 'package:cineandgo/localization/app_localizations.dart';
 import 'package:cineandgo/models/room.dart';
-import 'package:cineandgo/services/tmdb.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class RoomDetails extends StatefulWidget {
@@ -16,87 +16,79 @@ class RoomDetails extends StatefulWidget {
 
 class _RoomDetailsState extends State<RoomDetails> {
   Room room;
+  bool going;
 
   @override
   void initState() {
     room = Room.fromJson(widget.room);
+    checkIfGoing();
     super.initState();
   }
+
+  void checkIfGoing() async =>
+      await FirebaseAuth.instance.currentUser().then((user) => setState(() {
+            going = room.going.contains(user.email);
+          }));
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF263238),
+      floatingActionButton: going
+          ? FloatingActionButton(
+              onPressed: () {},
+              child: Icon(Icons.forum),
+            )
+          : FloatingActionButton(
+              onPressed: () {},
+              child: Icon(Icons.add),
+            ),
       appBar: AppBar(
-        title: Text('Cine&Go!', style: TextStyle(color:Color(0xFF01D277)),),
+        title: Text(
+          'Cine&Go!',
+        ),
         centerTitle: true,
-        backgroundColor: Color(0xFF101213),
-        elevation: 0.0,
       ),
       body: Column(
         children: <Widget>[
-          // TODO: Room layout
-          MovieCard(
+          Padding(
+            padding: const EdgeInsets.fromLTRB(5.0, 10.0, 5.0, 5.0),
+            child: MovieCard(
               posterPath: room.film.posterPath,
               title: room.film.title,
               originalTitle: room.film.originalTitle,
               voteAverage: room.film.voteAverage.toString(),
-              evaluation: ''),
+              evaluation: '',
+              roundAll: true,
+            ),
+          ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.only(top: 5.0),
             child: InfoTile(
-                title: '¿Cuando?', description: 'El 20 de marzo a las 20:00'),
+                title: AppLocalizations.of(context).translate('when'),
+                description:
+                    '${AppLocalizations.of(context).translate('on_the')} ${room.date.day < 10 ? 0.toString() + room.date.day.toString() : room.date.day}/${room.date.month < 10 ? 0.toString() + room.date.month.toString() : room.date.month} ${AppLocalizations.of(context).translate('at')} ${room.time}'),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 5.0),
+            child: InfoTile(
+              title: AppLocalizations.of(context).translate('where'),
+              description:
+                  '${AppLocalizations.of(context).translate('in')} ${room.theater.name.trim()}',
+              button:
+                  IconButton(icon: Icon(Icons.arrow_forward), onPressed: () {}),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 5.0),
+            child: InfoTile(
+              title: AppLocalizations.of(context).translate('who'),
+              description:
+                  '${room.going.length} ${room.going.length > 1 ? AppLocalizations.of(context).translate('are_going_pl') : AppLocalizations.of(context).translate('are_going_si')}',
+              button:
+                  IconButton(icon: Icon(Icons.arrow_forward), onPressed: () {}),
+            ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class InfoTile extends StatelessWidget {
-  final String title;
-  final String description;
-
-  InfoTile({this.title, this.description});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 80.0,
-      width: 300.0,
-      child: Material(
-        color: kPrimaryColor,
-        borderRadius: BorderRadius.circular(5.0),
-        elevation: 1.0,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Expanded(
-                  flex: 1,
-                  child: Container(
-                    alignment: Alignment.centerLeft,
-                    child: AutoSizeText(
-                      title,
-                      style: TextStyle(
-                          color: Colors.black45,
-                          fontSize: 18.0,
-                          fontStyle: FontStyle.italic),
-                    ),
-                  )),
-              Expanded(
-                  flex: 2,
-                  child: Container(
-                      alignment: Alignment.centerLeft,
-                      child: AutoSizeText(
-                        description,
-                        style: TextStyle(fontSize: 25),
-                      ))),
-            ],
-          ),
-        ),
       ),
     );
   }

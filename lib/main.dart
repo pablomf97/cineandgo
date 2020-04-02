@@ -17,17 +17,20 @@ class CineGo extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData.dark().copyWith(
+          primaryColor: kPrimaryColor,
+          accentColor: kAccentColor,
+          scaffoldBackgroundColor: kLightPrimaryColor,
+          appBarTheme: AppBarTheme().copyWith(
+            color: kPrimaryColor,
+            elevation: 0.0,
+          ),
+          floatingActionButtonTheme: FloatingActionButtonThemeData().copyWith(
+            backgroundColor: kAccentColor,
+          )) /* of(context).copyWith(
         primaryColor: kPrimaryColor,
         accentColor: kAccentColor,
-        scaffoldBackgroundColor: kLightPrimaryColor,
-        appBarTheme: AppBarTheme().copyWith(
-          color: kPrimaryColor,
-          elevation: 0.0,
-        )
-      )/* of(context).copyWith(
-        primaryColor: kPrimaryColor,
-        accentColor: kAccentColor,
-      ) */,
+      ) */
+      ,
       supportedLocales: [
         Locale('en', 'GB'),
         Locale('en', 'US'),

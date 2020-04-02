@@ -55,5 +55,11 @@
   "err_msg_firebase_email_already_in_use": "El email que has introducido ya está en uso.",
   "err_msg_firebase_generic": "Ha ocurrido algún error relacionado con la base de datos. Vuelve a intentarlo en unos momentos.",
   "err_msg_google_sign_in": "Algo no ha salido bien al intentar entrar con tu cuenta de Google. Inténtalo de nuevo en unos momentos.",
-  "form_not_filled": "¡Error! Asegúrate de haber rellenado todos los campos."
+  "form_not_filled": "¡Error! Asegúrate de haber rellenado todos los campos.",
+  "when": "¿Cuándo?",
+  "on_the": "El día",
+  "at": "a las",
+  "where": "¿Dónde?",
+  "in": "En",
+  "who": "¿Quién?"
 }
