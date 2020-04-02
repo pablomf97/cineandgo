@@ -22,50 +22,50 @@ class MovieCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      elevation: 3.0,
-      color: kVeryLightPrimaryColor,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-        bottomRight: Radius.circular(20.0),
-        bottomLeft: Radius.circular(20.0),
-      )),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Expanded(
-            flex: 1,
-            child: GestureDetector(
-              onTap: () {
-                if (posterPath != null && posterPath.isNotEmpty) {
-                  Navigator.push(context, MaterialPageRoute(builder: (_) {
-                    return Fullscreen(
-                      photoUrl: TMDBModel.getPosterUrl(posterPath, false),
-                      index: 0,
-                    );
-                  }));
-                }
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: Hero(
-                  tag: 'go_fullscreen_0',
-                  child: FractionallySizedBox(
-                    heightFactor: 1.0,
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20.0),
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: (posterPath == null || posterPath.isEmpty)
-                                ? AssetImage('images/logo.png')
-                                : NetworkImage(
-                                    TMDBModel.getPosterUrl(posterPath, false)),
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.35,
+      child: Material(
+        color: Color(0xFF101213),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+          bottomRight: Radius.circular(20.0),
+          bottomLeft: Radius.circular(20.0),
+        )),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(4.0, 0.0, 4.0, 12.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Expanded(
+                flex: 1,
+                child: GestureDetector(
+                  onTap: () {
+                    if (posterPath != null && posterPath.isNotEmpty) {
+                      Navigator.push(context, MaterialPageRoute(builder: (_) {
+                        return Fullscreen(
+                          photoUrl: TMDBModel.getPosterUrl(posterPath, false),
+                          index: 0,
+                        );
+                      }));
+                    }
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Hero(
+                      tag: 'go_fullscreen_0',
+                      child: FractionallySizedBox(
+                        heightFactor: 1.0,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20.0),
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: (posterPath == null || posterPath.isEmpty)
+                                  ? AssetImage('images/logo.png')
+                                  : NetworkImage(
+                                      TMDBModel.getPosterUrl(posterPath, false)),
+                            ),
                           ),
                         ),
                       ),
@@ -73,99 +73,106 @@ class MovieCard extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
+              Expanded(
+                flex: 1,
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      Expanded(
-                        flex: 3,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Expanded(
-                              child: AutoSizeText(
-                                title,
-                                maxLines: 2,
-                                style: TextStyle(
-                                  fontFamily: 'OpenSans',
-                                  fontSize: 30.0,
+                  padding: const EdgeInsets.all(5.0),
+                  child: Material(
+                    borderRadius: BorderRadius.circular(20.0),
+                    color: Color(0xFF263238),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          Expanded(
+                            flex: 3,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Expanded(
+                                  child: AutoSizeText(
+                                    title,
+                                    maxLines: 2,
+                                    style: TextStyle(
+                                      fontFamily: 'OpenSans',
+                                      fontSize: 30.0,
+                                      color: Colors.white,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                            Expanded(
-                              child: AutoSizeText(
-                                originalTitle,
-                                maxLines: 2,
-                                style: TextStyle(
-                                  fontFamily: 'OpenSans',
-                                  color: Colors.black45,
-                                  fontSize: 20.0,
+                                Expanded(
+                                  child: AutoSizeText(
+                                    originalTitle,
+                                    maxLines: 2,
+                                    style: TextStyle(
+                                      fontFamily: 'OpenSans',
+                                      color: Colors.white,
+                                      fontSize: 20.0,
+                                    ),
+                                  ),
                                 ),
-                              ),
+                              ],
                             ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        flex: 4,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[
-                            Container(
-                              padding: EdgeInsets.symmetric(horizontal: 15.0),
-                              width: MediaQuery.of(context).size.width * 0.25,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: kPrimaryColor,
-                              ),
-                              child: AutoSizeText(
-                                voteAverage,
-                                textAlign: TextAlign.center,
-                                maxLines: 1,
-                                style: TextStyle(
-                                  fontFamily: 'OpenSans',
-                                  height: 1.25,
-                                  color: Colors.white,
-                                  fontSize: 150,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Text(
-                          evaluation,
-                          textAlign: TextAlign.end,
-                          style: TextStyle(
-                            fontSize: 15.0,
-                            fontFamily: 'OpenSans',
                           ),
-                        ),
+                          Expanded(
+                            flex: 4,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: <Widget>[
+                                Material(
+                                  elevation: 6.0,
+                                  shape: CircleBorder(),
+                                  child: Container(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 15.0),
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.25,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Color(0xFF01894c),
+                                    ),
+                                    child: AutoSizeText(
+                                      voteAverage,
+                                      textAlign: TextAlign.center,
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                        fontFamily: 'OpenSans',
+                                        height: 1.25,
+                                        color: Colors.white,
+                                        fontSize: 150,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Text(
+                              evaluation,
+                              textAlign: TextAlign.end,
+                              style: TextStyle(
+                                fontSize: 15.0,
+                                fontFamily: 'OpenSans',
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

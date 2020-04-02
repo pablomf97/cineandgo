@@ -22,11 +22,14 @@ dependencies:
 
 # Firebase dependencies
   # Firebase Core
-  firebase_core: ^0.4.4+3
+  firebase_core: 0.4.4
   # Firebase Authentication
   firebase_auth: ^0.15.5+3
   # Firebase Cloud Firestore
-  cloud_firestore: ^0.13.4+2
+  cloud_firestore: 0.13.4
+  # Port of FirestoreUI
+  firestore_ui: ^1.9.1
+  
 
   # Google Sign In
   google_sign_in: ^4.2.0

@@ -27,7 +27,7 @@
   "loading_screen": "Cargando películas y salas...",
   "enter_email": "Introduce tu email",
   "enter_pass": "Introduce tu contraseña",
-  "enter_a_email": "Introduce un email",
+  "enter_an_email": "Introduce un email",
   "enter_a_pass": "Introduce una contraseña",
   "repeat_pass": "Reenter the password",
   "pass_six_chars": "La contraseña debe tener al menos seis caracteres.",

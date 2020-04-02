@@ -3,7 +3,7 @@ import 'package:cineandgo/components/genre_container.dart';
 import 'package:cineandgo/components/movie_details_layout.dart';
 import 'package:cineandgo/constants/constants.dart';
 import 'package:cineandgo/localization/app_localizations.dart';
-import 'package:cineandgo/screens/movie_form.dart';
+import 'package:cineandgo/screens/room_form.dart';
 import 'package:cineandgo/services/tmdb.dart';
 import 'package:flutter/material.dart';
 
@@ -80,13 +80,11 @@ class _MovieDetailsState extends State<MovieDetails>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Cine&Go!'),
         centerTitle: true,
-        backgroundColor: kPrimaryColor,
       ),
-      body: pageLayout, // TODO: Creation of rooms tomorrow (as of 29/03)
+      body: pageLayout,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(

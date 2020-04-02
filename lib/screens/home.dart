@@ -95,11 +95,10 @@ class _HomeState extends State<Home> {
           email: email,
           auth: _auth,
         ),
-        backgroundColor: Colors.white,
         appBar: AppBar(
           title: Text('Cine&Go!'),
           centerTitle: true,
-          backgroundColor: kPrimaryColor,
+          
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

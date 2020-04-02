@@ -1,3 +1,4 @@
+import 'package:cineandgo/constants/constants.dart';
 import 'package:cineandgo/screens/fullscreen.dart';
 import 'package:cineandgo/services/tmdb.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ class CustomTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: kPrimaryColor,
       child: ListTile(
         contentPadding: EdgeInsets.symmetric(horizontal: 15.0),
         leading: GestureDetector(
@@ -43,11 +45,11 @@ class CustomTile extends StatelessWidget {
         ),
         title: Text(
           name,
-          style: TextStyle(fontFamily: 'OpenSans'),
+          style: TextStyle(fontFamily: 'OpenSans', fontWeight: FontWeight.bold),
         ),
         subtitle: Text(
           'As ' + character,
-          style: TextStyle(fontFamily: 'OpenSans'),
+          style: TextStyle(fontFamily: 'OpenSans', fontWeight: FontWeight.bold),
         ),
       ),
     );

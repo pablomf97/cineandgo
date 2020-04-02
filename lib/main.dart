@@ -16,10 +16,18 @@ class CineGo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: Theme.of(context).copyWith(
+      theme: ThemeData.dark().copyWith(
         primaryColor: kPrimaryColor,
         accentColor: kAccentColor,
-      ),
+        scaffoldBackgroundColor: kLightPrimaryColor,
+        appBarTheme: AppBarTheme().copyWith(
+          color: kPrimaryColor,
+          elevation: 0.0,
+        )
+      )/* of(context).copyWith(
+        primaryColor: kPrimaryColor,
+        accentColor: kAccentColor,
+      ) */,
       supportedLocales: [
         Locale('en', 'GB'),
         Locale('en', 'US'),

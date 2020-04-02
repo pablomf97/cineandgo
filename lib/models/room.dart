@@ -1,45 +1,52 @@
 import 'package:cineandgo/models/film.dart';
 import 'package:cineandgo/models/message.dart';
-import 'package:cineandgo/models/user.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'cinema.dart';
+
+import 'package:meta/meta.dart';
 
 class Room {
   // Attributes
-  String _id;
-  Cinema _cinema;
-  Film _film;
-  String _roomTitle;
-  String _dateTime;
-  List<User> _users;
-  List<Message> _messages;
+  String movieId;
+  Cinema theater;
+  Film film;
+  String roomName;
+  DateTime date;
+  String time;
+  List<dynamic> going;
+  List<Message> messages;
 
   // Constructor
-  Room(
-    this._id,
-    this._cinema,
-    this._film,
-    this._roomTitle,
-    this._dateTime,
-    this._users,
-    this._messages,
-  );
+  Room({
+    @required this.movieId,
+    @required this.theater,
+    @required this.film,
+    @required this.roomName,
+    @required this.date,
+    @required this.time,
+    @required this.going,
+    this.messages,
+  });
 
-  // Getters
-  String getId() => _id;
-  Cinema getCinema() => _cinema;
-  Film getFilm() => _film;
-  String getRoomTitle() => _roomTitle;
-  String getDateTime() => _dateTime;
-  List<User> getUsers() => _users;
-  List<Message> getMessages() => _messages;
+  // ToJSON
+  Map<String, dynamic> toJson() => {
+        'movieId': movieId,
+        'theater': theater.toJson(),
+        'film': film.toJson(),
+        'roomName': roomName,
+        'date': date,
+        'time': time,
+        'going': going,
+        'messages': (messages == null) ? [] : messages
+      };
 
-  // Setters -- Will uncomment if necessary
-  //  void setId(String value) => _id = value;
-  //  void setCinema(Cinema value) => _cinema = value;
-  //  void setFilm(Film value) => _film = value;
-  //  void setRoomTitle(String value) => _roomTitle = value;
-  //  void setDateTime(String value) => _dateTime = value;
-  //  void setUsers(List<User> value) => _users = value;
-  //  void setMessages(List<Message> value) => _messages = value;
+  // FromJSON
+  static Room fromJson(Map<String, dynamic> data) => Room(
+      movieId: data['movieId'],
+      theater: Cinema.fromJSON(data['theater']),
+      film: Film.fromJSON(data['film']),
+      roomName: data['roomName'],
+      date: data['date'].toDate(),
+      time: data['time'],
+      going: data['going']);
 }

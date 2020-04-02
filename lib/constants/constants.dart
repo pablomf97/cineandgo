@@ -363,15 +363,15 @@ const kPosterPath500 = 'https://image.tmdb.org/t/p/w500';
 //      following the material design
 //      standards.
 // Primary color --> DeepOrange
-const Color kPrimaryColor = Color(0xFFFF5722);
+const Color kPrimaryColor = Color(0xFF101213);
 // Dark primary color --> Darker version of DeepOrange
-const kDarkPrimaryColor = Color(0xFFE64A19);
+const kDarkPrimaryColor = Colors.black;
 // Light primary color --> Lighter version of DeepOrange
-const kLightPrimaryColor = Color(0xFFFFCCBC);
+const kLightPrimaryColor = Color(0xFF263238);
 // Very light primary color
-const kVeryLightPrimaryColor = Color(0xFFFEF2EE);
+const kVeryLightPrimaryColor = Color(0xF263238);
 // Accent color --> Orange
-const kAccentColor = Color(0xFFFF9800);
+const kAccentColor = Color(0xFF01D277);
 // Text&Icons color --> White
 const kTextAndIconsColor = Color(0xFFFFFFFF);
 // Primary text color --> Lighter black
@@ -389,11 +389,15 @@ const kTextFieldDecoration = InputDecoration(
     borderRadius: BorderRadius.all(Radius.circular(32.0)),
   ),
   enabledBorder: OutlineInputBorder(
-    borderSide: BorderSide(color: kLightPrimaryColor, width: 1.0),
+    borderSide: BorderSide(color: kAccentColor, width: 1.0),
     borderRadius: BorderRadius.all(Radius.circular(32.0)),
   ),
   focusedBorder: OutlineInputBorder(
-    borderSide: BorderSide(color: kAccentColor, width: 2.0),
+    borderSide: BorderSide(color: Colors.amberAccent, width: 2.0),
     borderRadius: BorderRadius.all(Radius.circular(32.0)),
   ),
+  disabledBorder: OutlineInputBorder(
+    borderSide: BorderSide(color: Colors.white, width: 1.0),
+    borderRadius: BorderRadius.all(Radius.circular(32.0)),
+  )
 );

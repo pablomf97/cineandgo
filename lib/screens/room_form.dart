@@ -20,21 +20,17 @@ class _MovieFormState extends State<MovieForm> {
 
   @override
   void initState() {
-    getData();
     super.initState();
-  }
-
-  void getData() {
-    print('$id $title');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cine&Go!'),
+        title: Text(
+          'Cine&Go!',
+        ),
         centerTitle: true,
-        backgroundColor: kPrimaryColor,
       ),
       body: CustomForm(
         id: id,
@@ -43,4 +39,3 @@ class _MovieFormState extends State<MovieForm> {
     );
   }
 }
-

@@ -17,7 +17,7 @@ class CustomCard extends StatelessWidget {
     return GestureDetector(
       onTap: function,
       child: Card(
-        elevation: 1.5,
+        elevation: 1,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),

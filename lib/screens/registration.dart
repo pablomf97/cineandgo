@@ -99,6 +99,7 @@ class _RegistrationState extends State<Registration>
                 height: 48.0,
               ),
               TextField(
+                style: TextStyle().copyWith(color: Colors.black),
                 keyboardType: TextInputType.emailAddress,
                 textAlign: TextAlign.center,
                 onChanged: (value) {
@@ -116,12 +117,14 @@ class _RegistrationState extends State<Registration>
                 decoration: kTextFieldDecoration.copyWith(
                   hintText:
                       AppLocalizations.of(context).translate('enter_an_email'),
+                  hintStyle: TextStyle().copyWith(color: Colors.grey),
                 ),
               ),
               SizedBox(
                 height: 8.0,
               ),
               TextField(
+                style: TextStyle().copyWith(color: Colors.black),
                 obscureText: true,
                 textAlign: TextAlign.center,
                 onChanged: (value) {
@@ -139,12 +142,14 @@ class _RegistrationState extends State<Registration>
                 decoration: kTextFieldDecoration.copyWith(
                   hintText:
                       AppLocalizations.of(context).translate('enter_a_pass'),
+                  hintStyle: TextStyle().copyWith(color: Colors.grey),
                 ),
               ),
               SizedBox(
                 height: 8.0,
               ),
               TextField(
+                style: TextStyle().copyWith(color: Colors.black),
                 obscureText: true,
                 textAlign: TextAlign.center,
                 onChanged: (value) {
@@ -161,6 +166,7 @@ class _RegistrationState extends State<Registration>
                 decoration: kTextFieldDecoration.copyWith(
                   hintText:
                       AppLocalizations.of(context).translate('repeat_pass'),
+                  hintStyle: TextStyle().copyWith(color: Colors.grey),
                 ),
               ),
               SizedBox(

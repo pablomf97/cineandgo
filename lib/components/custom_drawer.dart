@@ -80,7 +80,7 @@ class CustomDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(
               Icons.movie,
-              color: Colors.black,
+              color: Colors.white,
             ),
             title: Text(
               AppLocalizations.of(context).translate('all_movies'),
@@ -95,7 +95,7 @@ class CustomDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(
               Icons.airline_seat_legroom_extra,
-              color: Colors.black,
+              color: Colors.white,
             ),
             title: Text(
               AppLocalizations.of(context).translate('all_rooms'),
@@ -114,7 +114,7 @@ class CustomDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(
               Icons.exit_to_app,
-              color: Colors.black,
+              color: Colors.white,
             ),
             title: Text(
               AppLocalizations.of(context).translate('sign_out'),

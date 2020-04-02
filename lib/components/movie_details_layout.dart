@@ -127,15 +127,12 @@ class _MovieDetailsLayoutState extends State<MovieDetailsLayout>
               ),
             );
           },
-          child: Container(
-            height: MediaQuery.of(context).size.height * 0.35,
-            child: MovieCard(
-                posterPath: posterPath,
-                title: title,
-                originalTitle: originalTitle,
-                voteAverage: voteAverage,
-                evaluation: evaluation),
-          ),
+          child: MovieCard(
+              posterPath: posterPath,
+              title: title,
+              originalTitle: originalTitle,
+              voteAverage: voteAverage,
+              evaluation: evaluation),
         ),
         Expanded(
           flex: 1,
@@ -165,11 +162,11 @@ class _MovieDetailsLayoutState extends State<MovieDetailsLayout>
                     alignment: Alignment.topCenter,
                     child: TabBar(
                       controller: _tabController,
-                      labelColor: Colors.white,
-                      unselectedLabelColor: kPrimaryColor,
+                      labelColor: Colors.black,
+                      unselectedLabelColor: Colors.white,
                       labelPadding: EdgeInsets.all(2.0),
                       indicator: ShapeDecoration(
-                        color: kPrimaryColor,
+                        color: kAccentColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(40.0),
                         ),
@@ -237,11 +234,13 @@ class _MovieDetailsLayoutState extends State<MovieDetailsLayout>
                       ),
                       ListView(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 15.0, vertical: 10.0),
+                            horizontal: 5.0, vertical: 5.0),
+                            
                         children: cast,
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(10.0),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 5.0, vertical: 5.0),
                         child: RoomList(movieId: id),
                       ),
                     ],

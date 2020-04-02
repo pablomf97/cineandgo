@@ -1,13 +1,14 @@
-import 'package:cineandgo/components/dropdown_cinema.dart';
 import 'package:cineandgo/components/single_searchable_dropdown.dart';
 import 'package:cineandgo/constants/constants.dart';
 import 'package:cineandgo/localization/app_localizations.dart';
 import 'package:cineandgo/models/cinema.dart';
+import 'package:cineandgo/models/film.dart';
+import 'package:cineandgo/models/room.dart';
+import 'package:cineandgo/services/tmdb.dart';
 import 'package:edge_alert/edge_alert.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 class CustomForm extends StatefulWidget {
   CustomForm({
@@ -82,7 +83,6 @@ class _CustomFormState extends State<CustomForm> {
             actions: <Widget>[
               FlatButton(
                 child: Text(AppLocalizations.of(context).translate('accept')),
-                textColor: kPrimaryColor,
                 onPressed: () => Navigator.pop(context),
               )
             ],
@@ -195,7 +195,6 @@ class _CustomFormState extends State<CustomForm> {
                   onPressed: () => Navigator.pop(context),
                   child: Text(
                     AppLocalizations.of(context).translate('accept'),
-                    style: TextStyle(color: kPrimaryColor),
                   ))
             ],
           );
@@ -205,6 +204,44 @@ class _CustomFormState extends State<CustomForm> {
     setState(() {
       _selectedTheater = _selectedTheater;
     });
+  }
+
+  Future<Room> createRoom(Firestore db) async {
+    Cinema theater;
+    await db
+        .collection('theaters')
+        .document(_selectedTheater.split('(')[1].replaceFirst(')', ''))
+        .get()
+        .then((doc) => theater = new Cinema(
+              address: doc.data['address'],
+              city: doc.data['city'],
+              id: doc.data['id'],
+              latitude: doc.data['latitude'],
+              longitude: doc.data['longitude'],
+              name: doc.data['name'],
+              place: doc.data['place'],
+              website: doc.data['website'],
+            ));
+
+    var movieData = await TMDBModel.getMovieDetails('es', widget.id);
+
+    Film film = Film(
+        title: movieData['title'],
+        originalTitle: movieData['original_title'],
+        overview: movieData['overview'],
+        voteAverage: movieData['vote_average'],
+        posterPath: movieData['poster_path']);
+
+    return Room(
+        movieId: widget.id,
+        theater: theater,
+        film: film,
+        roomName: _selectedName,
+        date: _selectedDate,
+        time: '${_selectedTime.hour}:${_selectedTime.minute}',
+        going: [
+          await FirebaseAuth.instance.currentUser().then((value) => value.email)
+        ]);
   }
 
   @override
@@ -238,155 +275,177 @@ class _CustomFormState extends State<CustomForm> {
                 AppLocalizations.of(context).translate('create_room'),
                 style: TextStyle(
                   fontSize: 40,
-                  color: kPrimaryColor,
                 ),
               ),
             ),
           ),
-          Card(
-            color: kVeryLightPrimaryColor,
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 15.0),
-              child: Container(
-                child: Column(
-                  children: <Widget>[
-                    Card(
-                      elevation: 5.0,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ListTile(
-                          leading: Icon(
-                            Icons.theaters,
-                            color: Colors.black,
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 8.0, vertical: 15.0),
+            child: Container(
+              child: Column(
+                children: <Widget>[
+                  Card(
+                    color: kPrimaryColor,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListTile(
+                        leading: Icon(
+                          Icons.theaters,
+                        ),
+                        title: Text(
+                          widget.title,
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
                           ),
-                          title: Text(
-                            widget.title,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Card(
+                    color: kPrimaryColor,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListTile(
+                        leading: Icon(
+                          Icons.border_color,
+                        ),
+                        title: _selectedName == null
+                            ? Text(
+                                AppLocalizations.of(context)
+                                    .translate('select_name'),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18.0),
+                              )
+                            : Text(
+                                '$_selectedName',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18.0),
+                              ),
+                        trailing: FlatButton(
+                          onPressed: () => _selectName(context),
+                          child: Text(
+                            AppLocalizations.of(context).translate('change'),
                             style: TextStyle(
-                              fontSize: 20.0,
                               fontWeight: FontWeight.bold,
+                              fontSize: 16.0,
                             ),
                           ),
+                          color: kAccentColor,
                         ),
                       ),
                     ),
-                    Card(
-                      elevation: 5.0,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ListTile(
-                          leading: Icon(
-                            Icons.border_color,
-                            color: Colors.black,
-                          ),
-                          title: _selectedName == null
-                              ? Text(AppLocalizations.of(context)
-                                  .translate('select_name'))
-                              : Text(
-                                  '$_selectedName',
-                                ),
-                          trailing: FlatButton(
-                            onPressed: () => _selectName(context),
-                            child: Text(
-                              AppLocalizations.of(context).translate('change'),
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
+                  ),
+                  Card(
+                    color: kPrimaryColor,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListTile(
+                        leading: Icon(
+                          Icons.event_seat,
+                        ),
+                        title: _selectedTheater == null
+                            ? Text(
+                                AppLocalizations.of(context)
+                                    .translate('select_theater'),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18.0),
+                              )
+                            : Text(
+                                '$_selectedTheater',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18.0),
                               ),
-                            ),
-                            color: kPrimaryColor,
+                        trailing: FlatButton(
+                          onPressed: () => _selectCinema(context),
+                          child: Text(
+                            AppLocalizations.of(context).translate('change'),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16.0),
                           ),
+                          color: kAccentColor,
                         ),
                       ),
                     ),
-                    Card(
-                      elevation: 5.0,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ListTile(
-                          leading: Icon(
-                            Icons.event_seat,
-                            color: Colors.black,
-                          ),
-                          title: _selectedTheater == null
-                              ? Text(AppLocalizations.of(context)
-                                  .translate('select_theater'))
-                              : Text(
-                                  '$_selectedTheater',
-                                ),
-                          trailing: FlatButton(
-                            onPressed: () => _selectCinema(context),
-                            child: Text(
-                              AppLocalizations.of(context).translate('change'),
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
+                  ),
+                  Card(
+                    color: kPrimaryColor,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListTile(
+                        leading: Icon(
+                          Icons.calendar_today,
+                        ),
+                        title: _selectedDate == null
+                            ? Text(
+                                AppLocalizations.of(context)
+                                    .translate('pick_date'),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18.0),
+                              )
+                            : Text(
+                                '${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18.0),
                               ),
+                        trailing: FlatButton(
+                          onPressed: () => _selectDate(context),
+                          child: Text(
+                            AppLocalizations.of(context).translate('change'),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
                             ),
-                            color: kPrimaryColor,
                           ),
+                          color: kAccentColor,
                         ),
                       ),
                     ),
-                    Card(
-                      elevation: 5.0,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ListTile(
-                          leading: Icon(
-                            Icons.calendar_today,
-                            color: Colors.black,
-                          ),
-                          title: _selectedDate == null
-                              ? Text(AppLocalizations.of(context)
-                                  .translate('pick_date'))
-                              : Text(
-                                  '${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}',
-                                ),
-                          trailing: FlatButton(
-                            onPressed: () => _selectDate(context),
-                            child: Text(
-                              AppLocalizations.of(context).translate('change'),
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
+                  ),
+                  Card(
+                    color: kPrimaryColor,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListTile(
+                        leading: Icon(
+                          Icons.access_time,
+                        ),
+                        title: _selectedTime == null
+                            ? Text(
+                                AppLocalizations.of(context)
+                                    .translate('pick_time'),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18.0),
+                              )
+                            : Text(
+                                '${_selectedTime.hour} : ${_selectedTime.minute == 0 ? _zero : _selectedTime.minute}',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18.0),
                               ),
+                        trailing: FlatButton(
+                          onPressed: () => _selectTime(context),
+                          child: Text(
+                            AppLocalizations.of(context).translate('change'),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
                             ),
-                            color: kPrimaryColor,
                           ),
+                          color: kAccentColor,
                         ),
                       ),
                     ),
-                    Card(
-                      elevation: 5.0,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ListTile(
-                          leading: Icon(
-                            Icons.access_time,
-                            color: Colors.black,
-                          ),
-                          title: _selectedTime == null
-                              ? Text(AppLocalizations.of(context)
-                                  .translate('pick_time'))
-                              : Text(
-                                  '${_selectedTime.hour} : ${_selectedTime.minute == 0 ? _zero : _selectedTime.minute}'),
-                          trailing: FlatButton(
-                            onPressed: () => _selectTime(context),
-                            child: Text(
-                              AppLocalizations.of(context).translate('change'),
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            color: kPrimaryColor,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -412,38 +471,11 @@ class _CustomFormState extends State<CustomForm> {
                       );
                     } else {
                       Firestore db = Firestore.instance;
-                      Cinema theater;
 
-                      await db
-                          .collection('theaters')
-                          .document(_selectedTheater
-                              .split('(')[1]
-                              .replaceFirst(')', ''))
-                          .get()
-                          .then((doc) => theater = new Cinema(
-                                address: doc.data['address'],
-                                city: doc.data['city'],
-                                id: doc.data['id'],
-                                latitude: doc.data['latitude'],
-                                longitude: doc.data['longitude'],
-                                name: doc.data['name'],
-                                place: doc.data['place'],
-                                website: doc.data['website'],
-                              ));
+                      Room room = await createRoom(db);
 
                       Future<DocumentReference> docRef =
-                          db.collection('rooms').add({
-                        'movieId': widget.id,
-                        'theater': theater.toJson(),
-                        'roomName': _selectedName,
-                        'date': _selectedDate,
-                        'time': '${_selectedTime.hour}:${_selectedTime.minute}',
-                        'going': [
-                          await FirebaseAuth.instance
-                              .currentUser()
-                              .then((value) => value.email)
-                        ]
-                      });
+                          db.collection('rooms').add(room.toJson());
 
                       docRef.then((value) {
                         EdgeAlert.show(context,
@@ -467,10 +499,9 @@ class _CustomFormState extends State<CustomForm> {
                   },
                   child: Text(
                     AppLocalizations.of(context).translate('create'),
-                    style: TextStyle(fontSize: 20),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-                  textColor: Colors.white,
-                  color: kPrimaryColor,
+                  color: kAccentColor,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0)),
                 ),

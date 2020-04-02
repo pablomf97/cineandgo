@@ -99,6 +99,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                 height: 48.0,
               ),
               TextField(
+                style: TextStyle().copyWith(color: Colors.black),
                 keyboardType: TextInputType.emailAddress,
                 textAlign: TextAlign.center,
                 onChanged: (value) {
@@ -116,12 +117,14 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                 decoration: kTextFieldDecoration.copyWith(
                   hintText:
                       AppLocalizations.of(context).translate('enter_email'),
+                  hintStyle: TextStyle().copyWith(color: Colors.grey),
                 ),
               ),
               SizedBox(
                 height: 8.0,
               ),
               TextField(
+                style: TextStyle().copyWith(color: Colors.black),
                 obscureText: true,
                 textAlign: TextAlign.center,
                 onChanged: (value) {
@@ -139,6 +142,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                 decoration: kTextFieldDecoration.copyWith(
                   hintText:
                       AppLocalizations.of(context).translate('enter_pass'),
+                  hintStyle: TextStyle().copyWith(color: Colors.grey),
                 ),
               ),
               SizedBox(
