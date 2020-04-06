@@ -7,6 +7,7 @@ import 'package:meta/meta.dart';
 
 class Room {
   // Attributes
+  String creator;
   String movieId;
   Cinema theater;
   Film film;
@@ -18,6 +19,7 @@ class Room {
   // Constructor
   Room({
     @required this.movieId,
+    @required this.creator,
     @required this.theater,
     @required this.film,
     @required this.roomName,
@@ -29,6 +31,7 @@ class Room {
   // ToJSON
   Map<String, dynamic> toJson() => {
         'movieId': movieId,
+        'creator': creator,
         'theater': theater.toJson(),
         'film': film.toJson(),
         'roomName': roomName,
@@ -40,6 +43,7 @@ class Room {
   // FromJSON
   static Room fromJson(Map<String, dynamic> data) => Room(
       movieId: data['movieId'],
+      creator: data['creator'],
       theater: Cinema.fromJSON(data['theater']),
       film: Film.fromJSON(data['film']),
       roomName: data['roomName'],

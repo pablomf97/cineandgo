@@ -224,6 +224,8 @@ class _CustomFormState extends State<CustomForm> {
             ));
 
     var movieData = await TMDBModel.getMovieDetails('es', widget.id);
+    String email =
+        await FirebaseAuth.instance.currentUser().then((value) => value.email);
 
     Film film = Film(
         title: movieData['title'],
@@ -234,14 +236,13 @@ class _CustomFormState extends State<CustomForm> {
 
     return Room(
         movieId: widget.id,
+        creator: email,
         theater: theater,
         film: film,
         roomName: _selectedName,
         date: _selectedDate,
         time: '${_selectedTime.hour}:${_selectedTime.minute}',
-        going: [
-          await FirebaseAuth.instance.currentUser().then((value) => value.email)
-        ]);
+        going: [email]);
   }
 
   @override

@@ -26,17 +26,23 @@ class RoomDetails extends StatefulWidget {
 class _RoomDetailsState extends State<RoomDetails> {
   Room room;
   bool going = false;
+  String email;
+  String name;
 
   @override
   void initState() {
     room = Room.fromJson(widget.room);
+    setState(() {
+      name = room.roomName;
+    });
     checkIfGoing();
     super.initState();
   }
 
   void checkIfGoing() async =>
       await FirebaseAuth.instance.currentUser().then((user) => setState(() {
-            going = room.going.contains(user.email);
+            email = user.email;
+            going = room.going.contains(email);
           }));
 
   showBottomSheet(List<Widget> children) => showModalBottomSheet(
@@ -58,8 +64,6 @@ class _RoomDetailsState extends State<RoomDetails> {
               ));
         },
       );
-
-  // TODO: Chat screen&implementation
 
   @override
   Widget build(BuildContext context) {
@@ -142,13 +146,136 @@ class _RoomDetailsState extends State<RoomDetails> {
           'Cine&Go!',
         ),
         centerTitle: true,
+        actions: going
+            ? <Widget>[
+                PopupMenuButton(
+                  onSelected: (value) async {
+                    switch (value) {
+                      case 0:
+                        await showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            content: TextField(
+                              decoration: InputDecoration(
+                                hintText: name,
+                              ),
+                              onChanged: (value) => name = value,
+                            ),
+                            actions: <Widget>[
+                              FlatButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: Text(
+                                  AppLocalizations.of(context)
+                                      .translate('close'),
+                                ),
+                              ),
+                              FlatButton(
+                                onPressed: () {
+                                  if (name != null &&
+                                      name.trim().isNotEmpty &&
+                                      name != room.roomName) {
+                                    Firestore.instance
+                                        .collection('rooms')
+                                        .document(widget.id)
+                                        .updateData({'roomName': name}).then(
+                                            (value) {
+                                      Navigator.pop(context);
+                                      EdgeAlert.show(context,
+                                          backgroundColor: Colors.green,
+                                          title: 'Name updated');
+                                      setState(() {
+                                        name = name;
+                                      });
+                                    });
+                                  }
+                                },
+                                child: Text(
+                                  AppLocalizations.of(context)
+                                      .translate('accept'),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                        break;
+                      case 1:
+                        await showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: Text(
+                                'You are about to leave the room. Are you sure?'),
+                            actions: <Widget>[
+                              FlatButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: Text(
+                                  AppLocalizations.of(context)
+                                      .translate('close'),
+                                ),
+                              ),
+                              FlatButton(
+                                onPressed: () {
+                                  Firestore.instance
+                                      .collection('rooms')
+                                      .document(widget.id)
+                                      .updateData({
+                                    'going': FieldValue.arrayRemove([email])
+                                  }).then((value) {
+                                    int i = 0;
+                                    Navigator.popUntil(
+                                        context, (route) => i++ == 2);
+                                    EdgeAlert.show(context,
+                                        backgroundColor: Colors.green,
+                                        title: 'Succesfully left room');
+                                  });
+                                },
+                                child: Text(
+                                  AppLocalizations.of(context)
+                                      .translate('accept'),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                        break;
+                    }
+                  },
+                  itemBuilder: (context) => [
+                    PopupMenuItem(
+                      enabled: email == room.creator,
+                      value: 0,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text('Change name'),
+                          Icon(Icons.edit),
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem(
+                      enabled: email != room.creator,
+                      value: 1,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text('Leave room'),
+                          Icon(Icons.exit_to_app),
+                        ],
+                      ),
+                    ),
+                  ],
+                )
+              ]
+            : null,
       ),
       body: Column(
         children: <Widget>[
           Container(
               alignment: Alignment.centerLeft,
               padding: EdgeInsets.all(10.0),
-              child: Text(room.roomName, style: TextStyle(fontSize: 30.0))),
+              child: Text(name != null ? name : room.roomName,
+                  style: TextStyle(fontSize: 30.0))),
           Padding(
             padding: const EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
             child: MovieCard(
