@@ -59,6 +59,7 @@ class RoomListTile extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (context) => RoomDetails(
                             room: snapshot.data,
+                            id: snapshot.documentID
                           ),
                         ));
                   }),

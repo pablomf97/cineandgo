@@ -39,6 +39,7 @@ class InfoTile extends StatelessWidget {
                   Expanded(
                       flex: 2,
                       child: Container(
+                          width: MediaQuery.of(context).size.width * 0.75,
                           alignment: Alignment.centerLeft,
                           child: AutoSizeText(
                             description,

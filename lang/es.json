@@ -61,5 +61,10 @@
   "at": "a las",
   "where": "¿Dónde?",
   "in": "En",
-  "who": "¿Quién?"
+  "who": "¿Quién?",
+  "register_to_room": "¿Estás segur@ de que te quieres unir a esta sala?",
+  "yes": "Sí",
+  "joined_room": "Te has unido a la sala",
+  "type_message": "Introduce tu mensaje aquí...",
+  "send": "Enviar"
 }

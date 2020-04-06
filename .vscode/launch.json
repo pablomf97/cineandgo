@@ -8,6 +8,18 @@
       "name": "Flutter",
       "request": "launch",
       "type": "dart"
-    }
+    },
+    {
+      "name": "Mi A3",
+      "type": "dart",
+      "request": "launch",
+      "deviceId": "603276fb9ead"
+    },
+    {
+      "name": "Pixel 3a XL",
+      "type": "dart",
+      "request": "launch",
+      "deviceId": "emulator-5554"
+    },
   ]
 }

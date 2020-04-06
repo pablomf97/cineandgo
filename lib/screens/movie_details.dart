@@ -86,22 +86,23 @@ class _MovieDetailsState extends State<MovieDetails>
       ),
       body: pageLayout,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) {
-                return MovieForm(
-                  id: widget.movieId,
-                  title: widget.title,
-                );
-              },
-            ),
+        heroTag: 'fabroom',
+          onPressed: () {
+            Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) {
+          return MovieForm(
+            id: widget.movieId,
+            title: widget.title,
           );
         },
-        child: Icon(Icons.add),
-        backgroundColor: kAccentColor,
       ),
+            );
+          },
+          child: Icon(Icons.add),
+          backgroundColor: kAccentColor,
+        ),
     );
   }
 }

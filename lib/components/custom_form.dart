@@ -478,6 +478,10 @@ class _CustomFormState extends State<CustomForm> {
                           db.collection('rooms').add(room.toJson());
 
                       docRef.then((value) {
+                        db
+                            .collection('chatrooms')
+                            .add({'roomid': value.documentID, 'messages': []});
+
                         EdgeAlert.show(context,
                             backgroundColor: Colors.green,
                             icon: Icons.check_circle_outline,

@@ -14,7 +14,6 @@ class Room {
   DateTime date;
   String time;
   List<dynamic> going;
-  List<Message> messages;
 
   // Constructor
   Room({
@@ -25,7 +24,6 @@ class Room {
     @required this.date,
     @required this.time,
     @required this.going,
-    this.messages,
   });
 
   // ToJSON
@@ -37,7 +35,6 @@ class Room {
         'date': date,
         'time': time,
         'going': going,
-        'messages': (messages == null) ? [] : messages
       };
 
   // FromJSON

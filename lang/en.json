@@ -61,5 +61,10 @@
   "at": "at",
   "where": "Where?",
   "in": "In",
-  "who": "Who?"
+  "who": "Who?",
+  "register_to_room": "You are about to register to this room. Are you sure?",
+  "yes": "Yes",
+  "joined_room": "You joined this room",
+  "type_message": "Type your message here...",
+  "send": "Send"
 }

@@ -235,12 +235,10 @@ class _MovieDetailsLayoutState extends State<MovieDetailsLayout>
                       ListView(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 5.0, vertical: 5.0),
-                            
                         children: cast,
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 5.0, vertical: 5.0),
+                        padding: const EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 0.0),
                         child: RoomList(movieId: id),
                       ),
                     ],
