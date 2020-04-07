@@ -2,16 +2,13 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cineandgo/components/room_list.dart';
 import 'package:cineandgo/constants/constants.dart';
 import 'package:cineandgo/localization/app_localizations.dart';
-import 'package:cineandgo/screens/fullscreen.dart';
 import 'package:cineandgo/services/tmdb.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'custom_tile.dart';
 import 'genre_container.dart';
 import 'movie_card.dart';
 
 // TODO: Clean code and separate it in diferent components
-// TODO: Add tab to see rooms
 
 class MovieDetailsLayout extends StatefulWidget {
   MovieDetailsLayout(
@@ -77,12 +74,9 @@ class _MovieDetailsLayoutState extends State<MovieDetailsLayout>
       vsync: this,
       initialIndex: 0,
     );
-    // getRooms();
     getCast();
     super.initState();
   }
-
-  // TODO: Finish implementing room list
 
   void getCast() async {
     var movieCast = await TMDBModel.getCast(id);

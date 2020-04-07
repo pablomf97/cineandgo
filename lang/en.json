@@ -66,5 +66,9 @@
   "yes": "Yes",
   "joined_room": "You joined this room",
   "type_message": "Type your message here...",
-  "send": "Send"
+  "send": "Send",
+  "leave_room_q": "You are about to leave the room. Are you sure?",
+  "successfully_left": "Succesfully left room",
+  "change_name": "Change name",
+  "leave_room": "Leave room"
 }

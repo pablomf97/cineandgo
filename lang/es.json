@@ -66,5 +66,9 @@
   "yes": "Sí",
   "joined_room": "Te has unido a la sala",
   "type_message": "Introduce tu mensaje aquí...",
-  "send": "Enviar"
+  "send": "Enviar",
+  "leave_room_q": "¿Estás segur@ de querer abandonar la sala?",
+  "successfully_left": "Sala abandonada correctamente",
+  "change_name": "Cambiar nombre",
+  "leave_room": "Abandonar sala"
 }

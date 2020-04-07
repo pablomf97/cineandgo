@@ -202,14 +202,13 @@ class _RoomDetailsState extends State<RoomDetails> {
                         await showDialog(
                           context: context,
                           builder: (context) => AlertDialog(
-                            title: Text(
-                                'You are about to leave the room. Are you sure?'),
+                            title: Text(AppLocalizations.of(context)
+                                .translate('leave_room_q')),
                             actions: <Widget>[
                               FlatButton(
                                 onPressed: () => Navigator.pop(context),
                                 child: Text(
-                                  AppLocalizations.of(context)
-                                      .translate('close'),
+                                  'No',
                                 ),
                               ),
                               FlatButton(
@@ -225,12 +224,12 @@ class _RoomDetailsState extends State<RoomDetails> {
                                         context, (route) => i++ == 2);
                                     EdgeAlert.show(context,
                                         backgroundColor: Colors.green,
-                                        title: 'Succesfully left room');
+                                        title: AppLocalizations.of(context)
+                                            .translate('successfully_left'));
                                   });
                                 },
                                 child: Text(
-                                  AppLocalizations.of(context)
-                                      .translate('accept'),
+                                  AppLocalizations.of(context).translate('yes'),
                                 ),
                               ),
                             ],
@@ -247,7 +246,10 @@ class _RoomDetailsState extends State<RoomDetails> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text('Change name'),
+                          Text(
+                            AppLocalizations.of(context)
+                                .translate('change_name'),
+                          ),
                           Icon(Icons.edit),
                         ],
                       ),
@@ -259,7 +261,10 @@ class _RoomDetailsState extends State<RoomDetails> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text('Leave room'),
+                          Text(
+                            AppLocalizations.of(context)
+                                .translate('leave_room'),
+                          ),
                           Icon(Icons.exit_to_app),
                         ],
                       ),

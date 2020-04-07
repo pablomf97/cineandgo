@@ -47,7 +47,9 @@ class Room {
       theater: Cinema.fromJSON(data['theater']),
       film: Film.fromJSON(data['film']),
       roomName: data['roomName'],
-      date: data['date'].toDate(),
+      date: data['date'].runtimeType == DateTime
+          ? data['date']
+          : data['date'].toDate(),
       time: data['time'],
       going: data['going']);
 }

@@ -1,8 +1,16 @@
+import 'dart:ui';
+
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cineandgo/components/custom_drawer.dart';
+import 'package:cineandgo/components/room_info_card.dart';
 import 'package:cineandgo/constants/constants.dart';
 import 'package:cineandgo/localization/app_localizations.dart';
+import 'package:cineandgo/models/room.dart';
+import 'package:cineandgo/screens/all_room_list.dart';
 import 'package:cineandgo/screens/movie_details.dart';
+import 'package:cineandgo/screens/room_details.dart';
 import 'package:cineandgo/services/tmdb.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +25,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   // Firebase stuff
+  final Firestore _db = Firestore.instance;
   final _auth = FirebaseAuth.instance;
   FirebaseUser loggedUser;
 
@@ -25,8 +34,12 @@ class _HomeState extends State<Home> {
   String name;
   String email;
 
-  // Movie info
+  // Movie&Rooms info
   List<CustomCard> movies = [];
+  List<Widget> rooms = [];
+
+  // Misc
+  DateTime now = DateTime.now();
 
   // This method gets the user
   // that is currently logged in
@@ -43,6 +56,7 @@ class _HomeState extends State<Home> {
     }
   }
 
+  // Used to get some user info
   void getUserInfo() {
     setState(() {
       photoUrl = loggedUser.photoUrl;
@@ -51,16 +65,9 @@ class _HomeState extends State<Home> {
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
-    getCurrentUser();
-    getMovieData();
-  }
-
+  // Used to get movie data
   void getMovieData() async {
-    var movieData = await TMDBModel.getNowPlaying('es');
-    // Localizations.localeOf(context).languageCode
+    var movieData = await TMDBModel.getNowPlaying(window.locale.languageCode);
 
     if (movieData != null) {
       List<CustomCard> aux = [];
@@ -86,6 +93,51 @@ class _HomeState extends State<Home> {
     }
   }
 
+  // Used to get room data
+  void getRooms() {
+    _db
+        .collection('rooms')
+        .where(
+          'date',
+          isGreaterThanOrEqualTo: now.subtract(
+            Duration(
+              hours: now.hour,
+              minutes: now.minute,
+              seconds: now.second,
+            ),
+          ),
+        )
+        .limit(10)
+        .getDocuments()
+        .then((docs) {
+      if (docs.documents.isNotEmpty) {
+        List<RoomInfo> aux = [];
+        for (DocumentSnapshot doc in docs.documents) {
+          Room room = Room.fromJson(doc.data);
+          aux.add(
+            RoomInfo(
+              room: room,
+              id: doc.documentID,
+            ),
+          );
+        }
+        setState(() => rooms = aux);
+      } else {
+        rooms.add(Card(
+          child: Center(child: Text('No rooms!')),
+        ));
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentUser();
+    getMovieData();
+    getRooms();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,26 +150,39 @@ class _HomeState extends State<Home> {
         appBar: AppBar(
           title: Text('Cine&Go!'),
           centerTitle: true,
-          
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Expanded(
               flex: 1,
-              child: Container(
-                padding: const EdgeInsets.only(
-                  left: 8.0,
-                ),
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  AppLocalizations.of(context).translate('now_playing'),
-                  style: TextStyle(
-                    fontSize: 22.0,
-                    fontFamily: 'OpenSans',
-                    fontWeight: FontWeight.w600,
-                  ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      AppLocalizations.of(context).translate('now_playing'),
+                      style: TextStyle(
+                        fontSize: 22.0,
+                        fontFamily: 'OpenSans',
+                        fontWeight: FontWeight.bold,
+                        height: 1.0,
+                      ),
+                    ),
+                    FlatButton(
+                      color: kPrimaryColor,
+                      onPressed: () {},
+                      child: Text(
+                        'Ver más',
+                        style: TextStyle(
+                          height: 1.0,
+                          fontSize: 16.0,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -125,31 +190,61 @@ class _HomeState extends State<Home> {
               flex: 5,
               child: ListView(
                 scrollDirection: Axis.horizontal,
+                physics: BouncingScrollPhysics(),
                 children: movies,
               ),
             ),
             Expanded(
               flex: 1,
-              child: Container(
-                padding: const EdgeInsets.only(
-                  left: 8.0,
-                ),
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  AppLocalizations.of(context).translate('rooms'),
-                  style: TextStyle(
-                    fontSize: 22.0,
-                    fontFamily: 'OpenSans',
-                    fontWeight: FontWeight.w600,
-                  ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      AppLocalizations.of(context).translate('rooms'),
+                      style: TextStyle(
+                        fontSize: 22.0,
+                        fontFamily: 'OpenSans',
+                        fontWeight: FontWeight.bold,
+                        height: 1.0,
+                      ),
+                    ),
+                    FlatButton(
+                      color: kPrimaryColor,
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AllRooms(),
+                        ),
+                      ),
+                      child: Text(
+                        'Ver más',
+                        style: TextStyle(
+                          height: 1.0,
+                          fontSize: 16.0,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
-            Expanded(
-              flex: 5,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: movies,
+            Flexible(
+              flex: 4,
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.3,
+                child: PageView(
+                  physics: BouncingScrollPhysics(),
+                  controller: PageController(
+                    viewportFraction: 0.95,
+                    initialPage: 1,
+                    keepPage: true,
+                  ),
+                  scrollDirection: Axis.horizontal,
+                  children: rooms,
+                ),
               ),
             ),
           ],
