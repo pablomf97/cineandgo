@@ -212,10 +212,7 @@ class _RegistrationState extends State<Registration>
 
                     if (newUser != null) {
                       int i = 0;
-                      Navigator.pushNamedAndRemoveUntil(context, Home.id,
-                          (route) {
-                        return i++ == 2;
-                      });
+                      Navigator.popUntil(context, (route) => i++ == 2);
                     }
                   } catch (oops) {
                     print(oops.code);
@@ -257,10 +254,7 @@ class _RegistrationState extends State<Registration>
                   try {
                     await GoogleSignInOut.signInWithGoogle(_auth, googleSignIn);
                     int i = 0;
-                    Navigator.pushNamedAndRemoveUntil(context, Home.id,
-                        (route) {
-                      return i++ == 2;
-                    });
+                    Navigator.popUntil(context, (route) => i++ == 2);
                   } catch (oops) {
                     print(oops);
                     setState(() {

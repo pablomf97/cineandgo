@@ -7,21 +7,22 @@ import 'package:cineandgo/services/tmdb.dart';
 import 'package:flutter/material.dart';
 
 class RoomInfo extends StatelessWidget {
-  RoomInfo({@required this.room, @required this.id});
+  RoomInfo({@required this.room, @required this.id, this.padding});
 
   final Room room;
   final String id;
+  final EdgeInsetsGeometry padding;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
+      padding: padding == null ? EdgeInsets.zero : padding,
       child: Container(
         height: MediaQuery.of(context).size.height * 0.22,
         child: Material(
           color: kPrimaryColor,
           borderRadius: BorderRadius.circular(10.0),
-          elevation: 1.0,
+          elevation: 2.0,
           child: InkWell(
             borderRadius: BorderRadius.circular(10.0),
             enableFeedback: true,
@@ -42,7 +43,7 @@ class RoomInfo extends StatelessWidget {
                 Expanded(
                   flex: 2,
                   child: Padding(
-                    padding: const EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.all(12.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,11 +53,12 @@ class RoomInfo extends StatelessWidget {
                           child: Container(
                             alignment: Alignment.centerLeft,
                             child: AutoSizeText(
-                              room.film.title,
+                              room.roomName,
                               maxLines: 2,
                               style: TextStyle(
                                 fontSize: 35,
                                 fontWeight: FontWeight.bold,
+                                height: 1.0,
                               ),
                             ),
                           ),

@@ -70,5 +70,12 @@
   "leave_room_q": "You are about to leave the room. Are you sure?",
   "successfully_left": "Succesfully left room",
   "change_name": "Change name",
-  "leave_room": "Leave room"
+  "leave_room": "Leave room",
+  "by_region": "By region",
+  "by_movie": "By movie",
+  "by_room_name": "By room name",
+  "looking_for_rooms": "Looking for rooms",
+  "filter": "Filter...",
+  "apply": "Apply",
+  "show_more": "Show more"
 }

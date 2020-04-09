@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cineandgo/components/custom_drawer.dart';
+import 'package:cineandgo/components/google_sign_in_out.dart';
 import 'package:cineandgo/components/room_info_card.dart';
 import 'package:cineandgo/constants/constants.dart';
 import 'package:cineandgo/localization/app_localizations.dart';
@@ -9,12 +10,14 @@ import 'package:cineandgo/models/room.dart';
 import 'package:cineandgo/screens/all_room_list.dart';
 import 'package:cineandgo/screens/movie_details.dart';
 import 'package:cineandgo/screens/room_details.dart';
+import 'package:cineandgo/screens/welcome.dart';
 import 'package:cineandgo/services/tmdb.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cineandgo/components/custom_card.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class Home extends StatefulWidget {
   static String id = 'home';
@@ -109,25 +112,34 @@ class _HomeState extends State<Home> {
         )
         .limit(10)
         .getDocuments()
-        .then((docs) {
-      if (docs.documents.isNotEmpty) {
-        List<RoomInfo> aux = [];
-        for (DocumentSnapshot doc in docs.documents) {
-          Room room = Room.fromJson(doc.data);
-          aux.add(
-            RoomInfo(
-              room: room,
-              id: doc.documentID,
+        .then(
+      (docs) {
+        if (docs.documents.isNotEmpty) {
+          List<RoomInfo> aux = [];
+          for (DocumentSnapshot doc in docs.documents) {
+            Room room = Room.fromJson(doc.data);
+            aux.add(
+              RoomInfo(
+                room: room,
+                id: doc.documentID,
+                padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 12.0),
+              ),
+            );
+          }
+          setState(() => rooms = aux);
+        } else {
+          rooms.add(
+            Card(
+              child: Center(
+                child: Text(
+                  AppLocalizations.of(context).translate('nothing_to_show'),
+                ),
+              ),
             ),
           );
         }
-        setState(() => rooms = aux);
-      } else {
-        rooms.add(Card(
-          child: Center(child: Text('No rooms!')),
-        ));
-      }
-    });
+      },
+    );
   }
 
   @override
@@ -141,15 +153,40 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: CustomDrawer(
-          photoUrl: photoUrl,
-          name: name,
-          email: email,
-          auth: _auth,
-        ),
         appBar: AppBar(
           title: Text('Cine&Go!'),
           centerTitle: true,
+          actions: <Widget>[
+            PopupMenuButton(
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  child: ListTile(
+                    leading: Icon(
+                      Icons.exit_to_app,
+                      color: Colors.white,
+                    ),
+                    title: Text(
+                      AppLocalizations.of(context).translate('sign_out'),
+                    ),
+                    onTap: () async {
+                      try {
+                        GoogleSignIn googleAuth = GoogleSignIn();
+
+                        if (await googleAuth.isSignedIn()) {
+                          GoogleSignIn().signOut();
+                          _auth.signOut();
+                        } else {
+                          _auth.signOut();
+                        }
+
+                        Navigator.popAndPushNamed(context, Welcome.id);
+                      } catch (error) {}
+                    },
+                  ),
+                ),
+              ],
+            )
+          ],
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -173,9 +210,11 @@ class _HomeState extends State<Home> {
                     ),
                     FlatButton(
                       color: kPrimaryColor,
-                      onPressed: () {},
+                      onPressed: () {
+                        // TODO: List of movies
+                      },
                       child: Text(
-                        'Ver más',
+                        AppLocalizations.of(context).translate('show_more'),
                         style: TextStyle(
                           height: 1.0,
                           fontSize: 16.0,
@@ -220,7 +259,7 @@ class _HomeState extends State<Home> {
                         ),
                       ),
                       child: Text(
-                        'Ver más',
+                        AppLocalizations.of(context).translate('show_more'),
                         style: TextStyle(
                           height: 1.0,
                           fontSize: 16.0,
@@ -238,7 +277,7 @@ class _HomeState extends State<Home> {
                 child: PageView(
                   physics: BouncingScrollPhysics(),
                   controller: PageController(
-                    viewportFraction: 0.95,
+                    viewportFraction: 0.9,
                     initialPage: 1,
                     keepPage: true,
                   ),

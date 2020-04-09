@@ -120,7 +120,6 @@ class CustomDrawer extends StatelessWidget {
               AppLocalizations.of(context).translate('sign_out'),
             ),
             onTap: () {
-              // TODO: Check if the user is connected using Google, and if so, log out of Google
               auth.signOut();
               Navigator.popAndPushNamed(context, Welcome.id);
             },

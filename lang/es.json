@@ -70,5 +70,12 @@
   "leave_room_q": "¿Estás segur@ de querer abandonar la sala?",
   "successfully_left": "Sala abandonada correctamente",
   "change_name": "Cambiar nombre",
-  "leave_room": "Abandonar sala"
+  "leave_room": "Abandonar sala",
+  "by_region": "Por comunidad",
+  "by_movie": "Por película",
+  "by_room_name": "Por nombre de sala",
+  "looking_for_rooms": "Buscando salas",
+  "filter": "Filtrar...",
+  "apply": "Aplicar",
+  "show_more": "Ver más"
 }

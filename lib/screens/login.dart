@@ -164,10 +164,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
 
                     if (user != null) {
                       int i = 0;
-                      Navigator.pushNamedAndRemoveUntil(context, Home.id,
-                          (route) {
-                        return i++ == 2;
-                      });
+                      Navigator.popUntil(context, (route) => i++ == 2);
                     }
                   } catch (oops) {
                     String message;
@@ -211,10 +208,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                   try {
                     await GoogleSignInOut.signInWithGoogle(_auth, googleSignIn);
                     int i = 0;
-                    Navigator.pushNamedAndRemoveUntil(context, Home.id,
-                        (route) {
-                      return i++ == 2;
-                    });
+                    
+                    Navigator.popUntil(context, (route) => i++ == 2);
                   } catch (oops) {
                     print(oops);
                     setState(() {
