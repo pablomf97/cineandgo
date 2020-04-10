@@ -51,7 +51,7 @@ class _AllRoomsState extends State<AllRooms> {
   }
 
   void getMovies() async {
-    var movieData = await TMDBModel.getNowPlaying(window.locale.countryCode);
+    var movieData = await TMDBModel.getNowPlaying(window.locale.countryCode, 1);
 
     if (movieData != null) {
       List<DropdownMenuItem> aux = [];
@@ -127,11 +127,13 @@ class _AllRoomsState extends State<AllRooms> {
                                   ),
                                 )
                                 .toList(),
-                            onChanged: (value) {
-                              setState(() {
-                                _region = value;
-                              });
-                            },
+                            onChanged: _radioValue != 1
+                                ? null
+                                : (value) {
+                                    setState(() {
+                                      _region = value;
+                                    });
+                                  },
                           ),
                         ],
                       ),
@@ -160,8 +162,9 @@ class _AllRoomsState extends State<AllRooms> {
                                     ),
                                   ]
                                 : _movies,
-                            onChanged: (value) =>
-                                setState(() => _movie = value),
+                            onChanged: _radioValue != 2
+                                ? null
+                                : (value) => setState(() => _movie = value),
                           ),
                         ],
                       ),
@@ -175,6 +178,7 @@ class _AllRoomsState extends State<AllRooms> {
                       onChanged: (selectedRadio) =>
                           setState(() => _radioValue = selectedRadio),
                       title: TextField(
+                        enabled: _radioValue == 3,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),

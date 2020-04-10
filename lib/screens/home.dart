@@ -9,6 +9,7 @@ import 'package:cineandgo/localization/app_localizations.dart';
 import 'package:cineandgo/models/room.dart';
 import 'package:cineandgo/screens/all_room_list.dart';
 import 'package:cineandgo/screens/movie_details.dart';
+import 'package:cineandgo/screens/movie_list.dart';
 import 'package:cineandgo/screens/room_details.dart';
 import 'package:cineandgo/screens/welcome.dart';
 import 'package:cineandgo/services/tmdb.dart';
@@ -70,7 +71,8 @@ class _HomeState extends State<Home> {
 
   // Used to get movie data
   void getMovieData() async {
-    var movieData = await TMDBModel.getNowPlaying(window.locale.languageCode);
+    var movieData =
+        await TMDBModel.getNowPlaying(window.locale.languageCode, 1);
 
     if (movieData != null) {
       List<CustomCard> aux = [];
@@ -105,7 +107,7 @@ class _HomeState extends State<Home> {
           isGreaterThanOrEqualTo: now.subtract(
             Duration(
               hours: now.hour,
-              minutes: now.minute,
+              minutes: now.minute + 1,
               seconds: now.second,
             ),
           ),
@@ -212,6 +214,12 @@ class _HomeState extends State<Home> {
                       color: kPrimaryColor,
                       onPressed: () {
                         // TODO: List of movies
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AllMovieList(),
+                          ),
+                        );
                       },
                       child: Text(
                         AppLocalizations.of(context).translate('show_more'),

@@ -7,10 +7,11 @@ const posterUrlOriginal = 'https://image.tmdb.org/t/p/original/';
 const posterUrlSmall = 'https://image.tmdb.org/t/p/w500/';
 
 class TMDBModel {
-  static Future<dynamic> getNowPlaying(String languageCode) async {
+  static Future<dynamic> getNowPlaying(String languageCode, int page) async {
     NetworkHelper networkHelper = NetworkHelper('${requestUrl}movie/now_playing'
         '?api_key=$_tmdbApiKey'
         '&region=ES'
+        '&page=$page'
         '&language=${languageCode == 'es' ? 'es-ES' : 'en-GB'}');
 
     var movieData = await networkHelper.getData();
