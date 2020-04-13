@@ -19,10 +19,12 @@ class _AllMovieListState extends State<AllMovieList> {
   int _currentPage = 1;
   int _totalPages = 1;
 
-  Widget _movies =
-      SliverFillRemaining(child: Center(child: CircularProgressIndicator()));
+  Widget _movies;
 
   void buildGrid() async {
+    _movies =
+        SliverFillRemaining(child: Center(child: CircularProgressIndicator()));
+
     var movieData =
         await TMDBModel.getNowPlaying(window.locale.countryCode, _currentPage);
 

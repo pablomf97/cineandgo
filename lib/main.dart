@@ -26,11 +26,7 @@ class CineGo extends StatelessWidget {
           ),
           floatingActionButtonTheme: FloatingActionButtonThemeData().copyWith(
             backgroundColor: kAccentColor,
-          )) /* of(context).copyWith(
-        primaryColor: kPrimaryColor,
-        accentColor: kAccentColor,
-      ) */
-      ,
+          )),
       supportedLocales: [
         Locale('en', 'GB'),
         Locale('en', 'US'),

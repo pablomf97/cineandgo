@@ -16,10 +16,16 @@
       "deviceId": "603276fb9ead"
     },
     {
-      "name": "Pixel 3a XL",
+      "name": "Emulador 1",
       "type": "dart",
       "request": "launch",
       "deviceId": "emulator-5554"
+    },
+    {
+      "name": "Emulador 2",
+      "type": "dart",
+      "request": "launch",
+      "deviceId": "emulator-5556"
     },
   ]
 }

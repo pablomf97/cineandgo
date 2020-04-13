@@ -118,6 +118,7 @@ class _AllRoomsState extends State<AllRooms> {
                           Text(AppLocalizations.of(context)
                               .translate('by_region')),
                           SearchableDropdown(
+                            readOnly: _radioValue != 1,
                             value: _region,
                             items: kComunidades.keys
                                 .map(
@@ -127,13 +128,8 @@ class _AllRoomsState extends State<AllRooms> {
                                   ),
                                 )
                                 .toList(),
-                            onChanged: _radioValue != 1
-                                ? null
-                                : (value) {
-                                    setState(() {
-                                      _region = value;
-                                    });
-                                  },
+                            onChanged: (value) =>
+                                setState(() => _region = value),
                           ),
                         ],
                       ),
@@ -152,6 +148,7 @@ class _AllRoomsState extends State<AllRooms> {
                           Text(AppLocalizations.of(context)
                               .translate('by_movie')),
                           SearchableDropdown(
+                            readOnly: _radioValue != 2,
                             value: _movie,
                             items: _movies == null
                                 ? [
@@ -162,9 +159,8 @@ class _AllRoomsState extends State<AllRooms> {
                                     ),
                                   ]
                                 : _movies,
-                            onChanged: _radioValue != 2
-                                ? null
-                                : (value) => setState(() => _movie = value),
+                            onChanged: (value) =>
+                                setState(() => _movie = value),
                           ),
                         ],
                       ),
