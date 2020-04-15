@@ -3,7 +3,6 @@ import 'package:cineandgo/components/google_sign_in_out.dart';
 import 'package:cineandgo/components/image_rounded_button.dart';
 import 'package:cineandgo/constants/constants.dart';
 import 'package:cineandgo/localization/app_localizations.dart';
-import 'package:cineandgo/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:cineandgo/components/rounded_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -60,6 +59,10 @@ class _RegistrationState extends State<Registration>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      /* 
+      Shows a rotating spinner whenever the 
+      boolean 'showSpinner' is equal to true.
+      */
       body: ModalProgressHUD(
         inAsyncCall: showSpinner,
         opacity: 0.9,
@@ -98,19 +101,20 @@ class _RegistrationState extends State<Registration>
               SizedBox(
                 height: 48.0,
               ),
+              /* 
+              Input for the email address. It only checks if
+              the input is filled because Firebase already
+              checks if the text provided is an email.
+              */
               TextField(
                 style: TextStyle().copyWith(color: Colors.black),
                 keyboardType: TextInputType.emailAddress,
                 textAlign: TextAlign.center,
                 onChanged: (value) {
                   if (value.length > 0) {
-                    setState(() {
-                      isEmailFieldFilled = true;
-                    });
+                    setState(() => isEmailFieldFilled = true);
                   } else {
-                    setState(() {
-                      isEmailFieldFilled = false;
-                    });
+                    setState(() => isEmailFieldFilled = false);
                   }
                   email = value;
                 },
@@ -123,19 +127,20 @@ class _RegistrationState extends State<Registration>
               SizedBox(
                 height: 8.0,
               ),
+              /* 
+              Password input. It checks if the text that 
+              the user inputs is more than 6 characters
+              long.
+              */
               TextField(
                 style: TextStyle().copyWith(color: Colors.black),
                 obscureText: true,
                 textAlign: TextAlign.center,
                 onChanged: (value) {
                   if (value.length >= 6) {
-                    setState(() {
-                      isPasswordFieldFilled = true;
-                    });
+                    setState(() => isPasswordFieldFilled = true);
                   } else {
-                    setState(() {
-                      isPasswordFieldFilled = false;
-                    });
+                    setState(() => isPasswordFieldFilled = false);
                   }
                   password = value;
                 },
@@ -148,19 +153,20 @@ class _RegistrationState extends State<Registration>
               SizedBox(
                 height: 8.0,
               ),
+              /* 
+              Password confirmation input. Checks that the password
+              written in this input is the same as the other
+              password input.
+              */
               TextField(
                 style: TextStyle().copyWith(color: Colors.black),
                 obscureText: true,
                 textAlign: TextAlign.center,
                 onChanged: (value) {
                   if (value == password) {
-                    setState(() {
-                      isPasswordConfirmationOkay = true;
-                    });
+                    setState(() => isPasswordConfirmationOkay = true);
                   } else {
-                    setState(() {
-                      isPasswordConfirmationOkay = false;
-                    });
+                    setState(() => isPasswordConfirmationOkay = false);
                   }
                 },
                 decoration: kTextFieldDecoration.copyWith(
@@ -172,6 +178,10 @@ class _RegistrationState extends State<Registration>
               SizedBox(
                 height: 5.0,
               ),
+              /* 
+              Just some tips so the user nows what he/she
+              already did.
+              */
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -194,17 +204,31 @@ class _RegistrationState extends State<Registration>
               SizedBox(
                 height: 24.0,
               ),
+              /* 
+              When the three booleans are equal to true means 
+              that the user correctly filled the form an it is
+              ready to validate.
+              */
               RoundedButton(
                 enabled: isEmailFieldFilled &&
                     isPasswordFieldFilled &&
                     isPasswordConfirmationOkay,
                 text: AppLocalizations.of(context).translate('register'),
                 color: kAccentColor,
+                /* 
+                While the user is waiting, a spinner will show 
+                in the middle of the screen so he/she knows that
+                the app is working hard.
+
+                If everything went correctly, there will be a new
+                user in the database that will be able to log in
+                in the app.
+                */
                 onPressed: () async {
                   try {
-                    setState(() {
-                      showSpinner = true;
-                    });
+                    setState(
+                      () => showSpinner = true,
+                    );
                     final newUser = await _auth.createUserWithEmailAndPassword(
                       email: email,
                       password: password,
@@ -215,6 +239,10 @@ class _RegistrationState extends State<Registration>
                       Navigator.popUntil(context, (route) => i++ == 2);
                     }
                   } catch (oops) {
+                    /* 
+                    If Firebase returned some error, the app will 
+                    show the user some information about it.
+                    */
                     print(oops.code);
                     String message;
                     if (oops.code == 'ERROR_INVALID_EMAIL') {
@@ -227,18 +255,24 @@ class _RegistrationState extends State<Registration>
                       message = AppLocalizations.of(context)
                           .translate('err_msg_firebase_generic');
                     }
-                    setState(() {
-                      showSpinner = false;
-                      EdgeAlert.show(context,
-                          title: AppLocalizations.of(context).translate('oops'),
-                          description: message,
-                          duration: EdgeAlert.LENGTH_VERY_LONG,
-                          icon: Icons.error_outline,
-                          backgroundColor: Colors.red);
-                    });
+                    setState(
+                      () {
+                        showSpinner = false;
+                        EdgeAlert.show(context,
+                            title:
+                                AppLocalizations.of(context).translate('oops'),
+                            description: message,
+                            duration: EdgeAlert.LENGTH_VERY_LONG,
+                            icon: Icons.error_outline,
+                            backgroundColor: Colors.red);
+                      },
+                    );
                   }
                 },
               ),
+              /* 
+              The user also has the option to register/login using Google
+              */
               CustomDivider(
                 thickness: 1.5,
                 text: AppLocalizations.of(context).translate('or_use'),
@@ -248,18 +282,20 @@ class _RegistrationState extends State<Registration>
                 title: 'Google',
                 imagePath: 'images/google.png',
                 onPressed: () async {
-                  setState(() {
-                    showSpinner = true;
-                  });
+                  setState(
+                    () => showSpinner = true,
+                  );
                   try {
                     await GoogleSignInOut.signInWithGoogle(_auth, googleSignIn);
                     int i = 0;
                     Navigator.popUntil(context, (route) => i++ == 2);
                   } catch (oops) {
                     print(oops);
-                    setState(() {
-                      showSpinner = false;
-                    });
+                    setState(
+                      () {
+                        showSpinner = false;
+                      },
+                    );
                     EdgeAlert.show(context,
                         title: AppLocalizations.of(context).translate('oops'),
                         description: AppLocalizations.of(context)

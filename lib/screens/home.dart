@@ -1,17 +1,12 @@
 import 'dart:ui';
-
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cineandgo/components/custom_drawer.dart';
-import 'package:cineandgo/components/google_sign_in_out.dart';
 import 'package:cineandgo/components/room_info_card.dart';
 import 'package:cineandgo/constants/constants.dart';
 import 'package:cineandgo/localization/app_localizations.dart';
 import 'package:cineandgo/models/room.dart';
-import 'package:cineandgo/screens/all_room_list.dart';
+import 'package:cineandgo/screens/room_list.dart';
 import 'package:cineandgo/screens/movie_details.dart';
 import 'package:cineandgo/screens/movie_list.dart';
-import 'package:cineandgo/screens/room_details.dart';
-import 'package:cineandgo/screens/welcome.dart';
+import 'package:cineandgo/screens/registration_login/welcome.dart';
 import 'package:cineandgo/services/tmdb.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -33,11 +28,6 @@ class _HomeState extends State<Home> {
   final _auth = FirebaseAuth.instance;
   FirebaseUser loggedUser;
 
-  // User info
-  String photoUrl;
-  String name;
-  String email;
-
   // Movie&Rooms info
   List<CustomCard> movies = [];
   List<Widget> rooms = [];
@@ -53,20 +43,8 @@ class _HomeState extends State<Home> {
 
       if (user != null) {
         loggedUser = user;
-        getUserInfo();
       }
-    } catch (oops) {
-      print(oops);
-    }
-  }
-
-  // Used to get some user info
-  void getUserInfo() {
-    setState(() {
-      photoUrl = loggedUser.photoUrl;
-      name = loggedUser.displayName;
-      email = loggedUser.email;
-    });
+    } catch (oops) {}
   }
 
   // Used to get movie data
@@ -147,6 +125,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+
     getCurrentUser();
     getMovieData();
     getRooms();
@@ -159,6 +138,9 @@ class _HomeState extends State<Home> {
           title: Text('Cine&Go!'),
           centerTitle: true,
           actions: <Widget>[
+            /* 
+            Button to sign out.
+            */
             PopupMenuButton(
               itemBuilder: (context) => [
                 PopupMenuItem(
@@ -195,41 +177,15 @@ class _HomeState extends State<Home> {
           children: <Widget>[
             Expanded(
               flex: 1,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      AppLocalizations.of(context).translate('now_playing'),
-                      style: TextStyle(
-                        fontSize: 22.0,
-                        fontFamily: 'OpenSans',
-                        fontWeight: FontWeight.bold,
-                        height: 1.0,
-                      ),
-                    ),
-                    FlatButton(
-                      color: kPrimaryColor,
-                      onPressed: () {
-                        // TODO: List of movies
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => AllMovieList(),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        AppLocalizations.of(context).translate('show_more'),
-                        style: TextStyle(
-                          height: 1.0,
-                          fontSize: 16.0,
-                        ),
-                      ),
-                    ),
-                  ],
+              child: TextButtonRow(
+                text: AppLocalizations.of(context).translate('now_playing'),
+                buttonTitle:
+                    AppLocalizations.of(context).translate('show_more'),
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AllMovieList(),
+                  ),
                 ),
               ),
             ),
@@ -243,38 +199,15 @@ class _HomeState extends State<Home> {
             ),
             Expanded(
               flex: 1,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      AppLocalizations.of(context).translate('rooms'),
-                      style: TextStyle(
-                        fontSize: 22.0,
-                        fontFamily: 'OpenSans',
-                        fontWeight: FontWeight.bold,
-                        height: 1.0,
-                      ),
-                    ),
-                    FlatButton(
-                      color: kPrimaryColor,
-                      onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AllRooms(),
-                        ),
-                      ),
-                      child: Text(
-                        AppLocalizations.of(context).translate('show_more'),
-                        style: TextStyle(
-                          height: 1.0,
-                          fontSize: 16.0,
-                        ),
-                      ),
-                    ),
-                  ],
+              child: TextButtonRow(
+                text: AppLocalizations.of(context).translate('rooms'),
+                buttonTitle:
+                    AppLocalizations.of(context).translate('show_more'),
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AllRooms(),
+                  ),
                 ),
               ),
             ),
@@ -285,7 +218,7 @@ class _HomeState extends State<Home> {
                 child: PageView(
                   physics: BouncingScrollPhysics(),
                   controller: PageController(
-                    viewportFraction: 0.9,
+                    viewportFraction: 0.90,
                     initialPage: 1,
                     keepPage: true,
                   ),
@@ -296,5 +229,50 @@ class _HomeState extends State<Home> {
             ),
           ],
         ));
+  }
+}
+
+class TextButtonRow extends StatelessWidget {
+  TextButtonRow({
+    @required this.text,
+    @required this.buttonTitle,
+    @required this.onPressed,
+  });
+
+  final String text;
+  final String buttonTitle;
+  final Function onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(
+            text,
+            style: TextStyle(
+              fontSize: 22.0,
+              fontFamily: 'OpenSans',
+              fontWeight: FontWeight.bold,
+              height: 1.0,
+            ),
+          ),
+          FlatButton(
+            color: kPrimaryColor,
+            onPressed: onPressed,
+            child: Text(
+              buttonTitle,
+              style: TextStyle(
+                height: 1.0,
+                fontSize: 16.0,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

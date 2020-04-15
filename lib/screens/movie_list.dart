@@ -16,11 +16,26 @@ class AllMovieList extends StatefulWidget {
 class _AllMovieListState extends State<AllMovieList> {
   final ScrollController _scrollController = ScrollController();
 
+  /* 
+  Used to know what the current page is
+  and which one is the last page.
+  */
   int _currentPage = 1;
   int _totalPages = 1;
 
+  /* 
+  This widget will be at the middle of the screen, showing 
+  a spinner that will indicate that the app is loading
+  all the movies.
+
+  When the app finishes loading all the movies, this
+  widget will change to a paginated grid of movies.
+  */
   Widget _movies;
 
+  /* 
+  This method builds the grid.
+  */
   void buildGrid() async {
     _movies =
         SliverFillRemaining(child: Center(child: CircularProgressIndicator()));
@@ -65,8 +80,8 @@ class _AllMovieListState extends State<AllMovieList> {
 
   @override
   void initState() {
-    buildGrid();
     super.initState();
+    buildGrid();
   }
 
   @override
@@ -76,59 +91,32 @@ class _AllMovieListState extends State<AllMovieList> {
         borderRadius: BorderRadius.circular(10.0),
         child: Material(
           color: kPrimaryColor,
-          elevation: 20.0,
           borderRadius: BorderRadius.circular(10.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              SizedBox(
-                height: 50.0,
-                width: MediaQuery.of(context).size.width * 0.35,
-                child: FlatButton(
-                  disabledColor: Colors.white38,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  color: kAccentColor,
-                  onPressed: _currentPage == 1
-                      ? null
-                      : () {
-                          setState(() {
+              BottomBarButton(
+                buttonText:
+                    AppLocalizations.of(context).translate('previous_page'),
+                onPressed: _currentPage == 1
+                    ? null
+                    : () {
+                        setState(
+                          () {
                             _currentPage--;
                             buildGrid();
                             _scrollController.animateTo(0.0,
                                 duration: Duration(seconds: 1),
                                 curve: Curves.ease);
-                          });
-                        },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Icon(
-                        Icons.arrow_back_ios,
-                        color: Colors.black,
-                        size: 15.0,
-                      ),
-                      SizedBox(
-                        width: 5.0,
-                      ),
-                      Text(
-                        'Previous page',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                          },
+                        );
+                      },
               ),
               SizedBox(
                 height: 40.0,
                 width: 40.0,
                 child: Material(
-                  elevation: 3.0,
+                  elevation: 1.0,
                   borderRadius: BorderRadius.circular(25.0),
                   child: Center(
                     child: Text(
@@ -141,48 +129,21 @@ class _AllMovieListState extends State<AllMovieList> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: 50.0,
-                width: MediaQuery.of(context).size.width * 0.35,
-                child: FlatButton(
-                  disabledColor: Colors.white38,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  color: kAccentColor,
-                  onPressed: _currentPage == _totalPages
-                      ? null
-                      : () {
-                          setState(() {
+              BottomBarButton(
+                buttonText: AppLocalizations.of(context).translate('next_page'),
+                onPressed: _currentPage == _totalPages
+                    ? null
+                    : () {
+                        setState(
+                          () {
                             _currentPage++;
                             buildGrid();
                             _scrollController.animateTo(0.0,
                                 duration: Duration(seconds: 1),
                                 curve: Curves.ease);
-                          });
-                        },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        'Next page',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 5.0,
-                      ),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        color: Colors.black,
-                        size: 15.0,
-                      ),
-                    ],
-                  ),
-                ),
+                          },
+                        );
+                      },
               ),
             ],
           ),
@@ -205,6 +166,44 @@ class _AllMovieListState extends State<AllMovieList> {
             ),
             _movies
           ],
+        ),
+      ),
+    );
+  }
+}
+
+/* 
+Bottom bar buttons.
+*/
+class BottomBarButton extends StatelessWidget {
+  BottomBarButton({
+    @required this.buttonText,
+    @required this.onPressed,
+  });
+
+  final String buttonText;
+  final Function onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 50.0,
+      width: MediaQuery.of(context).size.width * 0.35,
+      child: FlatButton(
+        disabledColor: Colors.white38,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        color: kAccentColor,
+        onPressed: onPressed,
+        child: Center(
+          child: Text(
+            buttonText,
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
       ),
     );

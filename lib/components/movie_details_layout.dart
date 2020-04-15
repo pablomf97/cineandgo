@@ -8,8 +8,6 @@ import 'custom_tile.dart';
 import 'genre_container.dart';
 import 'movie_card.dart';
 
-// TODO: Clean code and separate it in diferent components
-
 class MovieDetailsLayout extends StatefulWidget {
   MovieDetailsLayout(
       {@required this.id,
@@ -31,55 +29,43 @@ class MovieDetailsLayout extends StatefulWidget {
   final List<GenreContainer> genres;
 
   @override
-  _MovieDetailsLayoutState createState() => _MovieDetailsLayoutState(
-        id: id,
-        title: title,
-        originalTitle: originalTitle,
-        overview: overview,
-        voteAverage: voteAverage,
-        posterPath: posterPath,
-        evaluation: evaluation,
-        genres: genres,
-      );
+  _MovieDetailsLayoutState createState() => _MovieDetailsLayoutState();
 }
 
 class _MovieDetailsLayoutState extends State<MovieDetailsLayout>
     with SingleTickerProviderStateMixin {
-  _MovieDetailsLayoutState(
-      {@required this.id,
-      @required this.posterPath,
-      @required this.title,
-      @required this.originalTitle,
-      @required this.overview,
-      @required this.voteAverage,
-      @required this.evaluation,
-      @required this.genres});
-
-  final String id;
-  final String posterPath;
-  final String title;
-  final String originalTitle;
-  final String voteAverage;
-  final String overview;
-  final String evaluation;
-  final List<GenreContainer> genres;
-
-  List<CustomTile> cast = [];
+  // Cast
+  List<Widget> _cast = [
+    Center(
+      child: CircularProgressIndicator(),
+    )
+  ];
+  // Tab stuff
   TabController _tabController;
+  // The text style of the tab bar
+  final TextStyle _tabBarTextStyle = TextStyle(
+    fontFamily: 'OpenSans',
+    fontSize: 17.0,
+    fontWeight: FontWeight.bold,
+  );
 
   @override
   void initState() {
+    super.initState();
     _tabController = TabController(
       length: 4,
       vsync: this,
       initialIndex: 0,
     );
-    getCast();
-    super.initState();
+    buildCastList();
   }
 
-  void getCast() async {
-    var movieCast = await TMDBModel.getCast(id);
+  /* 
+  Builds the list of 'CustomTiles' that contains all
+  the cast of the movie that is being displayed.
+  */
+  void buildCastList() async {
+    var movieCast = await TMDBModel.getCast(widget.id);
 
     if (movieCast != null) {
       List<CustomTile> aux = [];
@@ -93,7 +79,7 @@ class _MovieDetailsLayoutState extends State<MovieDetailsLayout>
         ));
       }
       setState(() {
-        cast = aux;
+        _cast = aux;
       });
     }
   }
@@ -103,51 +89,20 @@ class _MovieDetailsLayoutState extends State<MovieDetailsLayout>
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
-        TweenAnimationBuilder(
-          tween: Tween<Offset>(
-            begin: Offset(0, -1.0),
-            end: Offset(0, 0),
-          ),
-          duration: Duration(milliseconds: 350),
-          curve: Curves.decelerate,
-          builder: (context, offset, child) {
-            return FractionalTranslation(
-              translation: offset,
-              child: Container(
-                width: double.infinity,
-                child: Center(
-                  child: child,
-                ),
-              ),
-            );
-          },
+        /* 
+        Animation that makes the movie card appear from offscreen.
+        */
+        SlideInAnimation(
           child: MovieCard(
-              posterPath: posterPath,
-              title: title,
-              originalTitle: originalTitle,
-              voteAverage: voteAverage,
-              evaluation: evaluation),
+              posterPath: widget.posterPath,
+              title: widget.title,
+              originalTitle: widget.originalTitle,
+              voteAverage: widget.voteAverage,
+              evaluation: widget.evaluation),
+          durationInMillis: 350,
         ),
         Expanded(
-          flex: 1,
-          child: TweenAnimationBuilder(
-            tween: Tween<Offset>(
-              begin: Offset(0, -1.0),
-              end: Offset(0, 0.0),
-            ),
-            duration: Duration(milliseconds: 350),
-            curve: Curves.decelerate,
-            builder: (context, offset, child) {
-              return FractionalTranslation(
-                translation: offset,
-                child: Container(
-                  width: double.infinity,
-                  child: Center(
-                    child: child,
-                  ),
-                ),
-              );
-            },
+          child: SlideInAnimation(
             child: Column(
               children: <Widget>[
                 Padding(
@@ -168,35 +123,19 @@ class _MovieDetailsLayoutState extends State<MovieDetailsLayout>
                       tabs: <Widget>[
                         Text(
                           AppLocalizations.of(context).translate('overview'),
-                          style: TextStyle(
-                            fontFamily: 'OpenSans',
-                            fontSize: 17.0,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: _tabBarTextStyle,
                         ),
                         Text(
                           AppLocalizations.of(context).translate('genres'),
-                          style: TextStyle(
-                            fontFamily: 'OpenSans',
-                            fontSize: 17.0,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: _tabBarTextStyle,
                         ),
                         Text(
                           AppLocalizations.of(context).translate('cast'),
-                          style: TextStyle(
-                            fontFamily: 'OpenSans',
-                            fontSize: 17.0,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: _tabBarTextStyle,
                         ),
                         Text(
                           AppLocalizations.of(context).translate('rooms'),
-                          style: TextStyle(
-                            fontFamily: 'OpenSans',
-                            fontSize: 17.0,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: _tabBarTextStyle,
                         ),
                       ],
                     ),
@@ -210,7 +149,7 @@ class _MovieDetailsLayoutState extends State<MovieDetailsLayout>
                         padding: const EdgeInsets.symmetric(
                             horizontal: 15.0, vertical: 10.0),
                         child: AutoSizeText(
-                          overview,
+                          widget.overview,
                           textAlign: TextAlign.justify,
                           maxLines: 10,
                           style: TextStyle(
@@ -223,23 +162,24 @@ class _MovieDetailsLayoutState extends State<MovieDetailsLayout>
                             horizontal: 15.0, vertical: 10.0),
                         child: Wrap(
                           alignment: WrapAlignment.center,
-                          children: genres,
+                          children: widget.genres,
                         ),
                       ),
                       ListView(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 5.0, vertical: 5.0),
-                        children: cast,
+                        children: _cast,
                       ),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 0.0),
-                        child: RoomList(movieId: id),
+                        child: RoomList(movieId: widget.id),
                       ),
                     ],
                   ),
                 )
               ],
             ),
+            durationInMillis: 450,
           ),
         ),
       ],
@@ -250,5 +190,39 @@ class _MovieDetailsLayoutState extends State<MovieDetailsLayout>
   void dispose() {
     _tabController.dispose();
     super.dispose();
+  }
+}
+
+class SlideInAnimation extends StatelessWidget {
+  SlideInAnimation({
+    @required this.child,
+    @required this.durationInMillis,
+  });
+
+  final Widget child;
+  final int durationInMillis;
+
+  @override
+  Widget build(BuildContext context) {
+    return TweenAnimationBuilder(
+      tween: Tween<Offset>(
+        begin: Offset(0, -1.0),
+        end: Offset(0, 0),
+      ),
+      duration: Duration(milliseconds: durationInMillis),
+      curve: Curves.decelerate,
+      builder: (context, offset, child) {
+        return FractionalTranslation(
+          translation: offset,
+          child: Container(
+            width: double.infinity,
+            child: Center(
+              child: child,
+            ),
+          ),
+        );
+      },
+      child: child,
+    );
   }
 }

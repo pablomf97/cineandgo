@@ -1,15 +1,13 @@
 import 'package:cineandgo/constants/constants.dart';
 import 'package:cineandgo/localization/app_localizations.dart';
 import 'package:cineandgo/screens/room_details.dart';
-import 'package:cineandgo/services/tmdb.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class RoomListTile extends StatelessWidget {
-  RoomListTile({@required this.snapshot, this.printImage});
+  RoomListTile({@required this.snapshot});
 
   final DocumentSnapshot snapshot;
-  final bool printImage;
 
   @override
   Widget build(BuildContext context) {
@@ -21,15 +19,6 @@ class RoomListTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(5.0),
         child: ListTile(
           isThreeLine: true,
-          leading: printImage != null && printImage
-              ? Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: NetworkImage(TMDBModel.getPosterUrl(
-                            snapshot.data['film']['posterPath'], true))),
-                  ),
-                )
-              : null,
           title: Text(
             snapshot.data['roomName'],
             style: TextStyle(fontSize: 20.0),
@@ -58,9 +47,7 @@ class RoomListTile extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => RoomDetails(
-                            room: snapshot.data,
-                            id: snapshot.documentID
-                          ),
+                              room: snapshot.data, id: snapshot.documentID),
                         ));
                   }),
             ],

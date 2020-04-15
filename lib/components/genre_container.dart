@@ -14,14 +14,14 @@ class GenreContainer extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
           border: Border.all(
-            color: Colors.grey[600],
+            color: Colors.white,
             style: BorderStyle.solid,
           ),
         ),
         child: Text(
           genre,
           textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.black, fontSize: 17.0),
+          style: TextStyle(color: Colors.white, fontSize: 17.0),
         ),
       ),
     );

@@ -77,5 +77,7 @@
   "looking_for_rooms": "Buscando salas",
   "filter": "Filtrar...",
   "apply": "Aplicar",
-  "show_more": "Ver más"
+  "show_more": "Ver más",
+  "previous_page": "Página anterior",
+  "next_page": "Página siguiente"
 }

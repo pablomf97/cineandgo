@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:cineandgo/components/room_info_card.dart';
 import 'package:cineandgo/constants/constants.dart';
 import 'package:cineandgo/localization/app_localizations.dart';
@@ -278,6 +277,7 @@ class _AllRoomsState extends State<AllRooms> {
       ),
       body: SafeArea(
         child: CustomScrollView(
+          physics: BouncingScrollPhysics(),
           slivers: <Widget>[
             SliverAppBar(
               actions: <Widget>[

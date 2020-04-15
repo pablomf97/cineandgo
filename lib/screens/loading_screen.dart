@@ -1,4 +1,4 @@
-import 'package:cineandgo/screens/welcome.dart';
+import 'package:cineandgo/screens/registration_login/welcome.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

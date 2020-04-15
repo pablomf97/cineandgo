@@ -36,6 +36,8 @@ class _RoomListState extends State<RoomList> {
           snapshot: snapshot,
         ),
       ),
+      physics: BouncingScrollPhysics(),
+      defaultChild: CircularProgressIndicator(),
     );
   }
 }

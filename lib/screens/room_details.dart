@@ -49,15 +49,18 @@ class _RoomDetailsState extends State<RoomDetails> {
       () {
         email = _currentUser.email;
         going = room.going.contains(email);
-        getPopupMenu();
+        buildPopupMenu();
       },
     );
   }
 
-  void getPopupMenu() {
+  /* 
+  This method determines what buttons should be shown to the user,
+  based on the type of user that looking at the room.
+  */
+  void buildPopupMenu() {
     if (going) {
       List<PopupMenuButton> aux;
-
       if (email == room.creator) {
         aux = [
           PopupMenuButton(
@@ -174,7 +177,7 @@ class _RoomDetailsState extends State<RoomDetails> {
             itemBuilder: (context) => [
               PopupMenuItem(
                 enabled: email != room.creator,
-                value: 1,
+                value: 0,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -194,6 +197,9 @@ class _RoomDetailsState extends State<RoomDetails> {
     }
   }
 
+  /*
+  This method shows a bottom sheet that displays widgets.
+  */
   showBottomSheet(List<Widget> children) => showModalBottomSheet(
         context: context,
         isScrollControlled: true,
@@ -320,7 +326,7 @@ class _RoomDetailsState extends State<RoomDetails> {
             child: InfoTile(
               title: AppLocalizations.of(context).translate('when'),
               description:
-                  '${AppLocalizations.of(context).translate('on_the')} ${room.date.day < 10 ? 0.toString() + room.date.day.toString() : room.date.day}/${room.date.month < 10 ? 0.toString() + room.date.month.toString() : room.date.month} ${AppLocalizations.of(context).translate('at')} ${room.time}',
+                  '${AppLocalizations.of(context).translate('on_the')} ${room.date.day < 10 ? 0.toString() + room.date.day.toString() : room.date.day}/${room.date.month < 10 ? 0.toString() + room.date.month.toString() : room.date.month} ${AppLocalizations.of(context).translate('at')} ${room.time.endsWith('0') ? room.time + 0.toString() : room.time}',
             ),
           ),
           Padding(
@@ -340,6 +346,9 @@ class _RoomDetailsState extends State<RoomDetails> {
                       title: room.theater.name,
                       description: room.theater.address,
                     ),
+                    /*
+                    Map.
+                    */
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.all(12.0),

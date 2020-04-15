@@ -6,14 +6,9 @@ import 'registration.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:cineandgo/components/rounded_button.dart';
 
-class Welcome extends StatefulWidget {
+class Welcome extends StatelessWidget {
   static const String id = 'welcome';
 
-  @override
-  _WelcomeState createState() => _WelcomeState();
-}
-
-class _WelcomeState extends State<Welcome> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

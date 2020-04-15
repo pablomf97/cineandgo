@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:progress_indicators/progress_indicators.dart';
-import 'home.dart';
 import 'package:cineandgo/components/image_rounded_button.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cineandgo/components/google_sign_in_out.dart';
@@ -60,6 +59,10 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      /* 
+      Shows a rotating spinner whenever the 
+      boolean 'showSpinner' is equal to true.
+      */
       body: ModalProgressHUD(
         inAsyncCall: showSpinner,
         opacity: 0.9,
@@ -98,19 +101,18 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
               SizedBox(
                 height: 48.0,
               ),
+              /* 
+              Input for the email address.
+              */
               TextField(
                 style: TextStyle().copyWith(color: Colors.black),
                 keyboardType: TextInputType.emailAddress,
                 textAlign: TextAlign.center,
                 onChanged: (value) {
                   if (value.length > 0) {
-                    setState(() {
-                      isEmailFieldFilled = true;
-                    });
+                    setState(() => isEmailFieldFilled = true);
                   } else {
-                    setState(() {
-                      isEmailFieldFilled = false;
-                    });
+                    setState(() => isEmailFieldFilled = false);
                   }
                   email = value;
                 },
@@ -123,19 +125,18 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
               SizedBox(
                 height: 8.0,
               ),
+              /* 
+              Input for the password.
+              */
               TextField(
                 style: TextStyle().copyWith(color: Colors.black),
                 obscureText: true,
                 textAlign: TextAlign.center,
                 onChanged: (value) {
                   if (value.length > 0) {
-                    setState(() {
-                      isPasswordFieldFilled = true;
-                    });
+                    setState(() => isPasswordFieldFilled = true);
                   } else {
-                    setState(() {
-                      isPasswordFieldFilled = false;
-                    });
+                    setState(() => isPasswordFieldFilled = false);
                   }
                   password = value;
                 },
@@ -148,15 +149,22 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
               SizedBox(
                 height: 24.0,
               ),
+              /* 
+              When the two booleans are equal to true means 
+              that the user correctly filled the form an it is
+              ready to validate.
+              */
               RoundedButton(
                 enabled: isEmailFieldFilled && isPasswordFieldFilled,
                 text: AppLocalizations.of(context).translate('login'),
                 color: kAccentColor,
+                /* 
+                If the user correctly filled the fields, he/she will
+                login to the application.
+                */
                 onPressed: () async {
                   try {
-                    setState(() {
-                      showSpinner = true;
-                    });
+                    setState(() => showSpinner = true);
                     final user = await _auth.signInWithEmailAndPassword(
                       email: email,
                       password: password,
@@ -167,6 +175,10 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                       Navigator.popUntil(context, (route) => i++ == 2);
                     }
                   } catch (oops) {
+                    /* 
+                    If not, the app will show the user some info 
+                    related to the error.
+                    */
                     String message;
                     if (oops.code == 'ERROR_USER_NOT_FOUND') {
                       message = AppLocalizations.of(context)
@@ -181,15 +193,18 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                       message = AppLocalizations.of(context)
                           .translate('err_msg_firebase_generic');
                     }
-                    setState(() {
-                      showSpinner = false;
-                      EdgeAlert.show(context,
-                          title: AppLocalizations.of(context).translate('oops'),
-                          description: message,
-                          duration: EdgeAlert.LENGTH_VERY_LONG,
-                          icon: Icons.error_outline,
-                          backgroundColor: Colors.red);
-                    });
+                    setState(
+                      () {
+                        showSpinner = false;
+                        EdgeAlert.show(context,
+                            title:
+                                AppLocalizations.of(context).translate('oops'),
+                            description: message,
+                            duration: EdgeAlert.LENGTH_VERY_LONG,
+                            icon: Icons.error_outline,
+                            backgroundColor: Colors.red);
+                      },
+                    );
                   }
                 },
               ),
@@ -202,13 +217,11 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                 title: 'Google',
                 imagePath: 'images/google.png',
                 onPressed: () async {
-                  setState(() {
-                    showSpinner = true;
-                  });
+                  setState(() => showSpinner = true);
                   try {
                     await GoogleSignInOut.signInWithGoogle(_auth, googleSignIn);
                     int i = 0;
-                    
+
                     Navigator.popUntil(context, (route) => i++ == 2);
                   } catch (oops) {
                     print(oops);

@@ -1,9 +1,9 @@
 import 'package:cineandgo/screens/fullscreen.dart';
+import 'package:cineandgo/screens/registration_login/welcome.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cineandgo/constants/constants.dart';
 import 'package:cineandgo/localization/app_localizations.dart';
-import 'package:cineandgo/screens/welcome.dart';
 
 class CustomDrawer extends StatelessWidget {
   CustomDrawer(
