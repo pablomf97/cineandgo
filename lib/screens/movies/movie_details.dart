@@ -1,8 +1,8 @@
 import 'dart:ui';
-import 'package:cineandgo/components/genre_container.dart';
-import 'package:cineandgo/components/movie_details_layout.dart';
+import 'package:cineandgo/components/movies/genre_container.dart';
+import 'package:cineandgo/components/movies/movie_details_layout.dart';
 import 'package:cineandgo/constants/constants.dart';
-import 'package:cineandgo/screens/room_form.dart';
+import 'package:cineandgo/screens/rooms/room_form.dart';
 import 'package:cineandgo/services/tmdb.dart';
 import 'package:flutter/material.dart';
 

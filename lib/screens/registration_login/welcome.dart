@@ -1,10 +1,10 @@
+import 'package:cineandgo/components/others/rounded_button.dart';
 import 'package:cineandgo/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:cineandgo/constants/constants.dart';
 import 'login.dart';
 import 'registration.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:cineandgo/components/rounded_button.dart';
 
 class Welcome extends StatelessWidget {
   static const String id = 'welcome';

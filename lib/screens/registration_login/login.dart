@@ -1,16 +1,17 @@
-import 'package:cineandgo/components/custom_divider.dart';
-import 'package:cineandgo/components/rounded_button.dart';
+import 'package:cineandgo/components/others/custom_divider.dart';
+import 'package:cineandgo/components/others/google_sign_in_out.dart';
+import 'package:cineandgo/components/others/image_rounded_button.dart';
+import 'package:cineandgo/components/others/rounded_button.dart';
 import 'package:cineandgo/constants/constants.dart';
 import 'package:cineandgo/localization/app_localizations.dart';
+import 'package:cineandgo/services/form_validators.dart';
 import 'package:edge_alert/edge_alert.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:progress_indicators/progress_indicators.dart';
-import 'package:cineandgo/components/image_rounded_button.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:cineandgo/components/google_sign_in_out.dart';
 
 class Login extends StatefulWidget {
   static const String id = 'login';
@@ -24,6 +25,9 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   final _auth = FirebaseAuth.instance;
   final GoogleSignIn googleSignIn = GoogleSignIn();
 
+  // Form key
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   // Animation-related
   AnimationController controller;
   RotationTransition transition;
@@ -32,10 +36,6 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   // TextFields values
   String email;
   String password;
-
-  // Enabling/Disabling button
-  bool isEmailFieldFilled = false;
-  bool isPasswordFieldFilled = false;
 
   @override
   void initState() {
@@ -104,50 +104,47 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
               /* 
               Input for the email address.
               */
-              TextField(
-                style: TextStyle().copyWith(color: Colors.black),
-                keyboardType: TextInputType.emailAddress,
-                textAlign: TextAlign.center,
-                onChanged: (value) {
-                  if (value.length > 0) {
-                    setState(() => isEmailFieldFilled = true);
-                  } else {
-                    setState(() => isEmailFieldFilled = false);
-                  }
-                  email = value;
-                },
-                decoration: kTextFieldDecoration.copyWith(
-                  hintText:
-                      AppLocalizations.of(context).translate('enter_email'),
-                  hintStyle: TextStyle().copyWith(color: Colors.grey),
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: <Widget>[
+                    TextFormField(
+                      style: TextStyle().copyWith(color: Colors.black),
+                      keyboardType: TextInputType.emailAddress,
+                      textAlign: TextAlign.center,
+                      validator: (value) => AppLocalizations.of(context)
+                          .translate(FormValidators.validateEmail(value)),
+                      onChanged: (value) => email = value,
+                      decoration: kTextFieldDecoration.copyWith(
+                        hintText: AppLocalizations.of(context)
+                            .translate('enter_email'),
+                        hintStyle: TextStyle().copyWith(color: Colors.grey),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 8.0,
+                    ),
+                    /* 
+                    Input for the password.
+                    */
+                    TextFormField(
+                      style: TextStyle().copyWith(color: Colors.black),
+                      obscureText: true,
+                      textAlign: TextAlign.center,
+                      validator: (value) => AppLocalizations.of(context)
+                          .translate(FormValidators.validatePassword(value)),
+                      onChanged: (value) => password = value,
+                      decoration: kTextFieldDecoration.copyWith(
+                        hintText: AppLocalizations.of(context)
+                            .translate('enter_pass'),
+                        hintStyle: TextStyle().copyWith(color: Colors.grey),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 8.0,
+                    ),
+                  ],
                 ),
-              ),
-              SizedBox(
-                height: 8.0,
-              ),
-              /* 
-              Input for the password.
-              */
-              TextField(
-                style: TextStyle().copyWith(color: Colors.black),
-                obscureText: true,
-                textAlign: TextAlign.center,
-                onChanged: (value) {
-                  if (value.length > 0) {
-                    setState(() => isPasswordFieldFilled = true);
-                  } else {
-                    setState(() => isPasswordFieldFilled = false);
-                  }
-                  password = value;
-                },
-                decoration: kTextFieldDecoration.copyWith(
-                  hintText:
-                      AppLocalizations.of(context).translate('enter_pass'),
-                  hintStyle: TextStyle().copyWith(color: Colors.grey),
-                ),
-              ),
-              SizedBox(
-                height: 24.0,
               ),
               /* 
               When the two booleans are equal to true means 
@@ -155,7 +152,6 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
               ready to validate.
               */
               RoundedButton(
-                enabled: isEmailFieldFilled && isPasswordFieldFilled,
                 text: AppLocalizations.of(context).translate('login'),
                 color: kAccentColor,
                 /* 
@@ -163,6 +159,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                 login to the application.
                 */
                 onPressed: () async {
+                  if (!_formKey.currentState.validate()) return;
                   try {
                     setState(() => showSpinner = true);
                     final user = await _auth.signInWithEmailAndPassword(

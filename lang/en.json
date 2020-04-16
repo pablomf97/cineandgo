@@ -79,5 +79,7 @@
   "apply": "Apply",
   "show_more": "Show more",
   "previous_page": "Previous page",
-  "next_page": "Next page"
+  "next_page": "Next page",
+  "empty_email": "Email cannot be empty",
+  "empty_pass": "Password cannot be empty"
 }

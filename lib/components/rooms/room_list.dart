@@ -1,4 +1,4 @@
-import 'package:cineandgo/components/room_list_tile.dart';
+import 'package:cineandgo/components/rooms/room_list_tile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firestore_ui/firestore_ui.dart';

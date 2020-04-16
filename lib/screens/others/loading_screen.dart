@@ -1,8 +1,7 @@
 import 'package:cineandgo/screens/registration_login/welcome.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
-import 'home.dart';
+import '../home.dart';
 
 class LoadingScreen extends StatefulWidget {
   static String id = 'loading_screen';

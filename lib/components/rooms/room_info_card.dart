@@ -2,7 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cineandgo/constants/constants.dart';
 import 'package:cineandgo/localization/app_localizations.dart';
 import 'package:cineandgo/models/room.dart';
-import 'package:cineandgo/screens/room_details.dart';
+import 'package:cineandgo/screens/rooms/room_details.dart';
 import 'package:cineandgo/services/tmdb.dart';
 import 'package:flutter/material.dart';
 

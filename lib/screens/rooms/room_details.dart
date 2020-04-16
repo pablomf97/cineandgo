@@ -1,17 +1,18 @@
 import 'package:cineandgo/api_keys/api_keys.dart';
-import 'package:cineandgo/components/info_tile.dart';
-import 'package:cineandgo/components/movie_card.dart';
-import 'package:cineandgo/components/simple_box.dart';
+import 'package:cineandgo/components/movies/movie_card.dart';
+import 'package:cineandgo/components/others/simple_box.dart';
+import 'package:cineandgo/components/rooms/info_tile.dart';
 import 'package:cineandgo/constants/constants.dart';
 import 'package:cineandgo/localization/app_localizations.dart';
 import 'package:cineandgo/models/room.dart';
-import 'package:cineandgo/screens/chat_room.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:edge_alert/edge_alert.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
+
+import 'chat_room.dart';
 
 class RoomDetails extends StatefulWidget {
   RoomDetails({@required this.room, @required this.id});

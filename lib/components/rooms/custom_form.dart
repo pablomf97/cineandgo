@@ -1,9 +1,10 @@
-import 'package:cineandgo/components/single_searchable_dropdown.dart';
+import 'package:cineandgo/components/others/single_searchable_dropdown.dart';
 import 'package:cineandgo/constants/constants.dart';
 import 'package:cineandgo/localization/app_localizations.dart';
 import 'package:cineandgo/models/cinema.dart';
 import 'package:cineandgo/models/film.dart';
 import 'package:cineandgo/models/room.dart';
+import 'package:cineandgo/services/form_validators.dart';
 import 'package:cineandgo/services/tmdb.dart';
 import 'package:edge_alert/edge_alert.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -179,13 +180,6 @@ class _CustomFormState extends State<CustomForm> {
                       });
                     },
                     value: _selectedTheater,
-                    validator: (value) {
-                      if (value == null) {
-                        return AppLocalizations.of(context)
-                            .translate('enter_theater');
-                      }
-                      return null;
-                    },
                   )
                 ],
               ),
@@ -304,41 +298,45 @@ class _CustomFormState extends State<CustomForm> {
                       ),
                     ),
                   ),
-                  Card(
-                    color: kPrimaryColor,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ListTile(
-                        leading: Icon(
-                          Icons.border_color,
-                        ),
-                        title: _selectedName == null
-                            ? Text(
-                                AppLocalizations.of(context)
-                                    .translate('select_name'),
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18.0),
-                              )
-                            : Text(
-                                '$_selectedName',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18.0),
-                              ),
-                        trailing: FlatButton(
-                          onPressed: () => _selectName(context),
-                          child: Text(
-                            AppLocalizations.of(context).translate('change'),
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16.0,
-                            ),
+                  FormField(
+                    builder: (field) => Card(
+                      color: kPrimaryColor,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListTile(
+                          leading: Icon(
+                            Icons.border_color,
                           ),
-                          color: kAccentColor,
+                          title: _selectedName == null
+                              ? Text(
+                                  AppLocalizations.of(context)
+                                      .translate('select_name'),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18.0),
+                                )
+                              : Text(
+                                  '$_selectedName',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18.0),
+                                ),
+                          trailing: FlatButton(
+                            onPressed: () => _selectName(context),
+                            child: Text(
+                              AppLocalizations.of(context).translate('change'),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16.0,
+                              ),
+                            ),
+                            color: kAccentColor,
+                          ),
                         ),
                       ),
                     ),
+                    validator: (value) =>
+                        FormValidators.validateEmail(_selectedName),
                   ),
                   Card(
                     color: kPrimaryColor,
@@ -458,10 +456,12 @@ class _CustomFormState extends State<CustomForm> {
                 child: RaisedButton(
                   elevation: 5.0,
                   onPressed: () async {
-                    if (_selectedDate == null ||
-                        _selectedTheater == null ||
-                        _selectedName == null ||
-                        _selectedTime == null) {
+                    if (!FormValidators.validateDate(_selectedDate) ||
+                        !FormValidators.validateNotEmptyFields([
+                          _selectedName,
+                          _selectedLocalidad,
+                          _selectedTheater
+                        ])) {
                       EdgeAlert.show(
                         context,
                         duration: EdgeAlert.LENGTH_VERY_LONG,

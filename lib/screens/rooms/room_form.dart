@@ -1,5 +1,4 @@
-import 'package:cineandgo/components/custom_form.dart';
-import 'package:cineandgo/constants/constants.dart';
+import 'package:cineandgo/components/rooms/custom_form.dart';
 import 'package:flutter/material.dart';
 
 class MovieForm extends StatefulWidget {

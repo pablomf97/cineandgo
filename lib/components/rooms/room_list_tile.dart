@@ -1,6 +1,6 @@
 import 'package:cineandgo/constants/constants.dart';
 import 'package:cineandgo/localization/app_localizations.dart';
-import 'package:cineandgo/screens/room_details.dart';
+import 'package:cineandgo/screens/rooms/room_details.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 

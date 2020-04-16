@@ -1,10 +1,11 @@
-import 'package:cineandgo/components/custom_divider.dart';
-import 'package:cineandgo/components/google_sign_in_out.dart';
-import 'package:cineandgo/components/image_rounded_button.dart';
+import 'package:cineandgo/components/others/custom_divider.dart';
+import 'package:cineandgo/components/others/google_sign_in_out.dart';
+import 'package:cineandgo/components/others/image_rounded_button.dart';
+import 'package:cineandgo/components/others/rounded_button.dart';
 import 'package:cineandgo/constants/constants.dart';
 import 'package:cineandgo/localization/app_localizations.dart';
+import 'package:cineandgo/services/form_validators.dart';
 import 'package:flutter/material.dart';
-import 'package:cineandgo/components/rounded_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -23,6 +24,9 @@ class _RegistrationState extends State<Registration>
   final _auth = FirebaseAuth.instance;
   final GoogleSignIn googleSignIn = GoogleSignIn();
 
+  // Form key
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   // Animation-related
   AnimationController controller;
   RotationTransition transition;
@@ -31,11 +35,6 @@ class _RegistrationState extends State<Registration>
   // TextFields values
   String email;
   String password;
-
-  // Enabling/Disabling buttons
-  bool isEmailFieldFilled = false;
-  bool isPasswordFieldFilled = false;
-  bool isPasswordConfirmationOkay = false;
 
   @override
   void initState() {
@@ -106,103 +105,71 @@ class _RegistrationState extends State<Registration>
               the input is filled because Firebase already
               checks if the text provided is an email.
               */
-              TextField(
-                style: TextStyle().copyWith(color: Colors.black),
-                keyboardType: TextInputType.emailAddress,
-                textAlign: TextAlign.center,
-                onChanged: (value) {
-                  if (value.length > 0) {
-                    setState(() => isEmailFieldFilled = true);
-                  } else {
-                    setState(() => isEmailFieldFilled = false);
-                  }
-                  email = value;
-                },
-                decoration: kTextFieldDecoration.copyWith(
-                  hintText:
-                      AppLocalizations.of(context).translate('enter_an_email'),
-                  hintStyle: TextStyle().copyWith(color: Colors.grey),
-                ),
-              ),
-              SizedBox(
-                height: 8.0,
-              ),
-              /* 
-              Password input. It checks if the text that 
-              the user inputs is more than 6 characters
-              long.
-              */
-              TextField(
-                style: TextStyle().copyWith(color: Colors.black),
-                obscureText: true,
-                textAlign: TextAlign.center,
-                onChanged: (value) {
-                  if (value.length >= 6) {
-                    setState(() => isPasswordFieldFilled = true);
-                  } else {
-                    setState(() => isPasswordFieldFilled = false);
-                  }
-                  password = value;
-                },
-                decoration: kTextFieldDecoration.copyWith(
-                  hintText:
-                      AppLocalizations.of(context).translate('enter_a_pass'),
-                  hintStyle: TextStyle().copyWith(color: Colors.grey),
-                ),
-              ),
-              SizedBox(
-                height: 8.0,
-              ),
-              /* 
-              Password confirmation input. Checks that the password
-              written in this input is the same as the other
-              password input.
-              */
-              TextField(
-                style: TextStyle().copyWith(color: Colors.black),
-                obscureText: true,
-                textAlign: TextAlign.center,
-                onChanged: (value) {
-                  if (value == password) {
-                    setState(() => isPasswordConfirmationOkay = true);
-                  } else {
-                    setState(() => isPasswordConfirmationOkay = false);
-                  }
-                },
-                decoration: kTextFieldDecoration.copyWith(
-                  hintText:
-                      AppLocalizations.of(context).translate('repeat_pass'),
-                  hintStyle: TextStyle().copyWith(color: Colors.grey),
-                ),
-              ),
-              SizedBox(
-                height: 5.0,
-              ),
-              /* 
-              Just some tips so the user nows what he/she
-              already did.
-              */
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    AppLocalizations.of(context).translate('pass_six_chars'),
-                    style: TextStyle(
-                      color: isPasswordFieldFilled ? Colors.green : Colors.red,
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: <Widget>[
+                    TextFormField(
+                      style: TextStyle().copyWith(color: Colors.black),
+                      keyboardType: TextInputType.emailAddress,
+                      textAlign: TextAlign.center,
+                      validator: (value) => FormValidators.validateEmail(value),
+                      onChanged: (value) => email = value,
+                      decoration: kTextFieldDecoration.copyWith(
+                        hintText: AppLocalizations.of(context)
+                            .translate('enter_an_email'),
+                        hintStyle: TextStyle().copyWith(color: Colors.grey),
+                      ),
                     ),
-                  ),
-                  Text(
-                    AppLocalizations.of(context).translate('pass_coincide'),
-                    style: TextStyle(
-                      color: isPasswordConfirmationOkay
-                          ? Colors.green
-                          : Colors.red,
+                    SizedBox(
+                      height: 8.0,
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 24.0,
+                    /* 
+                    Password input. It checks if the text that 
+                    the user inputs is more than 6 characters
+                    long.
+                    */
+                    TextFormField(
+                      style: TextStyle().copyWith(color: Colors.black),
+                      obscureText: true,
+                      textAlign: TextAlign.center,
+                      validator: (value) =>
+                          FormValidators.validatePassword(value),
+                      onChanged: (value) => password = value,
+                      decoration: kTextFieldDecoration.copyWith(
+                        hintText: AppLocalizations.of(context)
+                            .translate('enter_a_pass'),
+                        hintStyle: TextStyle().copyWith(color: Colors.grey),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 8.0,
+                    ),
+                    /* 
+                    Password confirmation input. Checks that the password
+                    written in this input is the same as the other
+                    password input.
+                    */
+                    TextFormField(
+                      style: TextStyle().copyWith(color: Colors.black),
+                      obscureText: true,
+                      textAlign: TextAlign.center,
+                      validator: (value) =>
+                          AppLocalizations.of(context).translate(
+                        FormValidators.validatePasswordConfirmation(
+                            password, value),
+                      ),
+                      decoration: kTextFieldDecoration.copyWith(
+                        hintText: AppLocalizations.of(context)
+                            .translate('repeat_pass'),
+                        hintStyle: TextStyle().copyWith(color: Colors.grey),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5.0,
+                    ),
+                  ],
+                ),
               ),
               /* 
               When the three booleans are equal to true means 
@@ -210,9 +177,6 @@ class _RegistrationState extends State<Registration>
               ready to validate.
               */
               RoundedButton(
-                enabled: isEmailFieldFilled &&
-                    isPasswordFieldFilled &&
-                    isPasswordConfirmationOkay,
                 text: AppLocalizations.of(context).translate('register'),
                 color: kAccentColor,
                 /* 
@@ -225,6 +189,7 @@ class _RegistrationState extends State<Registration>
                 in the app.
                 */
                 onPressed: () async {
+                  if (!_formKey.currentState.validate()) return;
                   try {
                     setState(
                       () => showSpinner = true,

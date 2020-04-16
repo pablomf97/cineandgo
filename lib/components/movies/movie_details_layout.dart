@@ -1,5 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cineandgo/components/room_list.dart';
+import 'package:cineandgo/components/rooms/room_list.dart';
 import 'package:cineandgo/constants/constants.dart';
 import 'package:cineandgo/localization/app_localizations.dart';
 import 'package:cineandgo/services/tmdb.dart';

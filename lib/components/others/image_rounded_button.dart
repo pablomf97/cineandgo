@@ -18,7 +18,7 @@ class ImageRoundedButton extends StatelessWidget {
       child: Center(
         child: Material(
           elevation: 5.0,
-          color: kAccentColor,
+          color: kPrimaryColor,
           borderRadius: BorderRadius.circular(30.0),
           child: MaterialButton(
             onPressed: onPressed,

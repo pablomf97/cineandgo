@@ -1,5 +1,5 @@
 import 'dart:ui';
-import 'package:cineandgo/components/custom_card.dart';
+import 'package:cineandgo/components/movies/custom_card.dart';
 import 'package:cineandgo/constants/constants.dart';
 import 'package:cineandgo/localization/app_localizations.dart';
 import 'package:cineandgo/services/tmdb.dart';

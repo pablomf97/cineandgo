@@ -1,5 +1,5 @@
 import 'dart:ui';
-import 'package:cineandgo/components/room_info_card.dart';
+import 'package:cineandgo/components/rooms/room_info_card.dart';
 import 'package:cineandgo/constants/constants.dart';
 import 'package:cineandgo/localization/app_localizations.dart';
 import 'package:cineandgo/models/room.dart';

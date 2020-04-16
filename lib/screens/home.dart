@@ -1,19 +1,20 @@
 import 'dart:ui';
-import 'package:cineandgo/components/room_info_card.dart';
+import 'package:cineandgo/components/movies/custom_card.dart';
+import 'package:cineandgo/components/rooms/room_info_card.dart';
 import 'package:cineandgo/constants/constants.dart';
 import 'package:cineandgo/localization/app_localizations.dart';
 import 'package:cineandgo/models/room.dart';
-import 'package:cineandgo/screens/room_list.dart';
-import 'package:cineandgo/screens/movie_details.dart';
-import 'package:cineandgo/screens/movie_list.dart';
 import 'package:cineandgo/screens/registration_login/welcome.dart';
+import 'package:cineandgo/screens/rooms/room_list.dart';
 import 'package:cineandgo/services/tmdb.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:cineandgo/components/custom_card.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
+import 'movies/movie_details.dart';
+import 'movies/movie_list.dart';
 
 class Home extends StatefulWidget {
   static String id = 'home';

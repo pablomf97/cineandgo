@@ -1,4 +1,4 @@
-import 'package:cineandgo/components/message_bubble.dart';
+import 'package:cineandgo/components/rooms/message_bubble.dart';
 import 'package:cineandgo/constants/constants.dart';
 import 'package:cineandgo/localization/app_localizations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

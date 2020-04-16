@@ -1,5 +1,5 @@
 import 'package:cineandgo/constants/constants.dart';
-import 'package:cineandgo/screens/fullscreen.dart';
+import 'package:cineandgo/screens/others/fullscreen.dart';
 import 'package:cineandgo/services/tmdb.dart';
 import 'package:flutter/material.dart';
 
