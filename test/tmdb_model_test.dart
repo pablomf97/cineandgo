@@ -1,7 +1,6 @@
 import 'package:cineandgo/services/tmdb.dart';
 import 'package:mockito/mockito.dart';
 import 'package:http/http.dart' as http;
-import 'package:cineandgo/api_keys/api_keys.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_config/flutter_config.dart';
 
@@ -116,6 +115,54 @@ void main() {
               .thenAnswer((_) async => http.Response('Oops! Not found', 400));
 
           expect(TMDBModel.getCast('115', client), throwsException);
+        },
+      );
+    },
+  );
+
+  group(
+    'Get poster URL',
+    () {
+      test(
+        'Get poster URL - Returns the original version of the poster',
+        () {
+          final String posterURL = TMDBModel.getPosterUrl('posterPath', false);
+
+          expect(posterURL, 'https://image.tmdb.org/t/p/original/posterPath');
+        },
+      );
+
+      test(
+        'Get poster URL - Returns the a smaller-sized version of the poster',
+        () {
+          final String posterURL = TMDBModel.getPosterUrl('posterPath', true);
+
+          expect(posterURL, 'https://image.tmdb.org/t/p/w500/posterPath');
+        },
+      );
+    },
+  );
+
+  group(
+    'Evaluation',
+    () {
+      test(
+        'Checking that evaluation works as expected',
+        () {
+          String evaluation;
+
+          evaluation = TMDBModel.getEvaluation(0.0);
+          assert(evaluation == 'of_the_worst');
+          evaluation = TMDBModel.getEvaluation(2.0);
+          assert(evaluation == 'bad');
+          evaluation = TMDBModel.getEvaluation(5.0);
+          assert(evaluation == 'okay');
+          evaluation = TMDBModel.getEvaluation(8.0);
+          assert(evaluation == 'good');
+          evaluation = TMDBModel.getEvaluation(9.0);
+          assert(evaluation == 'verrrrry_good');
+          evaluation = TMDBModel.getEvaluation(10.0);
+          assert(evaluation == 'mastapiece');
         },
       );
     },

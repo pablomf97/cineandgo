@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:cineandgo/components/movies/genre_container.dart';
 import 'package:cineandgo/components/movies/movie_details_layout.dart';
 import 'package:cineandgo/constants/constants.dart';
+import 'package:cineandgo/localization/app_localizations.dart';
 import 'package:cineandgo/screens/rooms/room_form.dart';
 import 'package:cineandgo/services/tmdb.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +29,7 @@ class _MovieDetailsState extends State<MovieDetails> {
     child: CircularProgressIndicator(),
   );
 
-  void getMovieData() async {
+  void getMovieData(context) async {
     var movieDetails = await TMDBModel.getMovieDetails(
         window.locale.languageCode, widget.movieId, _client);
 
@@ -49,8 +50,11 @@ class _MovieDetailsState extends State<MovieDetails> {
           overview: movieDetails['overview'],
           voteAverage: movieDetails['vote_average'].toString(),
           posterPath: movieDetails['poster_path'],
-          evaluation:
-              TMDBModel.getEvaluation(movieDetails['vote_average'], context),
+          evaluation: AppLocalizations.of(context).translate(
+            TMDBModel.getEvaluation(
+              movieDetails['vote_average'],
+            ),
+          ),
           genres: genres,
         );
       });
@@ -58,13 +62,8 @@ class _MovieDetailsState extends State<MovieDetails> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    getMovieData();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    getMovieData(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Cine&Go!'),

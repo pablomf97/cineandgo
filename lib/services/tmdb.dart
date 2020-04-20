@@ -68,18 +68,18 @@ class TMDBModel {
   /*
   This method returns a simple evaluation based on the score of one movie.  
   */
-  static String getEvaluation(double voteAverage, BuildContext context) {
-    String ev = AppLocalizations.of(context).translate('of_the_worst');
+  static String getEvaluation(double voteAverage) {
+    String ev = 'of_the_worst';
     if (voteAverage >= 2 && voteAverage <= 4.9) {
-      ev = AppLocalizations.of(context).translate('bad');
+      ev = 'bad';
     } else if (voteAverage >= 5 && voteAverage <= 6.9) {
-      ev = AppLocalizations.of(context).translate('okay');
+      ev = 'okay';
     } else if (voteAverage >= 7 && voteAverage <= 8.5) {
-      ev = AppLocalizations.of(context).translate('good');
+      ev = 'good';
     } else if (voteAverage >= 8.6 && voteAverage <= 9.5) {
-      ev = AppLocalizations.of(context).translate('verrrrry_good');
+      ev = 'verrrrry_good';
     } else if (voteAverage > 9.5) {
-      ev = AppLocalizations.of(context).translate('mastapiece');
+      ev = 'mastapiece';
     }
     return ev;
   }
