@@ -5,6 +5,7 @@ import 'package:cineandgo/constants/constants.dart';
 import 'package:cineandgo/screens/rooms/room_form.dart';
 import 'package:cineandgo/services/tmdb.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class MovieDetails extends StatefulWidget {
   MovieDetails({
@@ -20,6 +21,8 @@ class MovieDetails extends StatefulWidget {
 }
 
 class _MovieDetailsState extends State<MovieDetails> {
+  http.Client _client = http.Client();
+
   // Page layout
   Widget pageLayout = Center(
     child: CircularProgressIndicator(),
@@ -27,7 +30,7 @@ class _MovieDetailsState extends State<MovieDetails> {
 
   void getMovieData() async {
     var movieDetails = await TMDBModel.getMovieDetails(
-        window.locale.languageCode, widget.movieId);
+        window.locale.languageCode, widget.movieId, _client);
 
     if (movieDetails != null) {
       List<GenreContainer> genres = [];
@@ -87,5 +90,11 @@ class _MovieDetailsState extends State<MovieDetails> {
         backgroundColor: kAccentColor,
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _client.close();
+    super.dispose();
   }
 }

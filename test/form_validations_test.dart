@@ -65,4 +65,62 @@ void main() {
       expect(actual, null);
     },
   );
+
+  ///Date validation
+  test(
+    'Validate date - Trying date before \'now\'',
+    () {
+      var actual =
+          FormValidators.validateDate(DateTime.now().add(Duration(hours: -5)));
+      expect(actual, false);
+    },
+  );
+
+  test(
+    'Validate date - Trying date after \'now\'',
+    () {
+      var actual =
+          FormValidators.validateDate(DateTime.now().add(Duration(hours: 5)));
+      expect(actual, true);
+    },
+  );
+
+  /// Validating empty strings.
+  test(
+    'Validate string - Trying empty string',
+    () {
+      var actual = FormValidators.validateNotEmpty('');
+      expect(actual, false);
+    },
+  );
+
+  test(
+    'Validate string - Trying non-empty string',
+    () {
+      var actual = FormValidators.validateNotEmpty('Not an empty string');
+      expect(actual, true);
+    },
+  );
+
+  /// Validating that a list of filds are not empty.
+  test(
+    'Validate list of strings - Trying empty strings',
+    () {
+      var actual = FormValidators.validateNotEmptyFields(
+          ['Not an empty string', ' ', 'Not an empty string']);
+      expect(actual, false);
+    },
+  );
+
+  test(
+    'Validate list of strings - Trying non-empty strings',
+    () {
+      var actual = FormValidators.validateNotEmptyFields([
+        'Not an empty string',
+        'Not an empty string',
+        'Not an empty string'
+      ]);
+      expect(actual, true);
+    },
+  );
 }

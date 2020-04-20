@@ -28,12 +28,12 @@ class FormValidators {
 
   /// Checks that all fields provided are not empty
   static bool validateNotEmptyFields(List<String> fields) {
-    bool aux = true;
-    fields.forEach((element) {
-      if (!validateNotEmpty(element)) {
-        aux = false;
+    bool res = true;
+    for (var field in fields)
+      if (!validateNotEmpty(field)) {
+        res = false;
+        break;
       }
-    });
-    return aux;
+    return res;
   }
 }

@@ -5,6 +5,7 @@ import 'package:cineandgo/localization/app_localizations.dart';
 import 'package:cineandgo/services/tmdb.dart';
 import 'package:flutter/material.dart';
 import 'movie_details.dart';
+import 'package:http/http.dart' as http;
 
 class AllMovieList extends StatefulWidget {
   AllMovieList({Key key}) : super(key: key);
@@ -15,6 +16,8 @@ class AllMovieList extends StatefulWidget {
 
 class _AllMovieListState extends State<AllMovieList> {
   final ScrollController _scrollController = ScrollController();
+
+  http.Client _client = http.Client();
 
   /* 
   Used to know what the current page is
@@ -40,8 +43,8 @@ class _AllMovieListState extends State<AllMovieList> {
     _movies =
         SliverFillRemaining(child: Center(child: CircularProgressIndicator()));
 
-    var movieData =
-        await TMDBModel.getNowPlaying(window.locale.countryCode, _currentPage);
+    var movieData = await TMDBModel.getNowPlaying(
+        window.locale.countryCode, _currentPage, _client);
 
     if (movieData != null) {
       Widget aux = SliverGrid(
@@ -169,6 +172,13 @@ class _AllMovieListState extends State<AllMovieList> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _client.close();
+    _scrollController.dispose();
+    super.dispose();
   }
 }
 

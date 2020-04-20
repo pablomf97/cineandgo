@@ -1,6 +1,6 @@
 import 'package:cineandgo/localization/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
-
+import 'package:http/http.dart' as http;
 import 'networking.dart';
 import 'package:cineandgo/api_keys/api_keys.dart';
 
@@ -16,7 +16,8 @@ class TMDBModel {
   /*
   This method gets the movies that are currently being displayed in thaters.
   */
-  static Future<dynamic> getNowPlaying(String languageCode, int page) async {
+  static Future<dynamic> getNowPlaying(
+      String languageCode, int page, http.Client client) async {
     NetworkHelper networkHelper =
         NetworkHelper('${_requestUrl}movie/now_playing'
             '?api_key=$_tmdbApiKey'
@@ -24,7 +25,7 @@ class TMDBModel {
             '&page=$page'
             '&language=${languageCode == 'es' ? 'es-ES' : 'en-GB'}');
 
-    var movieData = await networkHelper.getData();
+    var movieData = await networkHelper.getData(client);
 
     return movieData;
   }
@@ -33,12 +34,12 @@ class TMDBModel {
   This method get the details of one movie by its ID.
   */
   static Future<dynamic> getMovieDetails(
-      String languageCode, String movieId) async {
+      String languageCode, String movieId, http.Client client) async {
     NetworkHelper networkHelper = NetworkHelper('${_requestUrl}movie/$movieId'
         '?api_key=$_tmdbApiKey'
         '&language=${languageCode == 'es' ? 'es-ES' : 'en-GB'}');
 
-    var movieData = await networkHelper.getData();
+    var movieData = await networkHelper.getData(client);
 
     return movieData;
   }
@@ -46,12 +47,12 @@ class TMDBModel {
   /*
   This method gets the cast of a certain movie by its ID.
   */
-  static Future<dynamic> getCast(String movieId) async {
+  static Future<dynamic> getCast(String movieId, http.Client client) async {
     NetworkHelper networkHelper =
         NetworkHelper('${_requestUrl}movie/$movieId/credits'
             '?api_key=$_tmdbApiKey');
 
-    var movieData = await networkHelper.getData();
+    var movieData = await networkHelper.getData(client);
 
     return movieData;
   }

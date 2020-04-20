@@ -7,6 +7,7 @@ import 'package:cineandgo/services/tmdb.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
+import 'package:http/http.dart' as http;
 
 final Firestore _db = Firestore.instance;
 final DateTime now = DateTime.now();
@@ -26,6 +27,9 @@ class _AllRoomsState extends State<AllRooms> {
   String _region;
   dynamic _movie;
   String _roomName;
+
+  // HTTP Client
+  http.Client _client = http.Client();
 
   List<DropdownMenuItem> _movies;
 
@@ -50,7 +54,8 @@ class _AllRoomsState extends State<AllRooms> {
   }
 
   void getMovies() async {
-    var movieData = await TMDBModel.getNowPlaying(window.locale.countryCode, 1);
+    var movieData =
+        await TMDBModel.getNowPlaying(window.locale.countryCode, 1, _client);
 
     if (movieData != null) {
       List<DropdownMenuItem> aux = [];
@@ -347,5 +352,11 @@ class _AllRoomsState extends State<AllRooms> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _client.close();
+    super.dispose();
   }
 }

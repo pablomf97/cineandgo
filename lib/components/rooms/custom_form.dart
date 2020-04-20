@@ -10,6 +10,7 @@ import 'package:edge_alert/edge_alert.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:http/http.dart' as http;
 
 class CustomForm extends StatefulWidget {
   CustomForm({
@@ -26,6 +27,9 @@ class CustomForm extends StatefulWidget {
 
 class _CustomFormState extends State<CustomForm> {
   final _formKey = GlobalKey<FormState>();
+
+  // HTTP Client
+  http.Client _client = http.Client();
 
   String _zero = "00";
 
@@ -217,7 +221,7 @@ class _CustomFormState extends State<CustomForm> {
               website: doc.data['website'],
             ));
 
-    var movieData = await TMDBModel.getMovieDetails('es', widget.id);
+    var movieData = await TMDBModel.getMovieDetails('es', widget.id, _client);
     String email =
         await FirebaseAuth.instance.currentUser().then((value) => value.email);
 
@@ -516,5 +520,11 @@ class _CustomFormState extends State<CustomForm> {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _client.close();
+    super.dispose();
   }
 }

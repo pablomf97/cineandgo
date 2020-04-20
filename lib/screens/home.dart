@@ -12,7 +12,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
+import 'package:http/http.dart' as http;
 import 'movies/movie_details.dart';
 import 'movies/movie_list.dart';
 
@@ -28,6 +28,9 @@ class _HomeState extends State<Home> {
   final Firestore _db = Firestore.instance;
   final _auth = FirebaseAuth.instance;
   FirebaseUser loggedUser;
+
+  // HTTP Client
+  http.Client _client = http.Client();
 
   // Movie&Rooms info
   List<CustomCard> movies = [];
@@ -51,7 +54,7 @@ class _HomeState extends State<Home> {
   // Used to get movie data
   void getMovieData() async {
     var movieData =
-        await TMDBModel.getNowPlaying(window.locale.languageCode, 1);
+        await TMDBModel.getNowPlaying(window.locale.languageCode, 1, _client);
 
     if (movieData != null) {
       List<CustomCard> aux = [];
@@ -230,6 +233,12 @@ class _HomeState extends State<Home> {
             ),
           ],
         ));
+  }
+
+  @override
+  void dispose() {
+    _client.close();
+    super.dispose();
   }
 }
 

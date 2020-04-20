@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'custom_tile.dart';
 import 'genre_container.dart';
 import 'movie_card.dart';
+import 'package:http/http.dart' as http;
 
 class MovieDetailsLayout extends StatefulWidget {
   MovieDetailsLayout(
@@ -40,14 +41,19 @@ class _MovieDetailsLayoutState extends State<MovieDetailsLayout>
       child: CircularProgressIndicator(),
     )
   ];
+
   // Tab stuff
   TabController _tabController;
+
   // The text style of the tab bar
   final TextStyle _tabBarTextStyle = TextStyle(
     fontFamily: 'OpenSans',
     fontSize: 17.0,
     fontWeight: FontWeight.bold,
   );
+
+  // HTTP Client
+  http.Client _client = http.Client();
 
   @override
   void initState() {
@@ -65,7 +71,7 @@ class _MovieDetailsLayoutState extends State<MovieDetailsLayout>
   the cast of the movie that is being displayed.
   */
   void buildCastList() async {
-    var movieCast = await TMDBModel.getCast(widget.id);
+    var movieCast = await TMDBModel.getCast(widget.id, _client);
 
     if (movieCast != null) {
       List<CustomTile> aux = [];
@@ -188,6 +194,7 @@ class _MovieDetailsLayoutState extends State<MovieDetailsLayout>
 
   @override
   void dispose() {
+    _client.close();
     _tabController.dispose();
     super.dispose();
   }

@@ -31,7 +31,7 @@ class InfoTile extends StatelessWidget {
                       child: Container(
                         alignment: Alignment.centerLeft,
                         child: AutoSizeText(
-                          title,
+                          title == null ? '' : title,
                           style: TextStyle(
                               fontSize: 18.0, fontStyle: FontStyle.italic),
                         ),
@@ -42,16 +42,18 @@ class InfoTile extends StatelessWidget {
                           width: MediaQuery.of(context).size.width * 0.75,
                           alignment: Alignment.centerLeft,
                           child: AutoSizeText(
-                            description,
+                            description == null ? '' : description,
                             style: TextStyle(fontSize: 23),
                             maxLines: 2,
                           ))),
                 ],
               ),
-              button != null ? Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: button,
-              ) : Container(),
+              button != null
+                  ? Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: button,
+                    )
+                  : Container(),
             ],
           ),
         ),
