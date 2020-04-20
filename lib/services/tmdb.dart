@@ -2,9 +2,8 @@ import 'package:cineandgo/localization/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'networking.dart';
-import 'package:cineandgo/api_keys/api_keys.dart';
+import 'package:flutter_config/flutter_config.dart';
 
-const String _tmdbApiKey = tmdbKey;
 const _requestUrl = 'https://api.themoviedb.org/3/';
 const _posterUrlOriginal = 'https://image.tmdb.org/t/p/original/';
 const _posterUrlSmall = 'https://image.tmdb.org/t/p/w500/';
@@ -20,7 +19,7 @@ class TMDBModel {
       String languageCode, int page, http.Client client) async {
     NetworkHelper networkHelper =
         NetworkHelper('${_requestUrl}movie/now_playing'
-            '?api_key=$_tmdbApiKey'
+            '?api_key=${FlutterConfig.get('TMDB_KEY')}'
             '&region=ES'
             '&page=$page'
             '&language=${languageCode == 'es' ? 'es-ES' : 'en-GB'}');
@@ -36,7 +35,7 @@ class TMDBModel {
   static Future<dynamic> getMovieDetails(
       String languageCode, String movieId, http.Client client) async {
     NetworkHelper networkHelper = NetworkHelper('${_requestUrl}movie/$movieId'
-        '?api_key=$_tmdbApiKey'
+        '?api_key=${FlutterConfig.get('TMDB_KEY')}'
         '&language=${languageCode == 'es' ? 'es-ES' : 'en-GB'}');
 
     var movieData = await networkHelper.getData(client);
@@ -50,7 +49,7 @@ class TMDBModel {
   static Future<dynamic> getCast(String movieId, http.Client client) async {
     NetworkHelper networkHelper =
         NetworkHelper('${_requestUrl}movie/$movieId/credits'
-            '?api_key=$_tmdbApiKey');
+            '?api_key=${FlutterConfig.get('TMDB_KEY')}');
 
     var movieData = await networkHelper.getData(client);
 

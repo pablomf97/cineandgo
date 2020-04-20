@@ -7,8 +7,13 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:cineandgo/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:cineandgo/localization/app_localizations.dart';
+import 'package:flutter_config/flutter_config.dart';
 
-void main() => runApp(CineGo());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await FlutterConfig.loadEnvVariables();
+  runApp(CineGo());
+}
 
 class CineGo extends StatelessWidget {
   @override

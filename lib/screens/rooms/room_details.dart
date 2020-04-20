@@ -1,4 +1,4 @@
-import 'package:cineandgo/api_keys/api_keys.dart';
+import 'package:flutter_config/flutter_config.dart';
 import 'package:cineandgo/components/movies/movie_card.dart';
 import 'package:cineandgo/components/others/simple_box.dart';
 import 'package:cineandgo/components/rooms/info_tile.dart';
@@ -366,7 +366,8 @@ class _RoomDetailsState extends State<RoomDetails> {
                                 urlTemplate: "https://api.tiles.mapbox.com/v4/"
                                     "{id}/{z}/{x}/{y}@2x.png?access_token={accessToken}",
                                 additionalOptions: {
-                                  'accessToken': '$mapboxKey',
+                                  'accessToken':
+                                      '${FlutterConfig.get('MAP_BOX_KEY')}',
                                   'id': 'mapbox.streets',
                                 },
                               ),

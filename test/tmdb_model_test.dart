@@ -3,12 +3,14 @@ import 'package:mockito/mockito.dart';
 import 'package:http/http.dart' as http;
 import 'package:cineandgo/api_keys/api_keys.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_config/flutter_config.dart';
 
 class MockClient extends Mock implements http.Client {}
 
-main() {
+void main() {
+  /// Mocking .env values
+  FlutterConfig.loadValueForTesting({'TMDB_KEY': 'key'});
   const _requestUrl = 'https://api.themoviedb.org/3/';
-  const _tmdbApiKey = tmdbKey;
 
   /// Testing 'getNowPlaying' request.
   group(
@@ -20,7 +22,7 @@ main() {
           final client = MockClient();
 
           when(client.get('${_requestUrl}movie/now_playing'
-                  '?api_key=$_tmdbApiKey'
+                  '?api_key=key'
                   '&region=ES'
                   '&page=1'
                   '&language=es-ES'))
@@ -38,7 +40,7 @@ main() {
           final client = MockClient();
 
           when(client.get('${_requestUrl}movie/now_playing'
-                  '?api_key=$_tmdbApiKey'
+                  '?api_key=key'
                   '&region=ES'
                   '&page=1'
                   '&language=es-ES'))
@@ -59,7 +61,7 @@ main() {
           final client = MockClient();
 
           when(client.get('${_requestUrl}movie/115'
-                  '?api_key=$_tmdbApiKey'
+                  '?api_key=key'
                   '&language=es-ES'))
               .thenAnswer((_) async =>
                   http.Response('{"test":3,"title": "El gran Lebowski"}', 200));
@@ -75,7 +77,7 @@ main() {
           final client = MockClient();
 
           when(client.get('${_requestUrl}movie/115'
-                  '?api_key=$_tmdbApiKey'
+                  '?api_key=key'
                   '&language=es-ES'))
               .thenAnswer((_) async => http.Response('Oops! Not found', 400));
 
@@ -95,7 +97,7 @@ main() {
           final client = MockClient();
 
           when(client.get('${_requestUrl}movie/115/credits'
-                  '?api_key=$_tmdbApiKey'))
+                  '?api_key=key'))
               .thenAnswer((_) async =>
                   http.Response('{"test":5,"title": "Jeff Bridges"}', 200));
 
@@ -110,7 +112,7 @@ main() {
           final client = MockClient();
 
           when(client.get('${_requestUrl}movie/115/credits'
-                  '?api_key=$_tmdbApiKey'))
+                  '?api_key=key'))
               .thenAnswer((_) async => http.Response('Oops! Not found', 400));
 
           expect(TMDBModel.getCast('115', client), throwsException);
