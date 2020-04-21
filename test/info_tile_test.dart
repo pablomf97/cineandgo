@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 void main() {
   testWidgets(
-    'This widget has a title and a description but no button.',
+    'Info tile - This widget has a title and a description but no button.',
     (WidgetTester tester) async {
       await tester.pumpWidget(MediaQuery(
           data: MediaQueryData(),
@@ -23,7 +23,7 @@ void main() {
   );
 
   testWidgets(
-    'This widget has no title and no description but has a button.',
+    'Info tile - This widget has no title and no description but has a button.',
     (WidgetTester tester) async {
       await tester.pumpWidget(MediaQuery(
           data: MediaQueryData(),
@@ -43,7 +43,7 @@ void main() {
   );
 
   testWidgets(
-    'This widget has a title, a description and a button.',
+    'Info tile - This widget has a title, a description and a button.',
     (WidgetTester tester) async {
       await tester.pumpWidget(MediaQuery(
           data: MediaQueryData(),
