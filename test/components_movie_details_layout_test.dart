@@ -1,5 +1,4 @@
 import 'package:cineandgo/components/movies/movie_card.dart';
-import 'package:cineandgo/components/rooms/room_list.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'package:cineandgo/components/movies/movie_details_layout.dart';

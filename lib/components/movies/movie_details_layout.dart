@@ -1,7 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cineandgo/components/rooms/room_list.dart';
 import 'package:cineandgo/constants/constants.dart';
-import 'package:cineandgo/localization/app_localizations.dart';
 import 'package:cineandgo/services/builders.dart';
 import 'package:flutter/material.dart';
 import 'genre_container.dart';

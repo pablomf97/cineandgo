@@ -10,7 +10,6 @@ class MockClient extends Mock implements http.Client {}
 main() {
   /// Mocking .env variable
   FlutterConfig.loadValueForTesting({'TMDB_KEY': 'key'});
-  const _requestUrl = 'https://api.themoviedb.org/3/';
   group(
     'Build cast',
     () {

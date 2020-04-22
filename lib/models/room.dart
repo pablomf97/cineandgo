@@ -1,6 +1,4 @@
 import 'package:cineandgo/models/film.dart';
-import 'package:cineandgo/models/message.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'cinema.dart';
 
 import 'package:meta/meta.dart';
