@@ -7,7 +7,7 @@ import 'package:flutter_config/flutter_config.dart';
 class MockClient extends Mock implements http.Client {}
 
 void main() {
-  /// Mocking .env values
+  /// Mocking .env variable
   FlutterConfig.loadValueForTesting({'TMDB_KEY': 'key'});
   const _requestUrl = 'https://api.themoviedb.org/3/';
 

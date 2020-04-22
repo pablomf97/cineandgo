@@ -2,9 +2,8 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cineandgo/components/rooms/room_list.dart';
 import 'package:cineandgo/constants/constants.dart';
 import 'package:cineandgo/localization/app_localizations.dart';
-import 'package:cineandgo/services/tmdb.dart';
+import 'package:cineandgo/services/builders.dart';
 import 'package:flutter/material.dart';
-import 'custom_tile.dart';
 import 'genre_container.dart';
 import 'movie_card.dart';
 import 'package:http/http.dart' as http;
@@ -18,7 +17,8 @@ class MovieDetailsLayout extends StatefulWidget {
       @required this.overview,
       @required this.voteAverage,
       @required this.evaluation,
-      @required this.genres});
+      @required this.genres,
+      this.client});
 
   final String id;
   final String posterPath;
@@ -28,6 +28,7 @@ class MovieDetailsLayout extends StatefulWidget {
   final String overview;
   final String evaluation;
   final List<GenreContainer> genres;
+  final http.Client client;
 
   @override
   _MovieDetailsLayoutState createState() => _MovieDetailsLayoutState();
@@ -48,12 +49,11 @@ class _MovieDetailsLayoutState extends State<MovieDetailsLayout>
   // The text style of the tab bar
   final TextStyle _tabBarTextStyle = TextStyle(
     fontFamily: 'OpenSans',
-    fontSize: 17.0,
     fontWeight: FontWeight.bold,
   );
 
   // HTTP Client
-  http.Client _client = http.Client();
+  http.Client _client;
 
   @override
   void initState() {
@@ -63,35 +63,24 @@ class _MovieDetailsLayoutState extends State<MovieDetailsLayout>
       vsync: this,
       initialIndex: 0,
     );
-    buildCastList();
+    _client = widget.client != null ? widget.client : http.Client();
+    getCastList();
   }
 
   /* 
-  Builds the list of 'CustomTiles' that contains all
-  the cast of the movie that is being displayed.
+    Builds the list of 'CustomTiles' that contains all
+    the cast of the movie that is being displayed.
   */
-  void buildCastList() async {
-    var movieCast = await TMDBModel.getCast(widget.id, _client);
-
-    if (movieCast != null) {
-      List<CustomTile> aux = [];
-      int i = 1;
-      for (var actor in movieCast['cast']) {
-        aux.add(CustomTile(
-          photoPath: actor['profile_path'],
-          name: actor['name'],
-          character: actor['character'],
-          heroIndex: i++,
-        ));
-      }
-      setState(() {
-        _cast = aux;
-      });
-    }
+  void getCastList() async {
+    var aux = await Builders.buildCast(widget.id, _client);
+    setState(() {
+      _cast = aux;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    String language = Localizations.localeOf(context).languageCode;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
@@ -128,19 +117,19 @@ class _MovieDetailsLayoutState extends State<MovieDetailsLayout>
                       ),
                       tabs: <Widget>[
                         Text(
-                          AppLocalizations.of(context).translate('overview'),
+                          language == 'en' ? 'Overview' : 'Sinopsis',
                           style: _tabBarTextStyle,
                         ),
                         Text(
-                          AppLocalizations.of(context).translate('genres'),
+                          language == 'en' ? 'Genre(s)' : 'Género(s)',
                           style: _tabBarTextStyle,
                         ),
                         Text(
-                          AppLocalizations.of(context).translate('cast'),
+                          language == 'en' ? 'Cast' : 'Reparto',
                           style: _tabBarTextStyle,
                         ),
                         Text(
-                          AppLocalizations.of(context).translate('rooms'),
+                          language == 'en' ? 'Room(s)' : 'Sala(s)',
                           style: _tabBarTextStyle,
                         ),
                       ],
