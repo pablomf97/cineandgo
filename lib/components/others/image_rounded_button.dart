@@ -29,11 +29,14 @@ class ImageRoundedButton extends StatelessWidget {
               children: <Widget>[
                 Container(
                   padding: EdgeInsets.only(right: 5.0),
-                  child: Image.asset(imagePath),
+                  child: Image.asset(
+                      imagePath == null || imagePath.trim().isEmpty
+                          ? 'images/logo.png'
+                          : imagePath),
                   height: 32.0,
                 ),
                 Text(
-                  title,
+                  title == null ? '' : title,
                   style: TextStyle(
                     fontFamily: 'Roboto',
                     fontSize: 20.0,

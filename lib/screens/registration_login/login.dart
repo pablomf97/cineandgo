@@ -1,5 +1,5 @@
 import 'package:cineandgo/components/others/custom_divider.dart';
-import 'package:cineandgo/components/others/google_sign_in_out.dart';
+import 'package:cineandgo/services/google_sign_in_out.dart';
 import 'package:cineandgo/components/others/image_rounded_button.dart';
 import 'package:cineandgo/components/others/rounded_button.dart';
 import 'package:cineandgo/constants/constants.dart';

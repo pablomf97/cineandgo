@@ -18,11 +18,13 @@ class CustomDivider extends StatelessWidget {
         Expanded(
           child: Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: horizontalPadding,
+              horizontal: horizontalPadding == null || horizontalPadding < 0
+                  ? 0.0
+                  : horizontalPadding,
             ),
             child: Divider(
               color: kPrimaryColor,
-              thickness: thickness,
+              thickness: thickness == null || thickness < 0.0 ? 0.0 : thickness,
             ),
           ),
         ),
@@ -36,11 +38,13 @@ class CustomDivider extends StatelessWidget {
         Expanded(
           child: Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: horizontalPadding,
+              horizontal: horizontalPadding == null || horizontalPadding < 0
+                  ? 0.0
+                  : horizontalPadding,
             ),
             child: Divider(
               color: kPrimaryColor,
-              thickness: thickness,
+              thickness: thickness == null || thickness < 0.0 ? 0.0 : thickness,
             ),
           ),
         ),
