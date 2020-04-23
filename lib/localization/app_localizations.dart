@@ -5,15 +5,20 @@ import 'package:flutter/services.dart';
 
 class AppLocalizations {
   final Locale locale;
+  bool isTest;
 
-  AppLocalizations(this.locale);
+  AppLocalizations(this.locale, {this.isTest = false});
 
   static AppLocalizations of(BuildContext context) {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
 
+  Future<AppLocalizations> loadTest(Locale locale) async {
+    return AppLocalizations(locale);
+  }
+
   static const LocalizationsDelegate<AppLocalizations> delegate =
-      _AppLocalizationsDelegate();
+      AppLocalizationsDelegate();
 
   Map<String, String> _localizedStrings;
 
@@ -30,13 +35,15 @@ class AppLocalizations {
   }
 
   String translate(String key) {
-    return key != null ? _localizedStrings[key] : null;
+    if (isTest) return key;
+    return key != null ? _localizedStrings[key] : '...';
   }
 }
 
-class _AppLocalizationsDelegate
-    extends LocalizationsDelegate<AppLocalizations> {
-  const _AppLocalizationsDelegate();
+class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
+  const AppLocalizationsDelegate({this.isTest = false});
+
+  final bool isTest;
 
   @override
   bool isSupported(Locale locale) {
@@ -45,8 +52,9 @@ class _AppLocalizationsDelegate
 
   @override
   Future<AppLocalizations> load(Locale locale) async {
-    AppLocalizations localizations = new AppLocalizations(locale);
-    await localizations.load();
+    AppLocalizations localizations =
+        new AppLocalizations(locale, isTest: isTest);
+    isTest ? await localizations.loadTest(locale) : await localizations.load();
     return localizations;
   }
 

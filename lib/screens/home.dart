@@ -99,11 +99,11 @@ class _HomeState extends State<Home> {
         .then(
       (docs) {
         if (docs.documents.isNotEmpty) {
-          List<RoomInfo> aux = [];
+          List<RoomInfoCard> aux = [];
           for (DocumentSnapshot doc in docs.documents) {
             Room room = Room.fromJson(doc.data);
             aux.add(
-              RoomInfo(
+              RoomInfoCard(
                 room: room,
                 id: doc.documentID,
                 padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 12.0),

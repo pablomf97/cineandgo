@@ -6,8 +6,8 @@ import 'package:cineandgo/screens/rooms/room_details.dart';
 import 'package:cineandgo/services/tmdb.dart';
 import 'package:flutter/material.dart';
 
-class RoomInfo extends StatelessWidget {
-  RoomInfo({@required this.room, @required this.id, this.padding});
+class RoomInfoCard extends StatelessWidget {
+  RoomInfoCard({@required this.room, @required this.id, this.padding});
 
   final Room room;
   final String id;

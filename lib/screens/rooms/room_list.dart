@@ -316,13 +316,13 @@ class _AllRoomsState extends State<AllRooms> {
                   );
                 }
                 if (snapshot.hasData) {
-                  List<RoomInfo> rooms = [];
+                  List<RoomInfoCard> rooms = [];
                   List<DocumentSnapshot> docs = snapshot.data.documents;
 
                   for (var doc in docs) {
                     Room room = Room.fromJson(doc.data);
                     rooms.add(
-                      RoomInfo(
+                      RoomInfoCard(
                         room: room,
                         id: doc.documentID,
                         padding:
