@@ -1,5 +1,3 @@
-import 'package:meta/meta.dart';
-
 class Film {
   // Attributes
   String posterPath;
@@ -10,11 +8,11 @@ class Film {
 
   // Constructor
   Film(
-      {@required this.title,
-      @required this.originalTitle,
-      @required this.overview,
-      @required this.voteAverage,
-      @required this.posterPath});
+      {this.title,
+      this.originalTitle,
+      this.overview,
+      this.voteAverage,
+      this.posterPath});
 
   // ToJSON
   Map<String, dynamic> toJson() => {

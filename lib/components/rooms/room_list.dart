@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:firestore_ui/firestore_ui.dart';
 
 class RoomList extends StatefulWidget {
-  RoomList({@required this.movieId});
+  RoomList({@required this.movieId, this.db});
 
   final String movieId;
+  final db;
 
   @override
   _RoomListState createState() => _RoomListState();
@@ -14,7 +15,7 @@ class RoomList extends StatefulWidget {
 
 class _RoomListState extends State<RoomList> {
   // Instance of the database
-  Firestore _db = Firestore.instance;
+  Firestore _db;
 
   // Query to perform to Firebase
   Stream<QuerySnapshot> get query => _db
@@ -23,6 +24,12 @@ class _RoomListState extends State<RoomList> {
       .where('date', isGreaterThanOrEqualTo: DateTime.now())
       .orderBy('date', descending: false)
       .snapshots();
+
+  @override
+  void initState() {
+    super.initState();
+    widget.db != null ? _db = widget.db : _db = Firestore.instance;
+  }
 
   @override
   Widget build(BuildContext context) {

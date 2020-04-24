@@ -13,14 +13,14 @@ class Cinema {
 
   // Constructor
   Cinema(
-      {@required this.id,
-      @required this.address,
-      @required this.city,
-      @required this.place,
-      @required this.name,
-      @required this.latitude,
-      @required this.longitude,
-      @required this.website});
+      {this.id,
+      this.address,
+      this.city,
+      this.place,
+      this.name,
+      this.latitude,
+      this.longitude,
+      this.website});
 
   // ToJSON
   Map<String, dynamic> toJson() => {

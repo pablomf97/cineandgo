@@ -13,13 +13,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
 
 class CustomForm extends StatefulWidget {
-  CustomForm({
-    @required this.id,
-    @required this.title,
-  });
+  CustomForm({@required this.id, @required this.title, this.db});
 
   final String id;
   final String title;
+  final db;
 
   @override
   _CustomFormState createState() => _CustomFormState();
@@ -27,6 +25,9 @@ class CustomForm extends StatefulWidget {
 
 class _CustomFormState extends State<CustomForm> {
   final _formKey = GlobalKey<FormState>();
+
+  // Database instace
+  Firestore _db;
 
   // HTTP Client
   http.Client _client = http.Client();
@@ -246,6 +247,7 @@ class _CustomFormState extends State<CustomForm> {
   @override
   void initState() {
     super.initState();
+    _db = widget.db != null ? widget.db : Firestore.instance;
     getSelectables();
   }
 
@@ -475,15 +477,13 @@ class _CustomFormState extends State<CustomForm> {
                             .translate('form_not_filled'),
                       );
                     } else {
-                      Firestore db = Firestore.instance;
-
-                      Room room = await createRoom(db);
+                      Room room = await createRoom(_db);
 
                       Future<DocumentReference> docRef =
-                          db.collection('rooms').add(room.toJson());
+                          _db.collection('rooms').add(room.toJson());
 
                       docRef.then((value) {
-                        db
+                        _db
                             .collection('chatrooms')
                             .add({'roomid': value.documentID, 'messages': []});
 

@@ -14,16 +14,16 @@ class Room {
   String time;
   List<dynamic> going;
 
-  // Constructor
+  // Constructors
   Room({
-    @required this.movieId,
-    @required this.creator,
-    @required this.theater,
-    @required this.film,
-    @required this.roomName,
-    @required this.date,
-    @required this.time,
-    @required this.going,
+    this.movieId,
+    this.creator,
+    this.theater,
+    this.film,
+    this.roomName,
+    this.date,
+    this.time,
+    this.going,
   });
 
   // ToJSON
