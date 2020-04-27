@@ -26,6 +26,13 @@ void main() {
         db: MockFirestoreInstance(),
       )));
       await tester.pumpAndSettle();
+
+      final buttonFinder = find.byType(FlatButton);
+
+      await tester.tap(buttonFinder.at(0));
+      await tester.tap(buttonFinder.at(1));
+      await tester.tap(buttonFinder.at(2));
+      await tester.tap(buttonFinder.at(3));
     },
   );
 }
