@@ -1,5 +1,3 @@
-import 'package:meta/meta.dart';
-
 class Cinema {
   // Attributes
   String id;
