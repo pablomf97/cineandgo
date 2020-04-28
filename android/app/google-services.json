@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "617647025945",
+    "firebase_url": "https://cineandgo-e1cd5.firebaseio.com",
+    "project_id": "cineandgo-e1cd5",
+    "storage_bucket": "cineandgo-e1cd5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:617647025945:android:40d06381ed193dda661f88",
+        "android_client_info": {
+          "package_name": "com.figueroa.cineandgo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "617647025945-1c4rgvid571f5ln55b253322q93qfnme.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmwL1pVULgnToHkTpuoabE7c-s6vZ8DcE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "617647025945-1c4rgvid571f5ln55b253322q93qfnme.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
