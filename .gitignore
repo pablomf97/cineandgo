@@ -251,3 +251,4 @@ iOSInjectionProject/
 pubspec.lock
 
 android/key.properties
+coverage/lcov.info

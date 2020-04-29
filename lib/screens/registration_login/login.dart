@@ -109,11 +109,16 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                 child: Column(
                   children: <Widget>[
                     TextFormField(
+                      key: Key('email_field'),
                       style: TextStyle().copyWith(color: Colors.black),
                       keyboardType: TextInputType.emailAddress,
                       textAlign: TextAlign.center,
-                      validator: (value) => AppLocalizations.of(context)
-                          .translate(FormValidators.validateEmail(value)),
+                      validator: (value) {
+                        final String message =
+                            FormValidators.validateEmail(value);
+                        if (message == null) return null;
+                        return AppLocalizations.of(context).translate(message);
+                      },
                       onChanged: (value) => email = value,
                       decoration: kTextFieldDecoration.copyWith(
                         hintText: AppLocalizations.of(context)
@@ -128,11 +133,16 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                     Input for the password.
                     */
                     TextFormField(
+                      key: Key('password_field'),
                       style: TextStyle().copyWith(color: Colors.black),
                       obscureText: true,
                       textAlign: TextAlign.center,
-                      validator: (value) => AppLocalizations.of(context)
-                          .translate(FormValidators.validatePassword(value)),
+                      validator: (value) {
+                        final String message =
+                            FormValidators.validatePassword(value);
+                        if (message == null) return null;
+                        return AppLocalizations.of(context).translate(message);
+                      },
                       onChanged: (value) => password = value,
                       decoration: kTextFieldDecoration.copyWith(
                         hintText: AppLocalizations.of(context)
@@ -152,6 +162,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
               ready to validate.
               */
               RoundedButton(
+                key: Key('login_screen_button'),
                 text: AppLocalizations.of(context).translate('login'),
                 color: kAccentColor,
                 /* 
