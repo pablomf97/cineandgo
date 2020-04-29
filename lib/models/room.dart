@@ -1,8 +1,6 @@
 import 'package:cineandgo/models/film.dart';
 import 'cinema.dart';
 
-import 'package:meta/meta.dart';
-
 class Room {
   // Attributes
   String creator;

@@ -49,11 +49,13 @@ class Welcome extends StatelessWidget {
               height: 48.0,
             ),
             RoundedButton(
+              key: Key('login_button'),
               text: AppLocalizations.of(context).translate('login'),
               color: kAccentColor,
               onPressed: () => Navigator.pushNamed(context, Login.id),
             ),
             RoundedButton(
+              key: Key('register_button'),
               text: AppLocalizations.of(context).translate('register'),
               color: kPrimaryColor,
               onPressed: () => Navigator.pushNamed(context, Registration.id),

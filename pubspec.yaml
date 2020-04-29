@@ -64,14 +64,17 @@ dependencies:
 
 dev_dependencies:
   flutter_config: ^1.0.7
-  flutter_test:
-    sdk: flutter
+  test:
   
   # Meks mocking of connections easier
   mockito: ^4.1.1
 
   # A bit of help to mock Firestore
   cloud_firestore_mocks: ^0.4.2
+
+  # Flutter driver
+  flutter_driver:
+    sdk: flutter
 
 flutter:
   uses-material-design: true
