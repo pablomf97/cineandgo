@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 
 class CustomTile extends StatelessWidget {
   CustomTile(
-      {@required this.photoPath,
+      {Key key,
+      @required this.photoPath,
       @required this.character,
       @required this.name,
-      @required this.heroIndex});
+      @required this.heroIndex})
+      : super(key: key);
 
   final String photoPath;
   final String name;

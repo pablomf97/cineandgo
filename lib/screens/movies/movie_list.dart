@@ -50,6 +50,7 @@ class _AllMovieListState extends State<AllMovieList> {
       Widget aux = SliverGrid(
           delegate: SliverChildBuilderDelegate(
             (context, index) => CustomCard(
+              key: Key('list_movie$index'),
               title: movieData['results'][index]['title'],
               posterPath: movieData['results'][index]['poster_path'],
               function: () {
@@ -99,6 +100,7 @@ class _AllMovieListState extends State<AllMovieList> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               BottomBarButton(
+                key: Key('movie_list_prev'),
                 buttonText:
                     AppLocalizations.of(context).translate('previous_page'),
                 onPressed: _currentPage == 1
@@ -133,6 +135,7 @@ class _AllMovieListState extends State<AllMovieList> {
                 ),
               ),
               BottomBarButton(
+                key: Key('movie_list_next'),
                 buttonText: AppLocalizations.of(context).translate('next_page'),
                 onPressed: _currentPage == _totalPages
                     ? null
@@ -154,6 +157,7 @@ class _AllMovieListState extends State<AllMovieList> {
       ),
       body: SafeArea(
         child: CustomScrollView(
+          key: Key('movies_grid'),
           controller: _scrollController,
           physics: BouncingScrollPhysics(),
           slivers: <Widget>[
@@ -187,9 +191,10 @@ Bottom bar buttons.
 */
 class BottomBarButton extends StatelessWidget {
   BottomBarButton({
+    Key key,
     @required this.buttonText,
     @required this.onPressed,
-  });
+  }) : super(key: key);
 
   final String buttonText;
   final Function onPressed;

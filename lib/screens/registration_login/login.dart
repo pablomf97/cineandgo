@@ -1,4 +1,5 @@
 import 'package:cineandgo/components/others/custom_divider.dart';
+import 'package:cineandgo/screens/others/loading_screen.dart';
 import 'package:cineandgo/services/google_sign_in_out.dart';
 import 'package:cineandgo/components/others/image_rounded_button.dart';
 import 'package:cineandgo/components/others/rounded_button.dart';
@@ -179,8 +180,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                     );
 
                     if (user != null) {
-                      int i = 0;
-                      Navigator.popUntil(context, (route) => i++ == 2);
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, LoadingScreen.id, (route) => false);
                     }
                   } catch (oops) {
                     /* 
@@ -228,9 +229,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                   setState(() => showSpinner = true);
                   try {
                     await GoogleSignInOut.signInWithGoogle(_auth, googleSignIn);
-                    int i = 0;
-
-                    Navigator.popUntil(context, (route) => i++ == 2);
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, LoadingScreen.id, (route) => false);
                   } catch (oops) {
                     print(oops);
                     setState(() {

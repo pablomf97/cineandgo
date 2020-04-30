@@ -3,7 +3,9 @@ import 'package:cineandgo/services/tmdb.dart';
 import 'package:flutter/material.dart';
 
 class CustomCard extends StatelessWidget {
-  CustomCard({@required this.title, this.posterPath, @required this.function});
+  CustomCard(
+      {Key key, @required this.title, this.posterPath, @required this.function})
+      : super(key: key);
 
   final String posterPath;
   final String title;

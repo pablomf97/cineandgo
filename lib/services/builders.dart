@@ -1,5 +1,6 @@
 import 'package:cineandgo/components/movies/custom_tile.dart';
 import 'package:cineandgo/services/tmdb.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class Builders {
@@ -13,11 +14,11 @@ class Builders {
         int i = 1;
         for (var actor in movieCast['cast']) {
           aux.add(CustomTile(
-            photoPath: actor['profile_path'],
-            name: actor['name'],
-            character: actor['character'],
-            heroIndex: i++,
-          ));
+              photoPath: actor['profile_path'],
+              name: actor['name'],
+              character: actor['character'],
+              heroIndex: i++,
+              key: Key('cast_member$i')));
         }
         res = aux;
       }
