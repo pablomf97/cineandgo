@@ -1,4 +1,5 @@
 import 'package:cineandgo/components/others/custom_divider.dart';
+import 'package:cineandgo/screens/others/loading_screen.dart';
 import 'package:cineandgo/services/google_sign_in_out.dart';
 import 'package:cineandgo/components/others/image_rounded_button.dart';
 import 'package:cineandgo/components/others/rounded_button.dart';
@@ -113,7 +114,12 @@ class _RegistrationState extends State<Registration>
                       style: TextStyle().copyWith(color: Colors.black),
                       keyboardType: TextInputType.emailAddress,
                       textAlign: TextAlign.center,
-                      validator: (value) => FormValidators.validateEmail(value),
+                      validator: (value) {
+                        final String message =
+                            FormValidators.validateEmail(value);
+                        if (message == null) return null;
+                        return AppLocalizations.of(context).translate(message);
+                      },
                       onChanged: (value) => email = value,
                       decoration: kTextFieldDecoration.copyWith(
                         hintText: AppLocalizations.of(context)
@@ -133,8 +139,12 @@ class _RegistrationState extends State<Registration>
                       style: TextStyle().copyWith(color: Colors.black),
                       obscureText: true,
                       textAlign: TextAlign.center,
-                      validator: (value) =>
-                          FormValidators.validatePassword(value),
+                      validator: (value) {
+                        final String message =
+                            FormValidators.validatePassword(value);
+                        if (message == null) return null;
+                        return AppLocalizations.of(context).translate(message);
+                      },
                       onChanged: (value) => password = value,
                       decoration: kTextFieldDecoration.copyWith(
                         hintText: AppLocalizations.of(context)
@@ -154,11 +164,13 @@ class _RegistrationState extends State<Registration>
                       style: TextStyle().copyWith(color: Colors.black),
                       obscureText: true,
                       textAlign: TextAlign.center,
-                      validator: (value) =>
-                          AppLocalizations.of(context).translate(
-                        FormValidators.validatePasswordConfirmation(
-                            password, value),
-                      ),
+                      validator: (value) {
+                        final String message =
+                            FormValidators.validatePasswordConfirmation(
+                                password, value);
+                        if (message == null) return null;
+                        return AppLocalizations.of(context).translate(message);
+                      },
                       decoration: kTextFieldDecoration.copyWith(
                         hintText: AppLocalizations.of(context)
                             .translate('repeat_pass'),
@@ -200,8 +212,8 @@ class _RegistrationState extends State<Registration>
                     );
 
                     if (newUser != null) {
-                      int i = 0;
-                      Navigator.popUntil(context, (route) => i++ == 2);
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, LoadingScreen.id, (route) => false);
                     }
                   } catch (oops) {
                     /* 
@@ -252,10 +264,9 @@ class _RegistrationState extends State<Registration>
                   );
                   try {
                     await GoogleSignInOut.signInWithGoogle(_auth, googleSignIn);
-                    int i = 0;
-                    Navigator.popUntil(context, (route) => i++ == 2);
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, LoadingScreen.id, (route) => false);
                   } catch (oops) {
-                    print(oops);
                     setState(
                       () {
                         showSpinner = false;

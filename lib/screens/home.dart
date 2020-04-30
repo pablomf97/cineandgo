@@ -4,6 +4,7 @@ import 'package:cineandgo/components/rooms/room_info_card.dart';
 import 'package:cineandgo/constants/constants.dart';
 import 'package:cineandgo/localization/app_localizations.dart';
 import 'package:cineandgo/models/room.dart';
+import 'package:cineandgo/screens/others/loading_screen.dart';
 import 'package:cineandgo/screens/registration_login/welcome.dart';
 import 'package:cineandgo/screens/rooms/room_list.dart';
 import 'package:cineandgo/services/tmdb.dart';
@@ -146,8 +147,10 @@ class _HomeState extends State<Home> {
             Button to sign out.
             */
             PopupMenuButton(
+              key: Key('popup_logout_button'),
               itemBuilder: (context) => [
                 PopupMenuItem(
+                  key: Key('logout_button'),
                   child: ListTile(
                     leading: Icon(
                       Icons.exit_to_app,
@@ -167,7 +170,8 @@ class _HomeState extends State<Home> {
                           _auth.signOut();
                         }
 
-                        Navigator.popAndPushNamed(context, Welcome.id);
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, LoadingScreen.id, (route) => false);
                       } catch (error) {}
                     },
                   ),
