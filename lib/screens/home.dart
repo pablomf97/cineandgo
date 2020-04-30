@@ -5,7 +5,6 @@ import 'package:cineandgo/constants/constants.dart';
 import 'package:cineandgo/localization/app_localizations.dart';
 import 'package:cineandgo/models/room.dart';
 import 'package:cineandgo/screens/others/loading_screen.dart';
-import 'package:cineandgo/screens/registration_login/welcome.dart';
 import 'package:cineandgo/screens/rooms/room_list.dart';
 import 'package:cineandgo/services/tmdb.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -59,9 +58,11 @@ class _HomeState extends State<Home> {
 
     if (movieData != null) {
       List<CustomCard> aux = [];
+      int i = 0;
       for (var movie in movieData['results']) {
         aux.add(
           CustomCard(
+            key: Key('movie${i++}'),
             title: movie['title'],
             posterPath: movie['poster_path'],
             function: () {
@@ -195,6 +196,7 @@ class _HomeState extends State<Home> {
                     builder: (context) => AllMovieList(),
                   ),
                 ),
+                index: 0,
               ),
             ),
             Expanded(
@@ -217,6 +219,7 @@ class _HomeState extends State<Home> {
                     builder: (context) => AllRooms(),
                   ),
                 ),
+                index: 1,
               ),
             ),
             Flexible(
@@ -247,15 +250,16 @@ class _HomeState extends State<Home> {
 }
 
 class TextButtonRow extends StatelessWidget {
-  TextButtonRow({
-    @required this.text,
-    @required this.buttonTitle,
-    @required this.onPressed,
-  });
+  TextButtonRow(
+      {@required this.text,
+      @required this.buttonTitle,
+      @required this.onPressed,
+      this.index});
 
   final String text;
   final String buttonTitle;
   final Function onPressed;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
@@ -275,6 +279,7 @@ class TextButtonRow extends StatelessWidget {
             ),
           ),
           FlatButton(
+            key: Key('button$index'),
             color: kPrimaryColor,
             onPressed: onPressed,
             child: Text(

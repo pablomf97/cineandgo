@@ -117,18 +117,22 @@ class _MovieDetailsLayoutState extends State<MovieDetailsLayout>
                       tabs: <Widget>[
                         Text(
                           language == 'en' ? 'Overview' : 'Sinopsis',
+                          key: Key('overview_tab'),
                           style: _tabBarTextStyle,
                         ),
                         Text(
                           language == 'en' ? 'Genre(s)' : 'Género(s)',
+                          key: Key('genres_tab'),
                           style: _tabBarTextStyle,
                         ),
                         Text(
                           language == 'en' ? 'Cast' : 'Reparto',
+                          key: Key('cast_tab'),
                           style: _tabBarTextStyle,
                         ),
                         Text(
                           language == 'en' ? 'Room(s)' : 'Sala(s)',
+                          key: Key('rooms_tab'),
                           style: _tabBarTextStyle,
                         ),
                       ],
@@ -160,6 +164,7 @@ class _MovieDetailsLayoutState extends State<MovieDetailsLayout>
                         ),
                       ),
                       ListView(
+                        key: Key('cast_list'),
                         padding: const EdgeInsets.symmetric(
                             horizontal: 5.0, vertical: 5.0),
                         children: _cast,
