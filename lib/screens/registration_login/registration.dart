@@ -111,6 +111,7 @@ class _RegistrationState extends State<Registration>
                 child: Column(
                   children: <Widget>[
                     TextFormField(
+                      key: Key('registration_email_field'),
                       style: TextStyle().copyWith(color: Colors.black),
                       keyboardType: TextInputType.emailAddress,
                       textAlign: TextAlign.center,
@@ -136,6 +137,7 @@ class _RegistrationState extends State<Registration>
                     long.
                     */
                     TextFormField(
+                      key: Key('registration_pass_field'),
                       style: TextStyle().copyWith(color: Colors.black),
                       obscureText: true,
                       textAlign: TextAlign.center,
@@ -161,6 +163,7 @@ class _RegistrationState extends State<Registration>
                     password input.
                     */
                     TextFormField(
+                      key: Key('registration_confirm_field'),
                       style: TextStyle().copyWith(color: Colors.black),
                       obscureText: true,
                       textAlign: TextAlign.center,
@@ -189,6 +192,7 @@ class _RegistrationState extends State<Registration>
               ready to validate.
               */
               RoundedButton(
+                key: Key('registration_register_button'),
                 text: AppLocalizations.of(context).translate('register'),
                 color: kAccentColor,
                 /* 
@@ -220,7 +224,6 @@ class _RegistrationState extends State<Registration>
                     If Firebase returned some error, the app will 
                     show the user some information about it.
                     */
-                    print(oops.code);
                     String message;
                     if (oops.code == 'ERROR_INVALID_EMAIL') {
                       message = AppLocalizations.of(context)
@@ -228,6 +231,9 @@ class _RegistrationState extends State<Registration>
                     } else if (oops.code == 'ERROR_EMAIL_ALREADY_IN_USE') {
                       message = AppLocalizations.of(context)
                           .translate('err_msg_firebase_email_already_in_use');
+                    } else if (oops.code == 'ERROR_WEAK_PASSWORD') {
+                      message = AppLocalizations.of(context)
+                          .translate('err_msg_firebase_weak_pass');
                     } else {
                       message = AppLocalizations.of(context)
                           .translate('err_msg_firebase_generic');

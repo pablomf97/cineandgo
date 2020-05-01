@@ -51,6 +51,7 @@
   "are_going_si": "person is going to this session",
   "err_msg_firebase_user_not_found": "It seems that the email you entered is not registered. Are you sure you wrote it correctly?",
   "err_msg_firebase_wrong_password": "Wrong password! Make sure you wrote it correctly and try again.",
+  "err_msg_firebase_weak_pass": "It looks like your password is too short or weak! Renember it must be at least 6 character long.",
   "err_msg_firebase_invalid_email": "It seems that the email you provided is not valid. Check that it is properly spelled and then try again.",
   "err_msg_firebase_email_already_in_use": "The email you entered is already in use.",
   "err_msg_firebase_generic": "There has been an error related with the database. Try again in few moments.",
