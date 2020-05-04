@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter_driver/flutter_driver.dart';
 import 'package:test/test.dart';
 
@@ -30,6 +32,8 @@ void main() {
     final moviedetailspage = find.byType('MovieDetails');
     final movielistpage = find.byType('AllMovieList');
     final registrationpage = find.byType('Registration');
+    final roomdetailspage = find.byType('RoomDetails');
+    final roomchatpage = find.byType('ChatRoom');
 
     test('Unsuccessful login', () async {
       await driver.tap(find.byValueKey('login_button'));
@@ -92,8 +96,25 @@ void main() {
       });
     });
 
+    test('Checking a room', () async {
+      await driver.runUnsynchronized(() async {
+        await driver.tap(find.pageBack());
+        await driver.tap(find.byType('RoomInfoCard'));
+        await driver.waitUntilNoTransientCallbacks();
+        assert(roomdetailspage != null);
+        await driver.tap(find.byValueKey('fab'));
+        assert(roomchatpage != null);
+        await driver.tap(find.byValueKey('messagefield'));
+        int randomInt = Random().nextInt(10000);
+        await driver.enterText(randomInt.toString());
+        await driver.tap(find.byValueKey('sendbutton'));
+        assert(find.text(randomInt.toString()) != null);
+      });
+    });
+
     test('Logout from app', () async {
       await driver.runUnsynchronized(() async {
+        await driver.tap(find.pageBack());
         await driver.tap(find.pageBack());
         assert(movielistpage == null);
         await driver.tap(find.byValueKey('popup_logout_button'));
