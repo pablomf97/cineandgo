@@ -225,6 +225,7 @@ class _RoomDetailsState extends State<RoomDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
+        key: Key('fab'),
         heroTag: 'fabroom',
         elevation: 1.0,
         onPressed: going

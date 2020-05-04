@@ -7,7 +7,8 @@ import 'package:cineandgo/services/tmdb.dart';
 import 'package:flutter/material.dart';
 
 class RoomInfoCard extends StatelessWidget {
-  RoomInfoCard({@required this.room, @required this.id, this.padding});
+  RoomInfoCard({Key key, @required this.room, @required this.id, this.padding})
+      : super(key: key);
 
   final Room room;
   final String id;
