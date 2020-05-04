@@ -76,6 +76,7 @@ class _ChatRoomState extends State<ChatRoom> {
                   children: <Widget>[
                     Expanded(
                       child: TextField(
+                        key: Key('messagefield'),
                         controller: messageTextController,
                         textCapitalization: TextCapitalization.sentences,
                         onChanged: (value) {
@@ -91,6 +92,7 @@ class _ChatRoomState extends State<ChatRoom> {
                       ),
                     ),
                     FlatButton(
+                      key: Key('sendbutton'),
                       onPressed: () {
                         if (messageText != null &&
                             messageText.trim().isNotEmpty) {

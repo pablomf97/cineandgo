@@ -102,10 +102,12 @@ class _HomeState extends State<Home> {
       (docs) {
         if (docs.documents.isNotEmpty) {
           List<RoomInfoCard> aux = [];
+          int i = -1;
           for (DocumentSnapshot doc in docs.documents) {
             Room room = Room.fromJson(doc.data);
             aux.add(
               RoomInfoCard(
+                key: Key('room_${i++}'),
                 room: room,
                 id: doc.documentID,
                 padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 12.0),
