@@ -1,5 +1,4 @@
 import 'package:cineandgo/components/movies/custom_tile.dart';
-import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:cineandgo/services/builders.dart';
 import 'package:mockito/mockito.dart';
@@ -9,7 +8,6 @@ class MockClient extends Mock implements http.Client {}
 
 main() {
   /// Mocking .env variable
-  FlutterConfig.loadValueForTesting({'TMDB_KEY': 'key'});
   group(
     'Build cast',
     () {
@@ -22,7 +20,7 @@ main() {
               '{"test": 1,"cast": [{"profile_path": "profilePath", "name": "Shameik Moore", "character": "Miles Morales"}]}',
               200));
 
-          var actual = await Builders.buildCast('324857', client);
+          var actual = await Builders.buildCast('324857', client, test: true);
           expect(actual is List<CustomTile>, true);
         },
       );

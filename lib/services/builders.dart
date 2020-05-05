@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class Builders {
-  static Future<List> buildCast(String id, http.Client client) async {
+  static Future<List> buildCast(String id, http.Client client,
+      {bool test = false}) async {
     var res;
     try {
-      var movieCast = await TMDBModel.getCast(id, client);
+      var movieCast = await TMDBModel.getCast(id, client, test: test);
 
       if (movieCast != null) {
         List<CustomTile> aux = [];
