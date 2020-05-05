@@ -35,6 +35,8 @@ dependencies:
   cloud_firestore: 0.13.4
   # Port of FirestoreUI
   firestore_ui: ^1.9.1
+  # Firebase Remote Config
+  firebase_remote_config: ^0.3.0+3
   
 
   # Google Sign In
@@ -63,7 +65,6 @@ dependencies:
   cupertino_icons: ^0.1.2
 
 dev_dependencies:
-  flutter_config: ^1.0.7
   test:
   
   # Meks mocking of connections easier

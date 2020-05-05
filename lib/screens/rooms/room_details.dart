@@ -1,4 +1,3 @@
-import 'package:flutter_config/flutter_config.dart';
 import 'package:cineandgo/components/movies/movie_card.dart';
 import 'package:cineandgo/components/others/simple_box.dart';
 import 'package:cineandgo/components/rooms/info_tile.dart';
@@ -11,7 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
-
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'chat_room.dart';
 
 class RoomDetails extends StatefulWidget {
@@ -339,7 +338,11 @@ class _RoomDetailsState extends State<RoomDetails> {
                   '${AppLocalizations.of(context).translate('in')} ${room.theater.name.trim()}',
               button: IconButton(
                 icon: Icon(Icons.arrow_forward),
-                onPressed: () {
+                onPressed: () async {
+                  RemoteConfig remoteConfig = await RemoteConfig.instance;
+                  await remoteConfig.fetch(expiration: Duration(minutes: 2));
+                  await remoteConfig.activateFetched();
+                  final key = remoteConfig.getValue('MAP_BOX_KEY').asString();
                   showBottomSheet([
                     SimpleBox(
                       color: kAccentColor,
@@ -367,8 +370,7 @@ class _RoomDetailsState extends State<RoomDetails> {
                                 urlTemplate: "https://api.tiles.mapbox.com/v4/"
                                     "{id}/{z}/{x}/{y}@2x.png?access_token={accessToken}",
                                 additionalOptions: {
-                                  'accessToken':
-                                      '${FlutterConfig.get('MAP_BOX_KEY')}',
+                                  'accessToken': '$key',
                                   'id': 'mapbox.streets',
                                 },
                               ),
