@@ -4,12 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:cineandgo/components/movies/movie_details_layout.dart';
 import 'package:mockito/mockito.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_config/flutter_config.dart';
 
 class MockClient extends Mock implements http.Client {}
 
 void main() {
-  FlutterConfig.loadValueForTesting({'TMDB_KEY': 'key'});
   testWidgets(
     'Movie details layout',
     (WidgetTester tester) async {

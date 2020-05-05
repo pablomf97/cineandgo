@@ -2,13 +2,11 @@ import 'package:cineandgo/services/tmdb.dart';
 import 'package:mockito/mockito.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_config/flutter_config.dart';
 
 class MockClient extends Mock implements http.Client {}
 
 void main() {
   /// Mocking .env variable
-  FlutterConfig.loadValueForTesting({'TMDB_KEY': 'key'});
   const _requestUrl = 'https://api.themoviedb.org/3/';
 
   /// Testing 'getNowPlaying' request.
@@ -16,7 +14,7 @@ void main() {
     'Get now playing',
     () {
       test(
-        'Get now playing - Returns a GET if the http call completes successfully',
+        '- Returns a GET if the http call completes successfully',
         () async {
           final client = MockClient();
 
@@ -28,7 +26,7 @@ void main() {
               .thenAnswer((_) async =>
                   http.Response('{"test":1,"title": "Success!"}', 200));
 
-          expect(await TMDBModel.getNowPlaying('es', 1, client),
+          expect(await TMDBModel.getNowPlaying('es', 1, client, test: true),
               {"test": 1, "title": "Success!"});
         },
       );
@@ -45,7 +43,8 @@ void main() {
                   '&language=es-ES'))
               .thenAnswer((_) async => http.Response('Oops! Not found', 400));
 
-          expect(TMDBModel.getNowPlaying('es', 1, client), throwsException);
+          expect(TMDBModel.getNowPlaying('es', 1, client, test: true),
+              throwsException);
         },
       );
     },
@@ -65,7 +64,8 @@ void main() {
               .thenAnswer((_) async =>
                   http.Response('{"test":3,"title": "El gran Lebowski"}', 200));
 
-          expect(await TMDBModel.getMovieDetails('es', '115', client),
+          expect(
+              await TMDBModel.getMovieDetails('es', '115', client, test: true),
               {"test": 3, "title": "El gran Lebowski"});
         },
       );
@@ -80,8 +80,8 @@ void main() {
                   '&language=es-ES'))
               .thenAnswer((_) async => http.Response('Oops! Not found', 400));
 
-          expect(
-              TMDBModel.getMovieDetails('es', '115', client), throwsException);
+          expect(TMDBModel.getMovieDetails('es', '115', client, test: true),
+              throwsException);
         },
       );
     },
@@ -100,7 +100,7 @@ void main() {
               .thenAnswer((_) async =>
                   http.Response('{"test":5,"title": "Jeff Bridges"}', 200));
 
-          expect(await TMDBModel.getCast('115', client),
+          expect(await TMDBModel.getCast('115', client, test: true),
               {"test": 5, "title": "Jeff Bridges"});
         },
       );
@@ -114,7 +114,7 @@ void main() {
                   '?api_key=key'))
               .thenAnswer((_) async => http.Response('Oops! Not found', 400));
 
-          expect(TMDBModel.getCast('115', client), throwsException);
+          expect(TMDBModel.getCast('115', client, test: true), throwsException);
         },
       );
     },
