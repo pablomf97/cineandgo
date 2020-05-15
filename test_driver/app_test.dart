@@ -61,26 +61,9 @@ void main() {
       });
     });
 
-    test('Checking a movie', () async {
-      await driver.runUnsynchronized(() async {
-        assert(homepage != null);
-        await driver.tap(find.byValueKey('movie1'));
-        await driver.waitUntilNoTransientCallbacks();
-        await driver.waitFor(moviedetailspage);
-        assert(moviedetailspage != null);
-        await driver.tap(find.byValueKey('overview_tab'));
-        await driver.tap(find.byValueKey('genres_tab'));
-        await driver.tap(find.byValueKey('cast_tab'));
-        await driver.scrollUntilVisible(
-            find.byValueKey('cast_list'), find.byValueKey('cast_member6'));
-        await driver.tap(find.byValueKey('rooms_tab'));
-        await driver.waitUntilNoTransientCallbacks();
-      });
-    });
-
     test('Checking all movies', () async {
       await driver.runUnsynchronized(() async {
-        await driver.tap(find.pageBack());
+        // await driver.tap(find.pageBack());
         await driver.waitUntilNoTransientCallbacks();
         assert(moviedetailspage == null);
         await driver.tap(find.byValueKey('button0'));
