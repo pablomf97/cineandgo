@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "617647025945-g57gnrttdv1b3j122b2uvkffoetqqb5q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.figueroa.cineandgo",
+            "certificate_hash": "c53b9d4573969151d579114fc7f0881550148f58"
+          }
+        },
+        {
+          "client_id": "617647025945-c1ejt3etl08ooh53uhlt3amk2h63ho28.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.figueroa.cineandgo",
+            "certificate_hash": "9b788673a0cb189b93199fe4b2a4022ac07e661a"
+          }
+        },
+        {
           "client_id": "617647025945-1c4rgvid571f5ln55b253322q93qfnme.apps.googleusercontent.com",
           "client_type": 3
         }
